@@ -1,9 +1,70 @@
 // ==========================================
     // FILE OPEN & SAVE
     // ==========================================
-    function triggerOpenFile() {
+    async function triggerOpenFile() {
+      if (window.simplePadDesktop && window.simplePadDesktop.isDesktop) {
+        try {
+          const res = await window.simplePadDesktop.openFile();
+          if (res && !res.canceled) {
+            processOpenedFileContent(res.fileName, res.content, res.filePath);
+          }
+        } catch (err) {
+          showToast('No se pudo abrir el archivo');
+        }
+        return;
+      }
       const input = document.getElementById('hiddenFileOpenInput');
       if (input) input.click();
+    }
+
+    function processOpenedFileContent(fileName, content, filePath = null) {
+      const text = String(content || '');
+      if (fileName.endsWith('.json')) {
+        try {
+          const parsed = JSON.parse(text);
+          if (parsed && Array.isArray(parsed.tabs)) {
+            appState.tabs = parsed.tabs;
+            appState.activeTabId = parsed.tabs[0].id;
+            saveTabsToStorage();
+            renderAll();
+            showToast('✓ Sesión de pestañas importada');
+            return;
+          }
+        } catch (err) {}
+      }
+
+      let importedHtml = '';
+      let restoredFormatted = false;
+      const fmtMatch = text.match(/<!--NOTAFLOW_FMT_V1:([A-Za-z0-9+/=\s]+)-->/);
+      if (/\.md$/i.test(fileName)) {
+        importedHtml = convertMarkdownToTabHtml(text);
+        restoredFormatted = true;
+      } else if (/\.html?$/i.test(fileName)) {
+        importedHtml = sanitizeImportedHtml(text);
+        restoredFormatted = true;
+      } else if (fmtMatch) {
+        try {
+          importedHtml = sanitizeImportedHtml(decodeUtf8Base64(fmtMatch[1]));
+          restoredFormatted = true;
+        } catch (err) {}
+      }
+
+      if (!importedHtml) {
+        const cleanPlain = text.replace(/\n*<!--NOTAFLOW_FMT_V1:[A-Za-z0-9+/=\s]+-->\s*$/, '');
+        importedHtml = cleanPlain.split(/\r?\n/).map(l => `<div class="txt-mediano">${escapeHtml(l) || '<br>'}</div>`).join('');
+      }
+
+      const newTab = {
+        id: 'tab-' + Date.now(),
+        title: fileName,
+        html: importedHtml,
+        filePath: filePath || null
+      };
+      appState.tabs.push(newTab);
+      appState.activeTabId = newTab.id;
+      saveTabsToStorage();
+      renderAll();
+      showToast(restoredFormatted ? `✓ "${fileName}" abierto con su formato completo` : `✓ Archivo "${fileName}" abierto en nueva pestaña`);
     }
 
     function escapeAttrJson(obj) {
@@ -285,51 +346,7 @@
       if (!file) return;
       const reader = new FileReader();
       reader.onload = function(e) {
-        const content = String(e.target.result || '');
-        if (file.name.endsWith('.json')) {
-          try {
-            const parsed = JSON.parse(content);
-            if (parsed && Array.isArray(parsed.tabs)) {
-              appState.tabs = parsed.tabs;
-              appState.activeTabId = parsed.tabs[0].id;
-              saveTabsToStorage();
-              renderAll();
-              showToast('✓ Sesión de pestañas importada');
-              return;
-            }
-          } catch (err) {}
-        }
-        let importedHtml = '';
-        let restoredFormatted = false;
-        const fmtMatch = content.match(/<!--NOTAFLOW_FMT_V1:([A-Za-z0-9+/=\s]+)-->/);
-        if (/\.md$/i.test(file.name)) {
-          importedHtml = convertMarkdownToTabHtml(content);
-          restoredFormatted = true;
-        } else if (/\.html?$/i.test(file.name)) {
-          importedHtml = sanitizeImportedHtml(content);
-          restoredFormatted = true;
-        } else if (fmtMatch) {
-          try {
-            importedHtml = sanitizeImportedHtml(decodeUtf8Base64(fmtMatch[1]));
-            restoredFormatted = true;
-          } catch (err) {}
-        }
-
-        if (!importedHtml) {
-          const cleanPlain = content.replace(/\n*<!--NOTAFLOW_FMT_V1:[A-Za-z0-9+/=\s]+-->\s*$/, '');
-          importedHtml = cleanPlain.split(/\r?\n/).map(l => `<div class="txt-mediano">${escapeHtml(l) || '<br>'}</div>`).join('');
-        }
-
-        const newTab = {
-          id: 'tab-' + Date.now(),
-          title: file.name,
-          html: importedHtml
-        };
-        appState.tabs.push(newTab);
-        appState.activeTabId = newTab.id;
-        saveTabsToStorage();
-        renderAll();
-        showToast(restoredFormatted ? `✓ "${file.name}" abierto con su formato completo` : `✓ Archivo "${file.name}" abierto en nueva pestaña`);
+        processOpenedFileContent(file.name, e.target.result || '', null);
       };
       reader.readAsText(file);
       event.target.value = '';
@@ -496,7 +513,23 @@
       return plain;
     }
 
-    function downloadActiveTab(ext) {
+    function quickSaveActiveTab() {
+      const tab = getActiveTab();
+      if (!tab) return;
+      const editor = document.getElementById('liveSheetEditor');
+      const liveHtml = editor ? editor.innerHTML : (tab.html || '');
+      const hasRich = /<(b|strong|i|em|u|s|strike|mark|ul|ol|li|table)\b|class="[^"]*(txt-grande|txt-chico|hl-yellow|table-widget|code-widget|math-widget|diagram-widget)/i.test(liveHtml);
+      let ext = 'txt';
+      if (tab.filePath) {
+        const m = tab.filePath.match(/\.(md|txt|html)$/i);
+        if (m) ext = m[1].toLowerCase();
+      } else if (/\.md$/i.test(tab.title || '') || hasRich) {
+        ext = 'md';
+      }
+      return downloadActiveTab(ext, true);
+    }
+
+    async function downloadActiveTab(ext, silentIfLinked = false) {
       const tab = getActiveTab();
       if (!tab) return;
       const editor = document.getElementById('liveSheetEditor');
@@ -514,6 +547,31 @@
       } else {
         payload = getPlainTextFromEditor();
       }
+
+      if (window.simplePadDesktop && window.simplePadDesktop.isDesktop) {
+        try {
+          const canOverwrite = silentIfLinked && tab.filePath && tab.filePath.toLowerCase().endsWith('.' + ext.toLowerCase());
+          const res = await window.simplePadDesktop.saveFile({
+            filePath: canOverwrite ? tab.filePath : null,
+            defaultName: filename,
+            content: payload,
+            ext
+          });
+          if (res && !res.canceled) {
+            tab.filePath = res.filePath;
+            if (res.fileName) {
+              tab.title = res.fileName;
+              renderTabsBar();
+            }
+            saveTabsToStorage();
+            showToast(canOverwrite ? `✓ Guardado en ${res.fileName}` : `✓ Guardado en disco: ${res.fileName}`);
+          }
+        } catch (err) {
+          showToast('Error al guardar en disco');
+        }
+        return;
+      }
+
       const blob = new Blob([payload], { type: mime });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');

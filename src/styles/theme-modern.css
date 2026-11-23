@@ -4,7 +4,7 @@
     html.theme-modern body {
       background-color: #f4f4f5 !important;
       color: #09090b !important;
-      font-family: 'Saira', 'Segoe UI', system-ui, sans-serif !important;
+      font-family: 'Saira', 'Bahnschrift', 'Segoe UI', system-ui, sans-serif !important;
       letter-spacing: -0.012em;
       -webkit-font-smoothing: antialiased;
     }
@@ -21,7 +21,7 @@
     html.theme-modern #shortcutsGuideModal,
     html.theme-modern #scienceCommandsModal,
     html.theme-modern #tokenCalculatorPopover {
-      font-family: 'Saira', 'Segoe UI', system-ui, sans-serif !important;
+      font-family: 'Saira', 'Bahnschrift', 'Segoe UI', system-ui, sans-serif !important;
     }
     /* Sharp, crisp architectural geometry (no bubbly rounded corners) */
     html.theme-modern button,
@@ -114,7 +114,7 @@
       color: #a1a1aa !important;
       padding-top: 22px !important;
       line-height: 1.66 !important;
-      font-family: 'Share Tech Mono', 'Consolas', monospace !important;
+      font-family: 'Share Tech Mono', 'Cascadia Mono', 'Consolas', monospace !important;
       font-variant-numeric: tabular-nums;
     }
     html.theme-modern.dark #lineNumbersGutter {
@@ -126,14 +126,14 @@
     html.theme-modern #splitSheetEditor {
       padding: 22px 28px !important;
       line-height: 1.66 !important;
-      font-family: 'Share Tech Mono', 'Consolas', monospace !important;
+      font-family: 'Share Tech Mono', 'Cascadia Mono', 'Consolas', monospace !important;
       font-feature-settings: "zero" 1;
     }
     html.theme-modern .code-editor-area,
     html.theme-modern .code-highlight-layer,
     html.theme-modern .code-input-layer,
     html.theme-modern .math-input-layer {
-      font-family: 'Share Tech Mono', 'Consolas', monospace !important;
+      font-family: 'Share Tech Mono', 'Cascadia Mono', 'Consolas', monospace !important;
     }
     html.theme-modern #mainFormattingGroup,
     html.theme-modern #findReplaceBar {
@@ -177,7 +177,7 @@
       background-color: #f4f4f5 !important;
       border-top: 1px solid #d4d4d8 !important;
       color: #52525b !important;
-      font-family: 'Share Tech Mono', 'Consolas', monospace !important;
+      font-family: 'Share Tech Mono', 'Cascadia Mono', 'Consolas', monospace !important;
     }
     html.theme-modern.dark #classicStatusBar {
       background-color: #111114 !important;
