@@ -1154,10 +1154,10 @@
       }
 
       const posEl = document.getElementById('statusCursorPos');
-      if (posEl) posEl.textContent = `Lín ${curLine}, Col ${curCol}`;
+      if (posEl) posEl.textContent = appState.lang === 'en' ? `Ln ${curLine}, Col ${curCol}` : `Lín ${curLine}, Col ${curCol}`;
 
       const countEl = document.getElementById('statusWordCharCount');
-      if (countEl) countEl.textContent = `${totalLines} lín | ${words} palabras, ${chars} caracteres`;
+      if (countEl) countEl.textContent = appState.lang === 'en' ? `${totalLines} ln | ${words} words, ${chars} chars` : `${totalLines} lín | ${words} palabras, ${chars} caracteres`;
 
       const selEl = document.getElementById('statusSelectionCount');
       let selectedText = '';
@@ -1166,7 +1166,7 @@
       }
       if (selEl) {
         if (selectedLen > 0) {
-          selEl.textContent = `(${selectedLen} seleccionados)`;
+          selEl.textContent = `(${selectedLen} ${appState.lang === 'en' ? 'selected' : 'seleccionados'})`;
           selEl.classList.remove('hidden');
         } else {
           selEl.classList.add('hidden');
@@ -1586,7 +1586,7 @@
       document.getElementById('menuCheckStatus').textContent = appState.showStatusBar ? '✓' : '';
       document.getElementById('menuCheckDarkMode').textContent = appState.darkMode ? '✓' : '';
 
-      document.getElementById('statusWrapLabel').textContent = `Ajuste de línea: ${appState.wordWrap ? 'Sí' : 'No'}`;
+      document.getElementById('statusWrapLabel').textContent = (appState.lang === 'en' ? `Word wrap: ${appState.wordWrap ? 'On' : 'Off'}` : (appState.lang === 'en' ? `Word wrap: ${appState.wordWrap ? 'On' : 'Off'}` : `Ajuste de línea: ${appState.wordWrap ? 'Sí' : 'No'}`));
       document.getElementById('statusZoomLabel').textContent = `${appState.zoomPercent}%`;
     }
 

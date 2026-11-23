@@ -9,7 +9,7 @@
 
     const SCIENCE_DISCIPLINES = {
       math: {
-        name: 'Matemática',
+        name: 'Matemática', nameEn: 'Math',
         iconSvg: SCIENCE_ICONS_SVG.math,
         placeholder: 'Escribí ecuaciones paso a paso (usá // para comentar un paso)...',
         defaultExpr: '',
@@ -36,7 +36,7 @@
         ]
       },
       physics: {
-        name: 'Física',
+        name: 'Física', nameEn: 'Physics',
         iconSvg: SCIENCE_ICONS_SVG.physics,
         placeholder: 'Escribí fórmulas de física, vectores (\\vec{F}) y pasos con // ...',
         defaultExpr: '',
@@ -63,7 +63,7 @@
         ]
       },
       chemistry: {
-        name: 'Química',
+        name: 'Química', nameEn: 'Chemistry',
         iconSvg: SCIENCE_ICONS_SVG.chemistry,
         placeholder: 'Escribí reacciones químicas con \\ce{H2O}, \\rightleftharpoons, \\xrightarrow{\\Delta}...',
         defaultExpr: '',
@@ -409,7 +409,7 @@
           <div>
             <div class="flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5">
               ${cfg.iconSvg}
-              <span>${cfg.name}</span>
+              <span>${appState.lang === 'en' ? cfg.nameEn : cfg.name}</span>
             </div>
             <div class="divide-y divide-slate-100 dark:divide-zinc-800/70 border border-slate-200 dark:border-zinc-800 rounded-md">${rows}</div>
           </div>`;
@@ -616,7 +616,7 @@
         const d = SCIENCE_DISCIPLINES[k];
         const isSelected = st.mode === k;
         return `<button type="button" onmousedown="event.preventDefault(); event.stopPropagation();" onclick="event.stopPropagation(); changeMathWidgetMode('${mathId}', '${k}'); closeAllWidgetDropdowns();" class="w-full px-2.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between gap-2 text-slate-700 dark:text-zinc-200 text-[11px] ${isSelected ? 'font-semibold bg-slate-50 dark:bg-zinc-800/60' : ''}">
-          <span class="flex items-center gap-1.5">${d.iconSvg}<span>${d.name}</span></span>
+          <span class="flex items-center gap-1.5">${d.iconSvg}<span>${appState.lang === 'en' ? d.nameEn : d.name}</span></span>
           <span class="text-[10px]">${isSelected ? '✓' : ''}</span>
         </button>`;
       }).join('');
@@ -639,7 +639,7 @@
             <div class="widget-dropdown-wrap relative">
               <button type="button" onmousedown="event.preventDefault(); event.stopPropagation();" onclick="event.stopPropagation(); toggleWidgetDropdown('${modeMenuId}')" aria-label="Cambiar ciencia" class="widget-dropdown-btn menu-trigger flex items-center gap-1.5 px-2 py-0.5 rounded bg-white/80 dark:bg-zinc-800 border border-slate-300/80 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 font-semibold text-[11px] hover:bg-white dark:hover:bg-zinc-700 transition">
                 ${cfg.iconSvg}
-                <span>${cfg.name}</span>
+                <span>${appState.lang === 'en' ? cfg.nameEn : cfg.name}</span>
                 <svg class="w-3 h-3 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"></path></svg>
               </button>
               <div id="${modeMenuId}" class="widget-dropdown-menu dropdown-panel hidden absolute left-0 mt-1 w-40 rounded-md bg-white dark:bg-zinc-900 shadow-xl border border-slate-200 dark:border-zinc-700 py-1 z-50">
@@ -651,7 +651,7 @@
             <div class="widget-dropdown-wrap relative ${st.previewOnly ? 'hidden' : ''}">
               <button type="button" onmousedown="event.preventDefault(); event.stopPropagation();" onclick="event.stopPropagation(); toggleWidgetDropdown('${symMenuId}')" title="Insertar símbolos de ${cfg.name}" class="widget-dropdown-btn menu-trigger flex items-center gap-1.5 px-2 py-0.5 rounded bg-white/80 dark:bg-zinc-800 border border-slate-300/80 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 font-semibold text-[11px] hover:bg-white dark:hover:bg-zinc-700 transition">
                 <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19h5v-2a6.5 6.5 0 1 1 4 0v2h5"></path></svg>
-                <span>Símbolos</span>
+                <span>${appState.lang === 'en' ? 'Symbols' : 'Símbolos'}</span>
                 <svg class="w-3 h-3 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"></path></svg>
               </button>
               <div id="${symMenuId}" class="widget-dropdown-menu dropdown-panel hidden absolute left-0 mt-1 w-64 max-h-64 overflow-y-auto rounded-md bg-white dark:bg-zinc-900 shadow-xl border border-slate-200 dark:border-zinc-700 py-1 z-50 divide-y divide-slate-100/70 dark:divide-zinc-800/60">
@@ -662,7 +662,7 @@
 
           <div class="flex items-center gap-0.5">
             <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); openScienceCommandsModal('all')" title="Comandos de ciencias (copiar y pegar)" aria-label="Comandos de ciencias" class="w-5 h-5 rounded hover:bg-slate-200/80 dark:hover:bg-zinc-800 text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-100 flex items-center justify-center text-[11px] font-bold transition">?</button>
-            <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); toggleMathPreviewOnly('${mathId}')" title="${st.previewOnly ? 'Editar expresión' : 'Ver solo expresión renderizada'}" class="px-1.5 py-0.5 rounded hover:bg-slate-200/80 dark:hover:bg-zinc-800 text-slate-500 dark:text-zinc-400 text-[10px] transition">${st.previewOnly ? 'Editar' : 'Solo vista'}</button>
+            <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); toggleMathPreviewOnly('${mathId}')" title="${st.previewOnly ? 'Editar expresión' : 'Ver solo expresión renderizada'}" class="px-1.5 py-0.5 rounded hover:bg-slate-200/80 dark:hover:bg-zinc-800 text-slate-500 dark:text-zinc-400 text-[10px] transition">${st.previewOnly ? (appState.lang === 'en' ? 'Edit' : 'Editar') : (appState.lang === 'en' ? 'Preview' : 'Solo vista')}</button>
             <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); copyMathWidgetContent('${mathId}')" title="Copiar expresión" aria-label="Copiar fórmula" class="w-6 h-6 rounded hover:bg-slate-200/80 dark:hover:bg-zinc-800 text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-300 flex items-center justify-center transition">
               <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
             </button>

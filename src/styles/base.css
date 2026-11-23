@@ -1206,11 +1206,65 @@
 }
 
 
-/* Integrated Electron Titlebar (drag region + space for native Windows minimize/maximize/close overlay) */
+/* Integrated Frameless Electron Titlebar + Compact Theme-Matched Controls */
 html.is-desktop header {
   -webkit-app-region: drag;
-  padding-right: 142px !important;
-  min-height: 32px !important;
+}
+html.is-desktop #desktopWindowControls {
+  display: flex !important;
+  -webkit-app-region: no-drag;
+}
+.win-ctrl-btn {
+  width: 28px;
+  height: 22px;
+  color: #52525b;
+  border-radius: 2px;
+}
+.dark .win-ctrl-btn {
+  color: #d4d4d8;
+}
+.win-ctrl-btn:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+  color: #09090b;
+}
+.dark .win-ctrl-btn:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+.win-ctrl-close:hover {
+  background-color: #e81123 !important;
+  color: #ffffff !important;
+}
+/* Authentic Compact Classic Win98 3D Titlebar Buttons */
+html.theme-win98 .win-ctrl-btn {
+  width: 18px !important;
+  height: 16px !important;
+  border-radius: 0 !important;
+  background-color: #c0c0c0 !important;
+  color: #000000 !important;
+  border-top: 2px solid #ffffff !important;
+  border-left: 2px solid #ffffff !important;
+  border-right: 2px solid #404040 !important;
+  border-bottom: 2px solid #404040 !important;
+  margin-bottom: 3px;
+}
+html.theme-win98 .win-ctrl-btn:active {
+  border-top: 2px solid #404040 !important;
+  border-left: 2px solid #404040 !important;
+  border-right: 2px solid #ffffff !important;
+  border-bottom: 2px solid #ffffff !important;
+}
+html.theme-win98 .win-ctrl-close:hover {
+  background-color: #c0c0c0 !important;
+  color: #000000 !important;
+}
+html.theme-win98.dark .win-ctrl-btn {
+  background-color: #3a3a3a !important;
+  color: #f0f0f0 !important;
+  border-top-color: #5a5a5a !important;
+  border-left-color: #5a5a5a !important;
+  border-right-color: #141414 !important;
+  border-bottom-color: #141414 !important;
 }
 html.is-desktop header button,
 html.is-desktop header input,

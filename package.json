@@ -1,6 +1,6 @@
 {
   "name": "simple-pad",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Simple Pad — Bloc de notas técnico 100% offline con pestañas, pizarras de diagramas, tablas, código y bloques de matemática, física y química.",
   "main": "electron/main.js",
   "scripts": {

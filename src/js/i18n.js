@@ -95,6 +95,39 @@
         'Física': 'Physics',
         'Química': 'Chemistry',
         'Hacé clic en copiar para pegar el comando en tu bloque': 'Click copy to paste the command into your block',
+        // Exact View menu items
+        'Acercar zoom (+10%)': 'Zoom in (+10%)',
+        'Alejar zoom (-10%)': 'Zoom out (-10%)',
+        'Restaurar zoom predeterminado': 'Reset default zoom',
+        'Numeración de líneas': 'Line numbers',
+        'Barra de estado inferior': 'Bottom status bar',
+        '/ y @': '/ & @',
+
+        // Token calculator popover
+        'Tokens estimados': 'Estimated tokens',
+        'Compañía:': 'Provider:',
+        'Palabras': 'Words',
+        'Caracteres': 'Characters',
+        'Car/tok': 'Char/tok',
+        'Selección actual': 'Current selection',
+
+        // Recycle Bin modal
+        'Vaciar papelera': 'Empty Recycle Bin',
+        'Restaurar': 'Restore',
+        'Restaurar todo': 'Restore all',
+        'Eliminar': 'Delete',
+        'Nombre': 'Name',
+        'Fecha de eliminación': 'Date deleted',
+        'Vence en': 'Expires in',
+        'Tamaño': 'Size',
+        'Retención automática: 15 días': 'Auto-retention: 15 days',
+        'La papelera está vacía': 'Recycle Bin is empty',
+
+        // Global search & Shortcuts modal
+        'Guía de atajos de teclado': 'Keyboard shortcuts guide',
+        'Solo vista': 'Preview',
+        'Editar': 'Edit',
+        'Símbolos': 'Symbols',
         'Copiar para IA (Markdown)': 'Copy for AI (Markdown)'
       }
     };
@@ -138,12 +171,12 @@
         '#menuArchivo', '#menuEdicion', '#menuFormato', '#menuVer',
         '#menuTextFormats', '#menuListTypes', '#menuInsertWidgets',
         '#findHighlightMenu', '#tabContextMenu', '#scienceCommandsModal',
-        '#tokenCalculatorPopover', '#findReplaceBar'
+        '#tokenCalculatorPopover', '#findReplaceBar', '#trashModal', '#globalSearchModal', '#shortcutsGuideModal'
       ];
       containers.forEach(sel => {
         const root = document.querySelector(sel);
         if (!root) return;
-        root.querySelectorAll('span, div, button').forEach(el => {
+        root.querySelectorAll('span, div, button, th, label, kbd').forEach(el => {
           // Only leaf text elements (no child elements)
           if (el.children.length > 0) return;
           const raw = (el.textContent || '').trim();
@@ -180,7 +213,8 @@
 
       // Translate status bar wrap label & metrics
       if (typeof updateCursorMetrics === 'function') updateCursorMetrics();
-      const wrapStatus = document.getElementById('statusWordWrap');
+      if (typeof applyZoomAndViewSettings === 'function') applyZoomAndViewSettings();
+      const wrapStatus = document.getElementById('statusWrapLabel') || document.getElementById('statusWordWrap');
       if (wrapStatus) {
         wrapStatus.textContent = lang === 'en'
           ? `Word wrap: ${appState.wordWrap ? 'On' : 'Off'}`
@@ -188,6 +222,8 @@
       }
       if (typeof renderTabsStrip === 'function') renderTabsStrip();
       renderInlineCommandsDocs();
+      if (typeof mountAllMathWidgetsInEditor === 'function') mountAllMathWidgetsInEditor(document.getElementById('liveSheetEditor'));
+      if (typeof renderTrashModal === 'function') renderTrashModal();
 
       saveTabsToStorage();
       if (!silent) {
