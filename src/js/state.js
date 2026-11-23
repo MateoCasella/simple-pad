@@ -259,6 +259,23 @@ const STORAGE_KEY = 'notepad_pro_single_live_v12';
       updateTrashBadge();
     }
 
+    let saveStorageTimer = null;
+    function scheduleSaveTabsToStorage(delayMs = 350) {
+      if (saveStorageTimer) clearTimeout(saveStorageTimer);
+      saveStorageTimer = setTimeout(() => {
+        saveStorageTimer = null;
+        saveTabsToStorage();
+      }, delayMs);
+    }
+
+    window.addEventListener('beforeunload', () => {
+      if (saveStorageTimer) {
+        clearTimeout(saveStorageTimer);
+        saveStorageTimer = null;
+        saveTabsToStorage();
+      }
+    });
+
     function getActiveTab() {
       return appState.tabs.find(t => t.id === appState.activeTabId) || appState.tabs[0];
     }
