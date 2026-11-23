@@ -1,9 +1,24 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs/promises');
 
+let mainWindow = null;
+
+// Single-instance lock: reopening Simple Pad focuses the running window instantly
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
+}
+
 function createWindow() {
-  const win = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1240,
     height: 800,
     minWidth: 760,
@@ -17,26 +32,27 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: false
+      sandbox: false,
+      spellcheck: true
     }
   });
 
-  win.once('ready-to-show', () => {
-    win.show();
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
   });
 
-  win.loadFile(path.join(__dirname, '..', 'index.html'));
+  mainWindow.loadFile(path.join(__dirname, '..', 'index.html'));
 }
 
 ipcMain.handle('dialog:openFile', async () => {
   const res = await dialog.showOpenDialog({
-    title: 'Abrir nota en Simple Pad',
+    title: 'Open file in Simple Pad',
     properties: ['openFile'],
     filters: [
-      { name: 'Notas compatibles (.md, .txt, .html, .json)', extensions: ['md', 'txt', 'html', 'htm', 'json'] },
+      { name: 'Supported notes (.md, .txt, .html, .json)', extensions: ['md', 'txt', 'html', 'htm', 'json'] },
       { name: 'Markdown (.md)', extensions: ['md'] },
-      { name: 'Texto plano (.txt)', extensions: ['txt'] },
-      { name: 'Todos los archivos', extensions: ['*'] }
+      { name: 'Plain text (.txt)', extensions: ['txt'] },
+      { name: 'All files', extensions: ['*'] }
     ]
   });
   if (res.canceled || !res.filePaths || res.filePaths.length === 0) {
@@ -57,15 +73,15 @@ ipcMain.handle('dialog:saveFile', async (_event, { filePath, defaultName, conten
   if (!targetPath) {
     const extLower = (ext || 'md').toLowerCase();
     const filterMap = {
-      md: { name: 'Markdown con formato (.md)', extensions: ['md'] },
-      txt: { name: 'Texto plano (.txt)', extensions: ['txt'] },
-      html: { name: 'Documento HTML (.html)', extensions: ['html'] },
-      json: { name: 'Respaldo Simple Pad (.json)', extensions: ['json'] }
+      md: { name: 'Formatted Markdown (.md)', extensions: ['md'] },
+      txt: { name: 'Plain text (.txt)', extensions: ['txt'] },
+      html: { name: 'HTML document (.html)', extensions: ['html'] },
+      json: { name: 'Simple Pad backup (.json)', extensions: ['json'] }
     };
     const res = await dialog.showSaveDialog({
-      title: 'Guardar en Simple Pad',
-      defaultPath: defaultName || `nota.${extLower}`,
-      filters: [filterMap[extLower] || filterMap.md, { name: 'Todos los archivos', extensions: ['*'] }]
+      title: 'Save in Simple Pad',
+      defaultPath: defaultName || `note.${extLower}`,
+      filters: [filterMap[extLower] || filterMap.md, { name: 'All files', extensions: ['*'] }]
     });
     if (res.canceled || !res.filePath) {
       return { canceled: true };
@@ -81,6 +97,7 @@ ipcMain.handle('dialog:saveFile', async (_event, { filePath, defaultName, conten
 });
 
 app.whenReady().then(() => {
+  Menu.setApplicationMenu(null);
   createWindow();
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

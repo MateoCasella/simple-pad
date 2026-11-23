@@ -727,16 +727,29 @@
       sel.addRange(r);
     }
 
+    let cursorMetricsTimer = null;
+    function scheduleCursorMetricsUpdate(delayMs = 120) {
+      if (cursorMetricsTimer) clearTimeout(cursorMetricsTimer);
+      cursorMetricsTimer = setTimeout(() => {
+        cursorMetricsTimer = null;
+        updateCursorMetrics();
+      }, delayMs);
+    }
+
     function handleLiveSheetInput() {
       const editor = document.getElementById('liveSheetEditor');
       const tab = getActiveTab();
       if (!editor || !tab) return;
       runAutocorrectOnWordBoundary();
       tab.html = editor.innerHTML;
-      saveTabsToStorage();
+      if (typeof scheduleSaveTabsToStorage === 'function') {
+        scheduleSaveTabsToStorage(350);
+      } else {
+        saveTabsToStorage();
+      }
       scheduleHistorySnapshot(tab.id, false);
-      updateLineNumbersGutter();
-      updateCursorMetrics();
+      scheduleLineNumbersUpdate();
+      scheduleCursorMetricsUpdate(120);
       if (!document.getElementById('findReplaceBar').classList.contains('hidden')) {
         runFindPreview();
       }
@@ -1022,13 +1035,16 @@
       const totalRows = Math.max(1, Math.ceil((maxBottom - 2) / rowH));
       const trackHeight = Math.max(editor.scrollHeight, Math.ceil(padTop + totalRows * rowH + 24));
 
-      let itemsHtml = '';
-      for (let i = 0; i < totalRows; i++) {
-        const topPx = Math.round(padTop + i * rowH);
-        itemsHtml += `<div class="gutter-num-item" style="top:${topPx}px;height:${rowH}px;line-height:${rowH}px;">${i + 1}</div>`;
+      const sig = `${totalRows}|${Math.round(padTop)}|${Math.round(rowH)}|${trackHeight}`;
+      if (gutter._lastSig !== sig) {
+        gutter._lastSig = sig;
+        let itemsHtml = '';
+        for (let i = 0; i < totalRows; i++) {
+          const topPx = Math.round(padTop + i * rowH);
+          itemsHtml += `<div class="gutter-num-item" style="top:${topPx}px;height:${rowH}px;line-height:${rowH}px;">${i + 1}</div>`;
+        }
+        gutter.innerHTML = `<div style="position:relative;height:${trackHeight}px;width:100%;">${itemsHtml}</div>`;
       }
-
-      gutter.innerHTML = `<div style="position:relative;height:${trackHeight}px;width:100%;">${itemsHtml}</div>`;
       gutter.scrollTop = wrap.scrollTop;
     }
 

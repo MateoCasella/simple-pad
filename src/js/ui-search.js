@@ -898,9 +898,10 @@
       closeScienceAutocomplete();
     }, true);
 
-    window.onload = function() {
+        function bootSimplePad() {
       loadSavedTabs();
       applyTheme();
+      if (typeof applyLanguage === 'function') applyLanguage(appState.lang || 'es', true);
       renderAll();
       if (window.ResizeObserver) {
         const edForObs = document.getElementById('liveSheetEditor');
@@ -908,4 +909,20 @@
           new ResizeObserver(() => scheduleLineNumbersUpdate()).observe(edForObs);
         }
       }
-    };
+      // Load optional web fonts lazily AFTER first paint so startup is never blocked
+      setTimeout(() => {
+        if (navigator.onLine && !document.getElementById('simplePadWebFonts')) {
+          const link = document.createElement('link');
+          link.id = 'simplePadWebFonts';
+          link.rel = 'stylesheet';
+          link.href = 'https://fonts.googleapis.com/css2?family=Saira:wght@400;600;700&family=Share+Tech+Mono&display=swap';
+          document.head.appendChild(link);
+        }
+      }, 250);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bootSimplePad, { once: true });
+    } else {
+      bootSimplePad();
+    }
