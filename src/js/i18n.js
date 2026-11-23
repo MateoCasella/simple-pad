@@ -187,6 +187,7 @@
           : `Ajuste de línea: ${appState.wordWrap ? 'Sí' : 'No'}`;
       }
       if (typeof renderTabsStrip === 'function') renderTabsStrip();
+      renderInlineCommandsDocs();
 
       saveTabsToStorage();
       if (!silent) {
@@ -196,4 +197,39 @@
 
     function setLanguage(langCode) {
       applyLanguage(langCode, false);
+    }
+
+
+    function renderInlineCommandsDocs() {
+      const sec = document.getElementById('inlineCommandsSection');
+      if (!sec) return;
+      const isEn = appState.lang === 'en';
+      const pair = (es, en) => isEn ? `${en} · ${es}` : `${es} · ${en}`;
+      const rows = [
+        { desc: isEn ? 'Text sizes' : 'Tamaños de texto',
+          cmds: isEn ? '/large · /medium · /small (/grande · /mediano · /chico)' : '/grande · /mediano · /chico (/large · /medium · /small)' },
+        { desc: isEn ? 'Heading & body aliases' : 'Alias de título, subtítulo y texto',
+          cmds: isEn ? '/title · /subtitle · /text (/titulo · /subtitulo · /texto)' : '/titulo · /subtitulo · /texto (/title · /subtitle · /text)' },
+        { desc: isEn ? 'Full-line text formatting' : 'Formato a toda la línea actual',
+          cmds: isEn ? '/bold · /italic · /underline · /strike · /highlight (/negrita · /cursiva · /subrayado · /tachado · /resaltado)' : '/negrita · /cursiva · /subrayado · /tachado · /resaltado (/bold · /italic · /underline · /strike · /highlight)' },
+        { desc: isEn ? 'Bulleted or numbered list' : 'Lista con viñetas o numerada',
+          cmds: isEn ? '/list · /numbered (/lista · /numerada)' : '/lista · /numerada (/list · /numbered)' },
+        { desc: isEn ? 'Insert current date, time or timestamp' : 'Insertar fecha actual, hora o timestamp',
+          cmds: isEn ? '/today · /time · /date (/hoy · /hora · /fecha)' : '/hoy · /hora · /fecha (/today · /time · /date)' },
+        { desc: isEn ? 'Insert interactive table' : 'Insertar tabla interactiva',
+          cmds: pair('/tabla', '/table') },
+        { desc: isEn ? 'Insert diagram board' : 'Insertar pizarra de diagramas',
+          cmds: pair('/diagrama', '/diagram') },
+        { desc: isEn ? 'Insert Math, Physics or Chemistry block' : 'Insertar bloque de matemática, física o química',
+          cmds: isEn ? '/math · /physics · /chemistry (/matematica · /fisica · /quimica)' : '/matematica · /fisica · /quimica (/math · /physics · /chemistry)' },
+        { desc: isEn ? 'Insert syntax-highlighted code block' : 'Insertar bloque de código por lenguaje',
+          cmds: '/js · /py · /c · /sql · /html · /json' },
+        { desc: isEn ? 'Insert clickable link to another open tab' : 'Insertar enlace clickeable a otra pestaña abierta',
+          cmds: isEn ? '@file_name' : '@nombre_archivo' }
+      ];
+      const title = isEn ? 'Inline commands (/ and @)' : 'Comandos en línea (/ y @)';
+      const rowsHtml = rows.map(r =>
+        `<div class="px-3 py-1.5 flex items-center justify-between gap-2"><span class="text-slate-700 dark:text-zinc-200">${escapeHtml(r.desc)}</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px] text-right">${escapeHtml(r.cmds)}</kbd></div>`
+      ).join('');
+      sec.innerHTML = `<div class="text-[10.5px] font-semibold uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-1.5">${title}</div><div class="divide-y divide-slate-100 dark:divide-zinc-800/70 border border-slate-200 dark:border-zinc-800 rounded-md">${rowsHtml}</div>`;
     }

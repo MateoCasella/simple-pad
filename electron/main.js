@@ -28,6 +28,12 @@ function createWindow() {
     backgroundColor: '#f4f4f5',
     show: false,
     autoHideMenuBar: true,
+    titleBarStyle: 'hidden',
+    titleBarOverlay: {
+      color: '#ececef',
+      symbolColor: '#18181b',
+      height: 32
+    },
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -41,8 +47,62 @@ function createWindow() {
     mainWindow.show();
   });
 
+  // Native right-click context menu on editable text / selections (Cut, Copy, Paste, Select All, Spellcheck)
+  mainWindow.webContents.on('context-menu', (_event, params) => {
+    const hasSelection = Boolean(params.selectionText && params.selectionText.trim().length > 0);
+    if (!params.isEditable && !hasSelection) return;
+
+    const template = [];
+
+    if (params.misspelledWord && Array.isArray(params.dictionarySuggestions) && params.dictionarySuggestions.length > 0) {
+      params.dictionarySuggestions.slice(0, 5).forEach(suggestion => {
+        template.push({
+          label: suggestion,
+          click: () => mainWindow.webContents.replaceMisspelling(suggestion)
+        });
+      });
+      template.push({ type: 'separator' });
+    }
+
+    if (params.isEditable) {
+      template.push(
+        { role: 'undo', label: 'Deshacer / Undo' },
+        { role: 'redo', label: 'Rehacer / Redo' },
+        { type: 'separator' },
+        { role: 'cut', label: 'Cortar / Cut', enabled: hasSelection },
+        { role: 'copy', label: 'Copiar / Copy', enabled: hasSelection },
+        { role: 'paste', label: 'Pegar / Paste' },
+        { role: 'pasteAndMatchStyle', label: 'Pegar sin formato / Paste plain' },
+        { type: 'separator' },
+        { role: 'selectAll', label: 'Seleccionar todo / Select all' }
+      );
+    } else if (hasSelection) {
+      template.push(
+        { role: 'copy', label: 'Copiar / Copy' },
+        { role: 'selectAll', label: 'Seleccionar todo / Select all' }
+      );
+    }
+
+    if (template.length > 0) {
+      const menu = Menu.buildFromTemplate(template);
+      menu.popup({ window: mainWindow });
+    }
+  });
+
   mainWindow.loadFile(path.join(__dirname, '..', 'index.html'));
 }
+
+ipcMain.on('window:setTitleBarOverlay', (_event, { color, symbolColor }) => {
+  if (mainWindow && typeof mainWindow.setTitleBarOverlay === 'function') {
+    try {
+      mainWindow.setTitleBarOverlay({
+        color: color || '#ececef',
+        symbolColor: symbolColor || '#18181b',
+        height: 32
+      });
+    } catch (e) {}
+  }
+});
 
 ipcMain.handle('dialog:openFile', async () => {
   const res = await dialog.showOpenDialog({

@@ -674,9 +674,29 @@
       if (chk98) chk98.textContent = isWin98 ? '✓' : '';
     }
 
+    function syncDesktopTitleBarOverlay() {
+      if (!window.simplePadDesktop || !window.simplePadDesktop.isDesktop) return;
+      document.documentElement.classList.add('is-desktop');
+      if (typeof window.simplePadDesktop.setTitleBarTheme === 'function') {
+        const isWin98 = appState.uiStyle === 'win98';
+        const isDark = Boolean(appState.darkMode);
+        let color = '#ececef';
+        let symbolColor = '#18181b';
+        if (isWin98) {
+          color = isDark ? '#0b4a7a' : '#1084d0';
+          symbolColor = '#ffffff';
+        } else if (isDark) {
+          color = '#111114';
+          symbolColor = '#f4f4f5';
+        }
+        window.simplePadDesktop.setTitleBarTheme({ color, symbolColor });
+      }
+    }
+
     function setUiStyle(styleName) {
       appState.uiStyle = styleName === 'modern' ? 'modern' : 'win98';
       applyTheme();
+      syncDesktopTitleBarOverlay();
       if (typeof applyLanguage === 'function') applyLanguage(appState.lang || 'es', true);
       renderTabsStrip();
       saveTabsToStorage();
@@ -698,6 +718,7 @@
     function toggleTheme() {
       appState.darkMode = !appState.darkMode;
       applyTheme();
+      syncDesktopTitleBarOverlay();
       saveTabsToStorage();
       showToast(appState.darkMode ? t('🌙 Modo oscuro activado', '🌙 Dark mode enabled') : t('☀️ Modo claro activado', '☀️ Light mode enabled'));
     }

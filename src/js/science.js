@@ -12,7 +12,7 @@
         name: 'Matemática',
         iconSvg: SCIENCE_ICONS_SVG.math,
         placeholder: 'Escribí ecuaciones paso a paso (usá // para comentar un paso)...',
-        defaultExpr: '\\lim_{x \\to 0} \\frac{\\sin(x)}{x} = 1  // Límite notable\n\\int_{0}^{\\pi} \\sin(x)\\,dx = [-\\cos(x)]_{0}^{\\pi} = 2  // Integral definida\n\\forall x \\in \\mathbb{R},\\; x^2 \\geq 0',
+        defaultExpr: '',
         quickSyms: [
           { lbl: 'a/b', desc: 'Fracción',        val: '\\frac{a}{b}' },
           { lbl: '√x',  desc: 'Raíz cuadrada',   val: '\\sqrt{x}' },
@@ -39,7 +39,7 @@
         name: 'Física',
         iconSvg: SCIENCE_ICONS_SVG.physics,
         placeholder: 'Escribí fórmulas de física, vectores (\\vec{F}) y pasos con // ...',
-        defaultExpr: '\\sum \\vec{F} = m \\cdot \\vec{a}  // 2da Ley de Newton\n\\Delta K = \\frac{1}{2} m v_f^2 - \\frac{1}{2} m v_0^2 = \\int_{x_0}^{x_f} \\vec{F} \\cdot d\\vec{r}  // Trabajo y energía\n\\vec{v}(t) = v_0 \\cos(\\theta)\\,\\hat{i} + (v_0 \\sin(\\theta) - g t)\\,\\hat{j}',
+        defaultExpr: '',
         quickSyms: [
           { lbl: 'v⃗',   desc: 'Vector',           val: '\\vec{F}' },
           { lbl: 'î',   desc: 'Versor unitario',  val: '\\hat{i}' },
@@ -66,7 +66,7 @@
         name: 'Química',
         iconSvg: SCIENCE_ICONS_SVG.chemistry,
         placeholder: 'Escribí reacciones químicas con \\ce{H2O}, \\rightleftharpoons, \\xrightarrow{\\Delta}...',
-        defaultExpr: '\\ce{2 H2(g) + O2(g)} \\xrightarrow{\\Delta} \\ce{2 H2O(l)}  // Combustión del hidrógeno\n\\ce{N2(g) + 3 H2(g)} \\rightleftharpoons \\ce{2 NH3(g)}  // Equilibrio Haber-Bosch\nK_c = \\frac{[\\ce{NH3}]^2}{[\\ce{N2}][\\ce{H2}]^3}  // Constante de equilibrio',
+        defaultExpr: '',
         quickSyms: [
           { lbl: 'H₂O', desc: 'Fórmula química',   val: '\\ce{H2O}' },
           { lbl: 'SO₄²⁻',desc: 'Ion / carga',      val: '\\ce{SO4^2-}' },
@@ -581,6 +581,8 @@
       st.previewOnly = !st.previewOnly;
       saveMathWidgetState(widget, st);
       mountMathWidget(widget);
+      const newTa = widget.querySelector('textarea.math-input-layer');
+      if (newTa) setTimeout(() => newTa.focus(), 10);
     }
 
     function changeMathWidgetMode(mathId, newMode) {

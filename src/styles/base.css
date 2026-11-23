@@ -1204,3 +1204,38 @@
   font-size: 11px !important;
   opacity: 0.78;
 }
+
+
+/* Integrated Electron Titlebar (drag region + space for native Windows minimize/maximize/close overlay) */
+html.is-desktop header {
+  -webkit-app-region: drag;
+  padding-right: 142px !important;
+  min-height: 32px !important;
+}
+html.is-desktop header button,
+html.is-desktop header input,
+html.is-desktop header [data-tab-id],
+html.is-desktop header .dropdown-panel {
+  -webkit-app-region: no-drag;
+}
+
+/* Ensure Solo vista mode hides the science textarea and symbols button reliably */
+.math-widget .hidden,
+.math-input-layer.hidden {
+  display: none !important;
+}
+
+
+/* Hide redundant scrollbar pill on tab strip */
+.no-scrollbar,
+#tabsStrip {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  overflow-y: hidden !important;
+}
+.no-scrollbar::-webkit-scrollbar,
+#tabsStrip::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
