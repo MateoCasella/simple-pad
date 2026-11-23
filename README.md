@@ -2,6 +2,9 @@
 
 Bloc de notas técnico, liviano y 100% offline pensado para estudiantes de ingeniería, ciencias y desarrolladores. Combina la velocidad del Bloc de Notas clásico con bloques interactivos de diagramas, tablas, código y notación científica (Matemática, Física y Química).
 
+- **Probar online (sin instalar):** https://mateocasella.github.io/simple-pad/
+- **Descargar para Windows (`.exe` / Portable):** https://github.com/MateoCasella/simple-pad/releases/latest
+
 ## Características principales
 
 - **Dos estilos visuales intercambiables** (`Formato → Estilo visual`):
@@ -21,11 +24,39 @@ Bloc de notas técnico, liviano y 100% offline pensado para estudiantes de ingen
   - PDF limpio (`@media print`), `.html`, respaldo completo `.json` y botón **Copiar para IA (Markdown)** con estimador de tokens.
 - **Productividad**: pestañas con Papelera de 15 días, vista dividida (`Alt+D`), búsqueda local (`Ctrl+F`) y global (`Ctrl+Shift+F`), autocompletado de palabras del apunte y autocorrector ortográfico.
 
+## Instalación y uso
+
+### 1. Versión Web (sin instalación)
+Abrí directamente https://mateocasella.github.io/simple-pad/ en tu navegador (podés instalarlo como app de escritorio desde el menú del navegador: *Instalar página como app*).
+
+### 2. Instalador para Windows (`.exe`)
+Descargá el instalador o la versión portable desde [GitHub Releases](https://github.com/MateoCasella/simple-pad/releases/latest) (compilados automáticamente con GitHub Actions).
+
+### 3. Ejecutar o compilar desde código fuente (`npm`)
+Requiere [Node.js](https://nodejs.org/) instalado:
+
+```bash
+git clone [https://github.com/MateoCasella/simple-pad.git](https://github.com/MateoCasella/simple-pad.git)
+cd simple-pad
+npm install
+npm start          # Abrir Simple Pad en ventana de escritorio (Electron)
+```
+
+Para generar los ejecutables `.exe` localmente en `dist/`:
+
+```bash
+npm run dist
+```
+
 ## Estructura del proyecto
 
 ```text
 simple-pad/
-├── index.html
+├── .github/
+│   └── workflows/
+│       └── release.yml
+├── electron/
+│   └── main.js
 ├── src/
 │   ├── styles/
 │   │   ├── base.css
@@ -40,25 +71,11 @@ simple-pad/
 │       ├── editor.js
 │       ├── io-markdown.js
 │       └── ui-search.js
-├── electron/
-│   └── main.js
+├── index.html
 ├── package.json
+├── .gitignore
 ├── LICENSE
 └── README.md
-```
-
-## Cómo usarlo o compilarlo
-
-### Opción 1: Web / GitHub Pages (sin instalación)
-Abrí `index.html` directamente en tu navegador o activá **GitHub Pages** desde **Settings → Pages** apuntando a la rama `main` y carpeta `/` ([documentación oficial](https://docs.github.com/es/pages/getting-started-with-github-pages/creating-a-github-pages-site)).
-
-### Opción 2: App de escritorio para Windows (`.exe`)
-Requiere Node.js instalado ([Electron Docs](https://electronjs.org/docs/latest) / [electron-builder](https://www.electron.build/docs/)):
-
-```bash
-npm install
-npm start            # Probar en ventana de escritorio
-npm run dist         # Generar instalador .exe y portable en dist/
 ```
 
 ## Licencia
