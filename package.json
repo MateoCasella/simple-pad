@@ -1,7 +1,7 @@
 {
   "name": "simple-pad",
-  "version": "1.0.0",
-  "description": "Simple Pad — Bloc de notas técnico offline con pestañas, pizarras de diagramas, tablas, código y bloques de matemática, física y química.",
+  "version": "1.1.0",
+  "description": "Simple Pad — Bloc de notas técnico 100% offline con pestañas, pizarras de diagramas, tablas, código y bloques de matemática, física y química.",
   "main": "electron/main.js",
   "scripts": {
     "start": "electron .",
@@ -28,10 +28,12 @@
     "productName": "Simple Pad",
     "files": [
       "index.html",
+      "assets/**/*",
       "src/**/*",
       "electron/**/*"
     ],
     "win": {
+      "icon": "assets/icon.ico",
       "target": [
         "nsis",
         "portable"

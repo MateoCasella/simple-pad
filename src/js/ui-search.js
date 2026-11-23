@@ -815,6 +815,9 @@
       } else if (e.altKey && e.key.toLowerCase() === 'w') {
         e.preventDefault();
         closeActiveTab();
+      } else if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        quickSaveActiveTab();
       } else if (e.altKey && e.key.toLowerCase() === 's') {
         e.preventDefault();
         downloadActiveTab('txt');
