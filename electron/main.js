@@ -4,19 +4,6 @@ const fs = require('fs/promises');
 
 let mainWindow = null;
 
-// Single-instance lock: reopening Simple Pad focuses the running window instantly
-const gotTheLock = app.requestSingleInstanceLock();
-if (!gotTheLock) {
-  app.quit();
-} else {
-  app.on('second-instance', () => {
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore();
-      mainWindow.focus();
-    }
-  });
-}
-
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1240,
@@ -26,14 +13,9 @@ function createWindow() {
     title: 'Simple Pad',
     icon: path.join(__dirname, '..', 'assets', 'icon.png'),
     backgroundColor: '#f4f4f5',
-    show: false,
+    show: true,
     autoHideMenuBar: true,
-    titleBarStyle: 'hidden',
-    titleBarOverlay: {
-      color: '#ececef',
-      symbolColor: '#18181b',
-      height: 32
-    },
+    frame: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -43,11 +25,11 @@ function createWindow() {
     }
   });
 
-  mainWindow.once('ready-to-show', () => {
-    mainWindow.show();
+  mainWindow.on('closed', () => {
+    mainWindow = null;
   });
 
-  // Native right-click context menu on editable text / selections (Cut, Copy, Paste, Select All, Spellcheck)
+  // Native right-click context menu on editable text / selections
   mainWindow.webContents.on('context-menu', (_event, params) => {
     const hasSelection = Boolean(params.selectionText && params.selectionText.trim().length > 0);
     if (!params.isEditable && !hasSelection) return;
@@ -58,7 +40,7 @@ function createWindow() {
       params.dictionarySuggestions.slice(0, 5).forEach(suggestion => {
         template.push({
           label: suggestion,
-          click: () => mainWindow.webContents.replaceMisspelling(suggestion)
+          click: () => mainWindow && !mainWindow.isDestroyed() && mainWindow.webContents.replaceMisspelling(suggestion)
         });
       });
       template.push({ type: 'separator' });
@@ -83,7 +65,7 @@ function createWindow() {
       );
     }
 
-    if (template.length > 0) {
+    if (template.length > 0 && mainWindow && !mainWindow.isDestroyed()) {
       const menu = Menu.buildFromTemplate(template);
       menu.popup({ window: mainWindow });
     }
@@ -92,16 +74,18 @@ function createWindow() {
   mainWindow.loadFile(path.join(__dirname, '..', 'index.html'));
 }
 
-ipcMain.on('window:setTitleBarOverlay', (_event, { color, symbolColor }) => {
-  if (mainWindow && typeof mainWindow.setTitleBarOverlay === 'function') {
-    try {
-      mainWindow.setTitleBarOverlay({
-        color: color || '#ececef',
-        symbolColor: symbolColor || '#18181b',
-        height: 32
-      });
-    } catch (e) {}
-  }
+ipcMain.on('window:minimize', () => {
+  if (mainWindow && !mainWindow.isDestroyed()) mainWindow.minimize();
+});
+
+ipcMain.on('window:toggleMaximize', () => {
+  if (!mainWindow || mainWindow.isDestroyed()) return;
+  if (mainWindow.isMaximized()) mainWindow.unmaximize();
+  else mainWindow.maximize();
+});
+
+ipcMain.on('window:close', () => {
+  if (mainWindow && !mainWindow.isDestroyed()) mainWindow.close();
 });
 
 ipcMain.handle('dialog:openFile', async () => {
@@ -165,5 +149,6 @@ app.whenReady().then(() => {
 });
 
 app.on('window-all-closed', () => {
+  mainWindow = null;
   if (process.platform !== 'darwin') app.quit();
 });

@@ -4,5 +4,7 @@ contextBridge.exposeInMainWorld('simplePadDesktop', {
   isDesktop: true,
   openFile: () => ipcRenderer.invoke('dialog:openFile'),
   saveFile: (opts) => ipcRenderer.invoke('dialog:saveFile', opts),
-  setTitleBarTheme: (opts) => ipcRenderer.send('window:setTitleBarOverlay', opts)
+  minimize: () => ipcRenderer.send('window:minimize'),
+  toggleMaximize: () => ipcRenderer.send('window:toggleMaximize'),
+  close: () => ipcRenderer.send('window:close')
 });
