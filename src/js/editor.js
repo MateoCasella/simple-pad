@@ -72,31 +72,48 @@
     // ==========================================
     // SLASH (/) & AT (@) INLINE COMMAND PALETTE
     // ==========================================
+    function insertCurrentDateTime(kind) {
+      const now = new Date();
+      const pad = n => String(n).padStart(2, '0');
+      const dateStr = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()}`;
+      const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+      if (kind === 'time') insertPlainTextAtCaret(timeStr);
+      else if (kind === 'datetime') insertPlainTextAtCaret(`${dateStr} ${timeStr}`);
+      else insertPlainTextAtCaret(dateStr);
+    }
+
     const SLASH_COMMANDS = [
-      // 1. Formato de texto (prioridad)
-      { id: 'grande',     label: 'Texto grande',       hint: '/grande',     keywords: 'grande titulo h1 tamano tamaño',   run: () => applyDirectSizeFormat('grande') },
-      { id: 'mediano',    label: 'Texto mediano',      hint: '/mediano',    keywords: 'mediano normal texto tamano tamaño',run: () => applyDirectSizeFormat('mediano') },
-      { id: 'chico',      label: 'Texto chico',        hint: '/chico',      keywords: 'chico pequeno pequeño nota tamano', run: () => applyDirectSizeFormat('chico') },
-      { id: 'negrita',    label: 'Negrita (línea)',    hint: '/negrita',    keywords: 'negrita bold fuerte formato',       run: () => applyLineFormatFromSlash('bold') },
-      { id: 'cursiva',    label: 'Cursiva (línea)',    hint: '/cursiva',    keywords: 'cursiva italic inclinada formato',  run: () => applyLineFormatFromSlash('italic') },
-      { id: 'subrayado',  label: 'Subrayado (línea)',  hint: '/subrayado',  keywords: 'subrayado underline linea formato', run: () => applyLineFormatFromSlash('underline') },
-      { id: 'tachado',    label: 'Tachado (línea)',    hint: '/tachado',    keywords: 'tachado strike tachar formato',     run: () => applyLineFormatFromSlash('strike') },
-      { id: 'resaltado',  label: 'Resaltado (línea)',  hint: '/resaltado',  keywords: 'resaltado highlight mark formato',  run: () => applyLineFormatFromSlash('highlight') },
-      // 2. Listas
-      { id: 'lista',      label: 'Lista con viñetas',  hint: '/lista',      keywords: 'lista vinetas viñetas bullets',     run: () => applyListType('disc') },
-      { id: 'numerada',   label: 'Lista numerada',     hint: '/numerada',   keywords: 'numerada lista numeros',            run: () => applyListType('decimal') },
-      // 3. Componentes
-      { id: 'tabla',      label: 'Tabla',              hint: '/tabla',      keywords: 'tabla table filas columnas',        run: () => insertTableInSheet() },
-      { id: 'diagrama',   label: 'Pizarra diagramas',  hint: '/diagrama',   keywords: 'diagrama pizarra formas draw',      run: () => insertDiagramInSheet() },
-      { id: 'matematica', label: 'Bloque matemática',  hint: '/matematica', keywords: 'matematica math formula ecuacion calculo analisis algebra', run: () => insertMathWidgetInSheet(null, 'math') },
-      { id: 'fisica',     label: 'Bloque física',      hint: '/fisica',     keywords: 'fisica physics vector fuerza energia cinematica dinamica formula', run: () => insertMathWidgetInSheet(null, 'physics') },
-      { id: 'quimica',    label: 'Bloque química',     hint: '/quimica',    keywords: 'quimica chemistry reaccion molecula formula equilibrio estequiometria', run: () => insertMathWidgetInSheet(null, 'chemistry') },
-      { id: 'js',         label: 'Código JavaScript',  hint: '/js',         keywords: 'codigo code js javascript',         run: () => insertCodeWidgetWithLang('javascript') },
-      { id: 'py',         label: 'Código Python',      hint: '/py',         keywords: 'codigo code py python',             run: () => insertCodeWidgetWithLang('python') },
-      { id: 'c',          label: 'Código C / C++',     hint: '/c',          keywords: 'codigo code c cpp',                 run: () => insertCodeWidgetWithLang('c') },
-      { id: 'sql',        label: 'Código SQL',         hint: '/sql',        keywords: 'codigo code sql query db',          run: () => insertCodeWidgetWithLang('sql') },
-      { id: 'html',       label: 'Código HTML / CSS',  hint: '/html',       keywords: 'codigo code html css web',          run: () => insertCodeWidgetWithLang('html') },
-      { id: 'json',       label: 'Código JSON',        hint: '/json',       keywords: 'codigo code json',                  run: () => insertCodeWidgetWithLang('json') }
+      // 1. Text formatting (short & bilingual ES + EN)
+      { id: 'grande',     labelEs: 'Grande',      labelEn: 'Large',       hintEs: '/grande',     hintEn: '/large',     keywords: 'grande large big h1 tamano tamaño size',       run: () => applyDirectSizeFormat('grande') },
+      { id: 'mediano',    labelEs: 'Mediano',     labelEn: 'Medium',      hintEs: '/mediano',    hintEn: '/medium',    keywords: 'mediano medium normal tamano tamaño size',     run: () => applyDirectSizeFormat('mediano') },
+      { id: 'chico',      labelEs: 'Chico',       labelEn: 'Small',       hintEs: '/chico',      hintEn: '/small',     keywords: 'chico small pequeno pequeño nota size',        run: () => applyDirectSizeFormat('chico') },
+      { id: 'titulo',     labelEs: 'Título',      labelEn: 'Title',       hintEs: '/titulo',     hintEn: '/title',     keywords: 'titulo título title heading h1 grande',        run: () => applyDirectSizeFormat('grande') },
+      { id: 'subtitulo',  labelEs: 'Subtítulo',   labelEn: 'Subtitle',    hintEs: '/subtitulo',  hintEn: '/subtitle',  keywords: 'subtitulo subtítulo subtitle h2 mediano',      run: () => applyDirectSizeFormat('mediano') },
+      { id: 'texto',      labelEs: 'Texto',       labelEn: 'Text',        hintEs: '/texto',      hintEn: '/text',      keywords: 'texto text body cuerpo chico parrafo párrafo', run: () => applyDirectSizeFormat('chico') },
+      { id: 'negrita',    labelEs: 'Negrita',     labelEn: 'Bold',        hintEs: '/negrita',    hintEn: '/bold',      keywords: 'negrita bold fuerte formato',                  run: () => applyLineFormatFromSlash('bold') },
+      { id: 'cursiva',    labelEs: 'Cursiva',     labelEn: 'Italic',      hintEs: '/cursiva',    hintEn: '/italic',    keywords: 'cursiva italic inclinada formato',             run: () => applyLineFormatFromSlash('italic') },
+      { id: 'subrayado',  labelEs: 'Subrayado',   labelEn: 'Underline',   hintEs: '/subrayado',  hintEn: '/underline', keywords: 'subrayado underline linea formato',            run: () => applyLineFormatFromSlash('underline') },
+      { id: 'tachado',    labelEs: 'Tachado',     labelEn: 'Strike',      hintEs: '/tachado',    hintEn: '/strike',    keywords: 'tachado strike strikethrough tachar',          run: () => applyLineFormatFromSlash('strike') },
+      { id: 'resaltado',  labelEs: 'Resaltado',   labelEn: 'Highlight',   hintEs: '/resaltado',  hintEn: '/highlight', keywords: 'resaltado highlight mark amarillo',            run: () => applyLineFormatFromSlash('highlight') },
+      // 2. Lists
+      { id: 'lista',      labelEs: 'Lista',       labelEn: 'List',        hintEs: '/lista',      hintEn: '/list',      keywords: 'lista list vinetas viñetas bullets ul',        run: () => applyListType('disc') },
+      { id: 'numerada',   labelEs: 'Numerada',    labelEn: 'Numbered',    hintEs: '/numerada',   hintEn: '/numbered',  keywords: 'numerada numbered lista numeros ordered ol',   run: () => applyListType('decimal') },
+      // 3. Date & Time (moved to slash commands)
+      { id: 'hoy',        labelEs: 'Hoy',         labelEn: 'Today',       hintEs: '/hoy',        hintEn: '/today',     keywords: 'hoy today fecha date dia día',                 run: () => insertCurrentDateTime('date') },
+      { id: 'hora',       labelEs: 'Hora',        labelEn: 'Time',        hintEs: '/hora',       hintEn: '/time',      keywords: 'hora time reloj clock now ahora',              run: () => insertCurrentDateTime('time') },
+      { id: 'fecha',      labelEs: 'Fecha y hora',labelEn: 'Date & time', hintEs: '/fecha',      hintEn: '/date',      keywords: 'fecha date datetime timestamp hoy hora',       run: () => insertCurrentDateTime('datetime') },
+      // 4. Components
+      { id: 'tabla',      labelEs: 'Tabla',       labelEn: 'Table',       hintEs: '/tabla',      hintEn: '/table',     keywords: 'tabla table filas columnas grid',              run: () => insertTableInSheet() },
+      { id: 'diagrama',   labelEs: 'Pizarra',     labelEn: 'Diagram',     hintEs: '/diagrama',   hintEn: '/diagram',   keywords: 'diagrama diagram pizarra board formas draw',   run: () => insertDiagramInSheet() },
+      { id: 'matematica', labelEs: 'Matemática',  labelEn: 'Math',        hintEs: '/matematica', hintEn: '/math',      keywords: 'matematica matemática math formula ecuacion',  run: () => insertMathWidgetInSheet(null, 'math') },
+      { id: 'fisica',     labelEs: 'Física',      labelEn: 'Physics',     hintEs: '/fisica',     hintEn: '/physics',   keywords: 'fisica física physics vector fuerza energia',  run: () => insertMathWidgetInSheet(null, 'physics') },
+      { id: 'quimica',    labelEs: 'Química',     labelEn: 'Chemistry',   hintEs: '/quimica',    hintEn: '/chemistry', keywords: 'quimica química chemistry reaccion molecula',  run: () => insertMathWidgetInSheet(null, 'chemistry') },
+      { id: 'js',         labelEs: 'JavaScript',  labelEn: 'JavaScript',  hintEs: '/js',         hintEn: '/js',        keywords: 'codigo code js javascript',                    run: () => insertCodeWidgetWithLang('javascript') },
+      { id: 'py',         labelEs: 'Python',      labelEn: 'Python',      hintEs: '/py',         hintEn: '/py',        keywords: 'codigo code py python',                        run: () => insertCodeWidgetWithLang('python') },
+      { id: 'c',          labelEs: 'C / C++',     labelEn: 'C / C++',     hintEs: '/c',          hintEn: '/c',         keywords: 'codigo code c cpp',                            run: () => insertCodeWidgetWithLang('c') },
+      { id: 'sql',        labelEs: 'SQL',         labelEn: 'SQL',         hintEs: '/sql',        hintEn: '/sql',       keywords: 'codigo code sql query db',                     run: () => insertCodeWidgetWithLang('sql') },
+      { id: 'html',       labelEs: 'HTML / CSS',  labelEn: 'HTML / CSS',  hintEs: '/html',       hintEn: '/html',      keywords: 'codigo code html css web',                     run: () => insertCodeWidgetWithLang('html') },
+      { id: 'json',       labelEs: 'JSON',        labelEn: 'JSON',        hintEs: '/json',       hintEn: '/json',      keywords: 'codigo code json',                             run: () => insertCodeWidgetWithLang('json') }
     ];
 
     function applyLineFormatFromSlash(fmtType) {
@@ -162,41 +179,16 @@
     }
 
     function getMentionItems(query) {
-      const now = new Date();
-      const pad = n => String(n).padStart(2, '0');
-      const dateStr = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()}`;
-      const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
-
       const items = [];
+      const tabHint = (typeof appState !== 'undefined' && appState.lang === 'en') ? 'Tab' : 'Pestaña';
       (appState.tabs || []).forEach(t => {
         items.push({
           id: 'tab:' + t.id,
           label: t.title || 'Sin título.txt',
-          hint: 'Pestaña',
+          hint: tabHint,
           keywords: (t.title || '').toLowerCase(),
           run: () => insertTabMentionChip(t.id, t.title || 'Sin título.txt')
         });
-      });
-      items.push({
-        id: 'date:hoy',
-        label: `Hoy (${dateStr})`,
-        hint: '@hoy',
-        keywords: 'hoy fecha date',
-        run: () => insertPlainTextAtCaret(dateStr)
-      });
-      items.push({
-        id: 'date:hora',
-        label: `Hora actual (${timeStr})`,
-        hint: '@hora',
-        keywords: 'hora time reloj',
-        run: () => insertPlainTextAtCaret(timeStr)
-      });
-      items.push({
-        id: 'date:fecha',
-        label: `Fecha y hora`,
-        hint: '@fecha',
-        keywords: 'fecha hora timestamp',
-        run: () => insertPlainTextAtCaret(`${dateStr} ${timeStr}`)
       });
 
       const q = (query || '').toLowerCase();
@@ -298,9 +290,21 @@
       let items = [];
       if (trigger === '/') {
         const q = query.toLowerCase();
+        const isEn = appState.lang === 'en';
+        const mapped = SLASH_COMMANDS.map(c => ({
+          ...c,
+          label: isEn ? (c.labelEn || c.labelEs) : (c.labelEs || c.labelEn),
+          hint: isEn ? (c.hintEn || c.hintEs) : (c.hintEs || c.hintEn)
+        }));
         items = q
-          ? SLASH_COMMANDS.filter(c => c.label.toLowerCase().includes(q) || c.keywords.includes(q) || c.hint.includes(q))
-          : SLASH_COMMANDS.slice();
+          ? mapped.filter(c =>
+              (c.labelEs || '').toLowerCase().includes(q) ||
+              (c.labelEn || '').toLowerCase().includes(q) ||
+              (c.hintEs || '').toLowerCase().includes(q) ||
+              (c.hintEn || '').toLowerCase().includes(q) ||
+              (c.keywords || '').toLowerCase().includes(q)
+            )
+          : mapped;
       } else {
         items = getMentionItems(query);
       }
@@ -336,7 +340,7 @@
       if (!pop || !listEl) return;
 
       if (titleEl) {
-        titleEl.textContent = cmdPaletteState.trigger === '/' ? 'Insertar (/)' : 'Mencionar (@)';
+        titleEl.textContent = cmdPaletteState.trigger === '/' ? (appState.lang === 'en' ? 'Insert (/)' : 'Insertar (/)') : (appState.lang === 'en' ? 'Mention (@)' : 'Mencionar (@)');
       }
 
       listEl.innerHTML = cmdPaletteState.items.map((item, idx) => {
