@@ -10,7 +10,7 @@ function createWindow() {
     minHeight: 520,
     title: 'Simple Pad',
     icon: path.join(__dirname, '..', 'assets', 'icon.png'),
-    backgroundColor: '#c0c0c0',
+    backgroundColor: '#f4f4f5',
     show: false,
     autoHideMenuBar: true,
     webPreferences: {

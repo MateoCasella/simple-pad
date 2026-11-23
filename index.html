@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full theme-win98"><head>
+<html lang="es" class="h-full theme-modern"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simple Pad</title>
@@ -170,10 +170,18 @@
           <div class="border-t border-slate-200 dark:border-zinc-800 my-1"></div>
           <div class="px-3.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400 dark:text-zinc-500">Estilo visual</div>
           <button onclick="setUiStyle('modern'); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
-            <span>Moderno</span><span id="checkStyleModern" class="text-sky-600 font-bold"></span>
+            <span>Moderno</span><span id="checkStyleModern" class="text-sky-600 font-bold">✓</span>
           </button>
           <button onclick="setUiStyle('win98'); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
-            <span>Clásico (Windows 98)</span><span id="checkStyleWin98" class="text-sky-600 font-bold">✓</span>
+            <span>Clásico (Windows 98)</span><span id="checkStyleWin98" class="text-sky-600 font-bold"></span>
+          </button>
+          <div class="border-t border-slate-200 dark:border-zinc-800 my-1"></div>
+          <div class="px-3.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400 dark:text-zinc-500">Idioma</div>
+          <button onclick="setLanguage('es'); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Español</span><span id="checkLangEs" class="text-sky-600 font-bold">✓</span>
+          </button>
+          <button onclick="setLanguage('en'); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>English</span><span id="checkLangEn" class="text-sky-600 font-bold"></span>
           </button>
         </div>
       </div>
@@ -951,6 +959,7 @@
   </div>
 
     <script defer src="src/js/state.js"></script>
+  <script defer src="src/js/i18n.js"></script>
   <script defer src="src/js/diagram.js"></script>
   <script defer src="src/js/table-code.js"></script>
   <script defer src="src/js/science.js"></script>

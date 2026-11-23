@@ -85,7 +85,8 @@ const STORAGE_KEY = 'notepad_pro_single_live_v12';
       showLineNumbers: true,
       showStatusBar: true,
       darkMode: false,
-      uiStyle: 'win98',
+      uiStyle: 'modern',
+      lang: 'es',
       findCaseSensitive: false,
       findUseRegex: false,
       splitView: false,
@@ -230,7 +231,8 @@ const STORAGE_KEY = 'notepad_pro_single_live_v12';
             appState.autocorrect = typeof parsed.autocorrect === 'boolean' ? parsed.autocorrect : true;
             appState.showLineNumbers = typeof parsed.showLineNumbers === 'boolean' ? parsed.showLineNumbers : true;
             appState.darkMode = Boolean(parsed.darkMode);
-            appState.uiStyle = parsed.uiStyle === 'modern' ? 'modern' : 'win98';
+            appState.uiStyle = parsed.uiStyle === 'win98' ? 'win98' : 'modern';
+            appState.lang = parsed.lang === 'en' ? 'en' : 'es';
           }
         }
       } catch (e) {}
@@ -250,7 +252,8 @@ const STORAGE_KEY = 'notepad_pro_single_live_v12';
           autocorrect: appState.autocorrect,
           showLineNumbers: appState.showLineNumbers,
           darkMode: appState.darkMode,
-          uiStyle: appState.uiStyle
+          uiStyle: appState.uiStyle,
+          lang: appState.lang
         }));
       } catch (e) {}
       updateTrashBadge();
