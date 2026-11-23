@@ -112,7 +112,7 @@
       background-color: #f8f8f9 !important;
       border-right: 1px solid #e4e4e7 !important;
       color: #a1a1aa !important;
-      padding-top: 22px !important;
+      padding-top: 0 !important;
       line-height: 1.66 !important;
       font-family: 'Share Tech Mono', 'Cascadia Mono', 'Consolas', monospace !important;
       font-variant-numeric: tabular-nums;
@@ -230,3 +230,54 @@
     html.theme-win98 .table-widget table {
       font-family: 'Lucida Console', 'Courier New', 'Courier Prime', monospace !important;
     }
+
+
+/* Framed, distinct tabs in Modern style + exact 0px gutter top offset */
+html.theme-modern #lineNumbersGutter {
+  width: 2rem !important;
+  min-width: 2rem !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  font-size: 11px !important;
+}
+html.theme-modern #tabsStrip [data-tab-id] {
+  border: 1px solid #d4d4d8 !important;
+  border-bottom: none !important;
+  background-color: #e4e4e7 !important;
+  color: #52525b !important;
+  border-radius: 2px 2px 0 0 !important;
+  margin-right: 1px;
+}
+html.theme-modern #tabsStrip [data-tab-id]:hover {
+  background-color: #f4f4f5 !important;
+  color: #18181b !important;
+}
+html.theme-modern #tabsStrip [data-tab-id][data-active="true"] {
+  background-color: #ffffff !important;
+  color: #09090b !important;
+  border-color: #a1a1aa !important;
+  border-top: 2px solid #18181b !important;
+  border-bottom: 1px solid #ffffff !important;
+  position: relative;
+  top: 1px;
+  font-weight: 600 !important;
+}
+html.theme-modern.dark #tabsStrip [data-tab-id] {
+  border: 1px solid #2e2e36 !important;
+  border-bottom: none !important;
+  background-color: #1a1a20 !important;
+  color: #a1a1aa !important;
+}
+html.theme-modern.dark #tabsStrip [data-tab-id]:hover {
+  background-color: #23232b !important;
+  color: #f4f4f5 !important;
+}
+html.theme-modern.dark #tabsStrip [data-tab-id][data-active="true"] {
+  background-color: #16161a !important;
+  color: #ffffff !important;
+  border-color: #52525b !important;
+  border-top: 2px solid #e4e4e7 !important;
+  border-bottom: 1px solid #16161a !important;
+  position: relative;
+  top: 1px;
+}

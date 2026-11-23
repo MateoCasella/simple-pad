@@ -219,6 +219,7 @@
                 : 'bg-transparent text-slate-600 dark:text-slate-400 border-transparent hover:bg-white/60 dark:hover:bg-[#24262b]/60 hover:text-slate-800 dark:hover:text-slate-200'
             }`;
         tabEl.setAttribute('data-tab-id', tab.id);
+        if (isActive) tabEl.setAttribute('data-active', 'true');
         tabEl.title = (typeof t === 'function')
           ? t('Doble clic para renombrar', 'Double-click to rename')
           : 'Doble clic para renombrar';
