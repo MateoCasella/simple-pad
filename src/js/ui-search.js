@@ -677,9 +677,10 @@
     function setUiStyle(styleName) {
       appState.uiStyle = styleName === 'modern' ? 'modern' : 'win98';
       applyTheme();
+      if (typeof applyLanguage === 'function') applyLanguage(appState.lang || 'es', true);
       renderTabsStrip();
       saveTabsToStorage();
-      showToast(appState.uiStyle === 'win98' ? 'Estilo: Clásico (Windows 98)' : 'Estilo: Moderno');
+      showToast(appState.uiStyle === 'win98' ? t('Estilo: Clásico (Windows 98)', 'Style: Classic (Windows 98)') : t('Estilo: Moderno', 'Style: Modern'));
     }
 
     function toggleRetroFullscreen() {
@@ -698,7 +699,7 @@
       appState.darkMode = !appState.darkMode;
       applyTheme();
       saveTabsToStorage();
-      showToast(appState.darkMode ? '🌙 Modo oscuro activado' : '☀️ Modo claro activado');
+      showToast(appState.darkMode ? t('🌙 Modo oscuro activado', '🌙 Dark mode enabled') : t('☀️ Modo claro activado', '☀️ Light mode enabled'));
     }
 
     let toastTimer = null;

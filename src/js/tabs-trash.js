@@ -218,11 +218,18 @@
                 ? 'bg-[#f9fafc] dark:bg-[#24262b] text-slate-900 dark:text-white font-semibold border-[#dce3ec] dark:border-[#30333b] shadow-2xs'
                 : 'bg-transparent text-slate-600 dark:text-slate-400 border-transparent hover:bg-white/60 dark:hover:bg-[#24262b]/60 hover:text-slate-800 dark:hover:text-slate-200'
             }`;
-        tabEl.title = 'Doble clic o clic derecho para renombrar';
-        tabEl.onclick = () => switchTab(tab.id);
+        tabEl.setAttribute('data-tab-id', tab.id);
+        tabEl.title = (typeof t === 'function')
+          ? t('Doble clic para renombrar', 'Double-click to rename')
+          : 'Doble clic para renombrar';
+        tabEl.onclick = (ev) => {
+          if (ev.target && ev.target.classList && ev.target.classList.contains('inline-tab-rename-input')) return;
+          switchTab(tab.id);
+        };
         tabEl.ondblclick = (ev) => {
+          ev.preventDefault();
           ev.stopPropagation();
-          openRenameTabModal(tab.id);
+          startInlineTabRename(tab.id);
         };
         tabEl.oncontextmenu = (ev) => {
           ev.preventDefault();
@@ -352,7 +359,71 @@
       closeTabById(appState.activeTabId);
     }
 
+    function startInlineTabRename(tabId) {
+      const targetId = tabId || appState.activeTabId;
+      const tab = appState.tabs.find(x => x.id === targetId) || getActiveTab();
+      if (!tab) return;
+
+      const tabEl = document.querySelector(`#tabsStrip [data-tab-id="${targetId}"]`);
+      if (!tabEl) return;
+      if (tabEl.querySelector('.inline-tab-rename-input')) return;
+
+      const titleSpan = tabEl.querySelector('span');
+      if (!titleSpan) return;
+
+      const origTitle = tab.title || 'Sin título.txt';
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = origTitle;
+      input.className = 'inline-tab-rename-input w-28 sm:w-36 px-1 py-0 bg-white dark:bg-zinc-900 text-slate-900 dark:text-white border border-sky-500 rounded-xs text-[11px] font-mono focus:outline-none';
+      input.setAttribute('aria-label', 'Renombrar pestaña');
+
+      let finished = false;
+      const commit = (save) => {
+        if (finished) return;
+        finished = true;
+        if (save) {
+          const val = input.value.trim();
+          if (val) {
+            const origExtMatch = origTitle.match(/(\.[a-z0-9]+)$/i);
+            const hasExt = /\.[a-z0-9]+$/i.test(val);
+            tab.title = (!hasExt && origExtMatch) ? (val + origExtMatch[1]) : val;
+            saveTabsToStorage();
+            if (typeof showToast === 'function') {
+              showToast(typeof t === 'function' ? t(`Renombrado a ${tab.title}`, `Renamed to ${tab.title}`) : `Renombrado a ${tab.title}`);
+            }
+          }
+        }
+        renderTabsStrip();
+      };
+
+      input.onclick = (e) => e.stopPropagation();
+      input.ondblclick = (e) => e.stopPropagation();
+      input.onkeydown = (e) => {
+        e.stopPropagation();
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          commit(true);
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          commit(false);
+        }
+      };
+      input.onblur = () => commit(true);
+
+      titleSpan.replaceWith(input);
+      input.focus();
+      const dotIdx = origTitle.lastIndexOf('.');
+      if (dotIdx > 0) {
+        input.setSelectionRange(0, dotIdx);
+      } else {
+        input.select();
+      }
+    }
+
     function openRenameTabModal(tabId) {
+      startInlineTabRename(tabId);
+      return;
       const targetId = tabId || appState.activeTabId;
       appState.renamingTabId = targetId;
       const tab = appState.tabs.find(t => t.id === targetId) || getActiveTab();
