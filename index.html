@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full theme-win98"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Pad</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700&amp;family=Share+Tech+Mono&amp;family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet">
+  <script>
+    if (typeof tailwind !== 'undefined') {
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', 'sans-serif'],
+              mono: ['JetBrains Mono', 'Consolas', 'monospace']
+            }
+          }
+        }
+      };
+    }
+  </script>
+    <link rel="stylesheet" href="src/styles/base.css">
+  <link rel="stylesheet" href="src/styles/theme-win98.css">
+  <link rel="stylesheet" href="src/styles/theme-modern.css"></head>
+<body class="h-full bg-[#f3f3f3] dark:bg-[#18181b] text-slate-800 dark:text-slate-100 flex flex-col overflow-hidden select-none transition-colors duration-150">
+
+  <!-- ========================================================= -->
+  <!-- 1. WINDOWS 11 / NOTEPAD++ TOP TAB BAR + TRASH BIN BUTTON  -->
+  <!-- ========================================================= -->
+  <header class="bg-[#e8e8ec] dark:bg-[#111113] pt-1.5 px-2 flex items-end justify-between gap-2 border-b border-slate-300/80 dark:border-zinc-800 shrink-0">
+    <div class="flex items-end gap-1 min-w-0 flex-1 overflow-x-auto no-scrollbar">
+      <!-- App Icon Only (Name Removed) -->
+      <div class="flex items-center px-1.5 pb-1.5 shrink-0" title="Bloc de Notas">
+        <div class="modern-only w-5 h-5 rounded-md bg-[#0067c0] dark:bg-[#4cc2ff] flex items-center justify-center text-white dark:text-slate-950 shadow-xs">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        </div>
+        <svg class="win98-only w-5 h-5" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+          <!-- Classic Win98 Turquoise Spiral Notepad Pixel Icon -->
+          <rect x="2" y="2" width="12" height="13" fill="#000000"></rect>
+          <rect x="3" y="3" width="10" height="11" fill="#008080"></rect>
+          <rect x="4" y="4" width="8" height="9" fill="#ffffff"></rect>
+          <!-- Spiral binding rings -->
+          <rect x="4" y="1" width="1" height="3" fill="#dfdfdf"></rect>
+          <rect x="7" y="1" width="1" height="3" fill="#dfdfdf"></rect>
+          <rect x="10" y="1" width="1" height="3" fill="#dfdfdf"></rect>
+          <!-- Ruled ink lines -->
+          <rect x="5" y="6" width="6" height="1" fill="#000080"></rect>
+          <rect x="5" y="8" width="6" height="1" fill="#808080"></rect>
+          <rect x="5" y="10" width="4" height="1" fill="#808080"></rect>
+          <!-- Folded corner shadow -->
+          <rect x="10" y="11" width="2" height="2" fill="#c0c0c0"></rect>
+        </svg>
+      </div>
+
+      <!-- Dynamic Tabs Container (Double-click or Right-click to rename) -->
+      <div id="tabsStrip" class="flex items-end gap-1 overflow-x-auto"><div class="group flex items-center gap-2 px-3 py-1 text-[11.5px] cursor-pointer shrink-0 max-w-[210px] font-mono bg-[#a8a8a8] dark:bg-[#1f1f1f] text-black/85 dark:text-zinc-300 border-t border-l border-[#dfdfdf] dark:border-[#3a3a3a] border-r border-r-[#404040] hover:bg-[#b8b8b8] dark:hover:bg-[#2a2a2a]" title="Doble clic o clic derecho para renombrar"><span class="truncate select-none">notas_rapidas.txt</span><button class="p-0.5 rounded hover:bg-slate-300 dark:hover:bg-zinc-700 text-slate-400 hover:text-slate-800 dark:hover:text-white text-[10px] leading-none" title="Enviar a Papelera (15 días)">✕</button></div><div class="group flex items-center gap-2 px-3 py-1 text-[11.5px] cursor-pointer shrink-0 max-w-[210px] font-mono bg-[#a8a8a8] dark:bg-[#1f1f1f] text-black/85 dark:text-zinc-300 border-t border-l border-[#dfdfdf] dark:border-[#3a3a3a] border-r border-r-[#404040] hover:bg-[#b8b8b8] dark:hover:bg-[#2a2a2a]" title="Doble clic o clic derecho para renombrar"><span class="truncate select-none">borrador_codigo.txt</span><button class="p-0.5 rounded hover:bg-slate-300 dark:hover:bg-zinc-700 text-slate-400 hover:text-slate-800 dark:hover:text-white text-[10px] leading-none" title="Enviar a Papelera (15 días)">✕</button></div><div class="group flex items-center gap-2 px-3 py-1 text-[11.5px] cursor-pointer shrink-0 max-w-[210px] font-mono bg-[#c0c0c0] dark:bg-[#2b2b2b] text-black dark:text-white font-bold border-t-2 border-l-2 border-white dark:border-[#555] border-r-2 border-r-[#404040] dark:border-r-[#111] relative top-[1px]" title="Doble clic o clic derecho para renombrar"><span class="truncate select-none">apuntes_reunion.txt</span><button class="p-0.5 rounded hover:bg-slate-300 dark:hover:bg-zinc-700 text-slate-400 hover:text-slate-800 dark:hover:text-white text-[10px] leading-none" title="Enviar a Papelera (15 días)">✕</button></div></div>
+
+      <!-- New Tab (+) Button -->
+      <button onclick="createNewTab()" title="Nueva pestaña (Alt+N)" class="mb-1 p-1.5 rounded-md hover:bg-slate-300/60 dark:hover:bg-zinc-800 text-slate-600 dark:text-zinc-400 shrink-0 transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+      </button>
+    </div>
+
+    <!-- Right Tab Bar: 15-Day Trash Bin Button -->
+    <div class="flex items-center pb-1.5 shrink-0">
+      <div class="flex items-center gap-1">
+        <button id="btnOpenTrash" onclick="openTrashModal()" title="Papelera de reciclaje (15 días)" aria-label="Papelera" class="flex items-center gap-1 text-[11px] font-mono transition">
+          <svg class="modern-only w-4 h-4 text-slate-500 dark:text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg><svg class="win98-only w-4 h-4" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+            <!-- Classic Win98 Pixel Recycle Bin -->
+            <rect x="4" y="2" width="8" height="1" fill="#404040"></rect>
+            <rect x="3" y="3" width="10" height="2" fill="#dfdfdf"></rect>
+            <rect x="3" y="3" width="10" height="1" fill="#ffffff"></rect>
+            <!-- Crumpled paper peeking out -->
+            <rect x="5" y="1" width="3" height="2" fill="#ffffff"></rect>
+            <rect x="8" y="2" width="2" height="1" fill="#c0c0c0"></rect>
+            <!-- Metallic mesh body -->
+            <rect x="4" y="5" width="8" height="9" fill="#808080"></rect>
+            <rect x="5" y="5" width="6" height="8" fill="#c0c0c0"></rect>
+            <rect x="6" y="6" width="1" height="6" fill="#404040"></rect>
+            <rect x="9" y="6" width="1" height="6" fill="#404040"></rect>
+            <rect x="4" y="14" width="8" height="1" fill="#000000"></rect>
+          </svg>
+          <span id="trashCountBadge" class="px-1 py-0 text-[10px] font-bold leading-tight">1</span>
+        </button>
+        <button type="button" onclick="toggleRetroFullscreen()" title="Pantalla completa" aria-label="Pantalla completa" class="win98-only win98-sys-btn w-5 h-5 flex items-center justify-center text-[10px] font-bold leading-none">
+          <svg class="w-2.5 h-2.5" viewBox="0 0 10 10" shape-rendering="crispEdges"><rect x="1" y="1" width="8" height="8" fill="none" stroke="currentColor" stroke-width="1.5"></rect><rect x="1" y="1" width="8" height="2" fill="currentColor"></rect></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================= -->
+  <!-- 2. CLASSIC MENU BAR + ICON-ONLY FORMATTING CONTROLS       -->
+  <!-- ========================================================= -->
+  <nav class="bg-[#f9f9fb] dark:bg-[#202024] border-b border-slate-200 dark:border-zinc-800 px-2 py-1 flex flex-wrap items-center justify-between gap-2 text-xs shrink-0 relative z-30">
+    <div class="flex items-center gap-0.5">
+      <!-- MENU: ARCHIVO -->
+      <div class="relative">
+        <button onclick="toggleMenu('menuArchivo')" class="menu-trigger px-2.5 py-1 rounded hover:bg-slate-200/70 dark:hover:bg-zinc-700/70 text-slate-700 dark:text-zinc-200 font-medium"><u>A</u>rchivo</button>
+        <div id="menuArchivo" class="dropdown-panel absolute left-0 mt-1 w-64 rounded-lg bg-white dark:bg-zinc-900 shadow-xl border border-slate-200 dark:border-zinc-700 py-1.5 z-50 hidden">
+          <button onclick="createNewTab(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Nueva pestaña</span><kbd class="text-[10px] text-slate-400 font-mono">Alt+N</kbd>
+          </button>
+          <button onclick="triggerOpenFile(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Abrir archivo (.txt, .md)...</span><kbd class="text-[10px] text-slate-400 font-mono">Alt+O</kbd>
+          </button>
+          <div class="border-t border-slate-200 dark:border-zinc-800 my-1"></div>
+          <button onclick="downloadActiveTab('txt'); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Guardar solo texto (.TXT)</span><kbd class="text-[10px] text-slate-400 font-mono">Alt+S</kbd>
+          </button>
+          <button onclick="downloadActiveTab('md'); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Guardar con formato (.MD)</span><span class="text-[10px] text-slate-400">.md</span>
+          </button>
+          <button onclick="exportActiveTabToPDF(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Exportar como PDF limpio...</span><span class="text-[10px] text-slate-400">.pdf</span>
+          </button>
+          <button onclick="downloadActiveTab('html'); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Guardar con formato (.HTML)</span><span class="text-[10px] text-slate-400">.html</span>
+          </button>
+          <button onclick="downloadAllTabsBackup(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Exportar sesión de pestañas (.JSON)</span><span class="text-[10px] text-slate-400">Backup</span>
+          </button>
+          <div class="border-t border-slate-200 dark:border-zinc-800 my-1"></div>
+          <button onclick="openTrashModal(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Papelera (.txt borrados)</span><span class="text-[10px] text-amber-600 font-mono">15 días</span>
+          </button>
+          <button onclick="closeActiveTab(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 dark:text-rose-400 flex items-center justify-between">
+            <span>Borrar / Cerrar pestaña</span><kbd class="text-[10px] font-mono">Alt+W</kbd>
+          </button>
+        </div>
+      </div>
+
+      <!-- MENU: EDICIÓN -->
+      <div class="relative">
+        <button onclick="toggleMenu('menuEdicion')" class="menu-trigger px-2.5 py-1 rounded hover:bg-slate-200/70 dark:hover:bg-zinc-700/70 text-slate-700 dark:text-zinc-200 font-medium"><u>E</u>dición</button>
+        <div id="menuEdicion" class="dropdown-panel hidden absolute left-0 mt-1 w-64 rounded-lg bg-white dark:bg-zinc-900 shadow-xl border border-slate-200 dark:border-zinc-700 py-1.5 z-50">
+          <button onclick="undoEdit(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Deshacer</span><kbd class="text-[10px] text-slate-400 font-mono">Ctrl+Z</kbd>
+          </button>
+          <button onclick="redoEdit(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Rehacer</span><kbd class="text-[10px] text-slate-400 font-mono">Ctrl+Y</kbd>
+          </button>
+          <div class="border-t border-slate-200 dark:border-zinc-800 my-1"></div>
+          <button onclick="cutSelection(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Cortar</span><kbd class="text-[10px] text-slate-400 font-mono">Ctrl+X</kbd>
+          </button>
+          <button onclick="copySelectionOrAll(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Copiar</span><kbd class="text-[10px] text-slate-400 font-mono">Ctrl+C</kbd>
+          </button>
+          <button onclick="selectAllText(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Seleccionar todo</span><kbd class="text-[10px] text-slate-400 font-mono">Ctrl+A</kbd>
+          </button>
+          <div class="border-t border-slate-200 dark:border-zinc-800 my-1"></div>
+          <button onclick="openGlobalSearchModal(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Buscar en todas las pestañas</span><kbd class="text-[10px] text-slate-400 font-mono">Ctrl+Shift+F</kbd>
+          </button>
+        </div>
+      </div>
+
+      <!-- MENU: FORMATO -->
+      <div class="relative">
+        <button onclick="toggleMenu('menuFormato')" class="menu-trigger px-2.5 py-1 rounded hover:bg-slate-200/70 dark:hover:bg-zinc-700/70 text-slate-700 dark:text-zinc-200 font-medium"><u>F</u>ormato</button>
+        <div id="menuFormato" class="dropdown-panel hidden absolute left-0 mt-1 w-64 rounded-lg bg-white dark:bg-zinc-900 shadow-xl border border-slate-200 dark:border-zinc-700 py-1.5 z-50">
+          <button onclick="toggleWordWrap(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Ajuste de línea (Word Wrap)</span><span id="menuCheckWrap" class="text-sky-600 font-bold">✓</span>
+          </button>
+          <button onclick="toggleWordAutocomplete(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Autocompletado de palabras</span><span id="menuCheckAutocomplete" class="text-sky-600 font-bold">✓</span>
+          </button>
+          <button onclick="toggleAutocorrect(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Autocorrector ortográfico</span><span id="menuCheckAutocorrect" class="text-sky-600 font-bold">✓</span>
+          </button>
+          <div class="border-t border-slate-200 dark:border-zinc-800 my-1"></div>
+          <button onclick="transformSelectionCase('upper'); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span>Convertir selección a MAYÚSCULAS</span>
+          </button>
+          <button onclick="transformSelectionCase('lower'); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span>Convertir selección a minúsculas</span>
+          </button>
+          <div class="border-t border-slate-200 dark:border-zinc-800 my-1"></div>
+          <div class="px-3.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400 dark:text-zinc-500">Estilo visual</div>
+          <button onclick="setUiStyle('modern'); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Moderno</span><span id="checkStyleModern" class="text-sky-600 font-bold"></span>
+          </button>
+          <button onclick="setUiStyle('win98'); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Clásico (Windows 98)</span><span id="checkStyleWin98" class="text-sky-600 font-bold">✓</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- MENU: VER (INCLUDES DARK MODE SETTING) -->
+      <div class="relative">
+        <button onclick="toggleMenu('menuVer')" class="menu-trigger px-2.5 py-1 rounded hover:bg-slate-200/70 dark:hover:bg-zinc-700/70 text-slate-700 dark:text-zinc-200 font-medium"><u>V</u>er</button>
+        <div id="menuVer" class="dropdown-panel absolute left-0 mt-1 w-64 rounded-lg bg-white dark:bg-zinc-900 shadow-xl border border-slate-200 dark:border-zinc-700 py-1.5 z-50 hidden">
+          <button onclick="changeZoom(10); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Acercar zoom (+10%)</span><kbd class="text-[10px] text-slate-400 font-mono">Alt +</kbd>
+          </button>
+          <button onclick="changeZoom(-10); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Alejar zoom (-10%)</span><kbd class="text-[10px] text-slate-400 font-mono">Alt -</kbd>
+          </button>
+          <button onclick="resetZoom(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Restaurar zoom predeterminado</span><span class="text-[10px] text-slate-400">100%</span>
+          </button>
+          <div class="border-t border-slate-200 dark:border-zinc-800 my-1"></div>
+          <button onclick="toggleLineNumbers(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Numeración de líneas</span><span id="menuCheckLines" class="text-sky-600 font-bold">✓</span>
+          </button>
+          <button onclick="toggleStatusBar(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Barra de estado inferior</span><span id="menuCheckStatus" class="text-sky-600 font-bold">✓</span>
+          </button>
+          <div class="border-t border-slate-200 dark:border-zinc-800 my-1"></div>
+          <button onclick="toggleSplitView(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Vista dividida</span>
+            <span class="flex items-center gap-2"><kbd class="text-[10px] text-slate-400 font-mono">Alt+D</kbd><span id="menuCheckSplit" class="text-sky-600 font-bold w-3 text-right"></span></span>
+          </button>
+          <button onclick="toggleTheme(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Modo oscuro</span>
+            <span class="flex items-center gap-2"><kbd class="text-[10px] text-slate-400 font-mono">Alt+T</kbd><span id="menuCheckDarkMode" class="text-sky-600 font-bold w-3 text-right"></span></span>
+          </button>
+          <div class="border-t border-slate-200 dark:border-zinc-800 my-1"></div>
+          <button onclick="openShortcutsGuideModal(); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Atajos de teclado</span><kbd class="text-[10px] text-slate-400 font-mono">F1</kbd>
+          </button>
+          <button onclick="openShortcutsGuideModal('inlineCommandsSection'); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Comandos en línea</span><kbd class="text-[10px] text-slate-400 font-mono">/ y @</kbd>
+          </button>
+          <button onclick="openScienceCommandsModal('all'); closeAllMenus();" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between">
+            <span>Notación de ciencias</span><kbd class="text-[10px] text-slate-400 font-mono">∑ · Ω · ⇌</kbd>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Middle Separate Bubble: Ctrl+F Find & Replace (Hidden by default, opens on Ctrl+F) -->
+    <div id="findReplaceBar" class="hidden relative flex items-center bg-slate-200/70 dark:bg-zinc-800/95 p-0.5 px-1.5 rounded-md border border-slate-300/80 dark:border-zinc-700 gap-1 text-xs font-mono select-none">
+      <!-- Compact Search Input + Aa / .* -->
+      <div class="flex items-center bg-white dark:bg-zinc-900 border border-slate-300/80 dark:border-zinc-700 rounded px-2 py-0.5 gap-1 w-44 sm:w-52">
+        <input id="findInput" type="text" oninput="runFindPreview()" onkeydown="if(event.key==='Enter'){ event.preventDefault(); event.shiftKey ? findPrevMatch() : findNextMatch(); }" placeholder="Buscar..." class="bg-transparent text-[11px] focus:outline-none w-full min-w-0 text-slate-800 dark:text-zinc-100 font-mono">
+        <button id="btnToggleCase" type="button" onclick="toggleFindOption('case')" title="Coincidir mayúsculas y minúsculas (Aa)" class="px-1 py-0.2 rounded text-[10px] font-bold border border-transparent text-slate-500 hover:bg-slate-100 dark:hover:bg-zinc-800 shrink-0">Aa</button>
+        <button id="btnToggleRegex" type="button" onclick="toggleFindOption('regex')" title="Usar Expresiones Regulares (.*)" class="px-1 py-0.2 rounded text-[10px] font-bold border border-transparent text-slate-500 hover:bg-slate-100 dark:hover:bg-zinc-800 shrink-0">.*</button>
+      </div>
+
+      <span id="findMatchCounter" class="text-[10.5px] text-slate-500 dark:text-zinc-400 px-1 min-w-[30px] text-center shrink-0">0/0</span>
+
+      <!-- Prev / Next -->
+      <button type="button" onclick="findPrevMatch()" title="Anterior (Shift+Enter)" aria-label="Anterior" class="w-5 h-6 rounded hover:bg-white dark:hover:bg-zinc-700 text-slate-600 dark:text-zinc-300 flex items-center justify-center shrink-0 transition">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+      </button>
+      <button type="button" onclick="findNextMatch()" title="Siguiente (Enter)" aria-label="Siguiente" class="w-5 h-6 rounded hover:bg-white dark:hover:bg-zinc-700 text-slate-600 dark:text-zinc-300 flex items-center justify-center shrink-0 transition">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+
+      <div class="h-3.5 w-px bg-slate-300/80 dark:bg-zinc-700 mx-0.5 shrink-0"></div>
+
+      <!-- Highlight Dropdown List (2 types: Resaltar palabra / Resaltado múltiple) -->
+      <div class="relative">
+        <button id="btnFindHighlightMenu" type="button" onmousedown="event.preventDefault(); toggleMenu('menuFindHighlight');" title="Opciones de resaltado" aria-label="Opciones de resaltado" class="menu-trigger px-1.5 py-0.5 rounded hover:bg-white dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-200 flex items-center gap-0.5 transition">
+          <span class="flex flex-col items-center justify-center">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+            <span class="w-3 h-0.5 bg-yellow-400 rounded-full"></span>
+          </span>
+          <svg class="w-2.5 h-2.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+
+        <div id="menuFindHighlight" class="dropdown-panel hidden absolute right-0 mt-2 w-48 rounded-lg bg-white dark:bg-zinc-900 shadow-xl border border-slate-200 dark:border-zinc-700 py-1 z-50 font-mono text-[11px]">
+          <button type="button" onmousedown="event.preventDefault(); highlightCurrentFindMatch(); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200 flex items-center justify-between gap-2">
+            <span>Resaltar palabra</span>
+            <span class="w-3 h-1.5 rounded-xs bg-yellow-300 border border-yellow-400"></span>
+          </button>
+          <button type="button" onmousedown="event.preventDefault(); highlightAllFindMatches(); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200 flex items-center justify-between gap-2">
+            <span class="flex items-center gap-1.5"><span>Resaltado múltiple</span><span id="checkFindMultiHl" class="text-sky-600 font-bold"></span></span>
+            <span class="flex flex-col gap-0.5"><span class="w-3 h-1 rounded-xs bg-yellow-300"></span><span class="w-3 h-1 rounded-xs bg-yellow-300"></span></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Clear Replace Toggle Icon (Swap Arrows) -->
+      <button id="btnToggleReplaceRow" type="button" onclick="toggleReplaceSection()" title="Reemplazar (Ctrl+H)" aria-label="Mostrar u ocultar reemplazo" class="w-6 h-6 rounded hover:bg-white dark:hover:bg-zinc-700 text-slate-600 dark:text-zinc-300 flex items-center justify-center shrink-0 transition">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"></path><path d="M3 6h18"></path><path d="M7 22l-4-4 4-4"></path><path d="M21 18H3"></path></svg>
+      </button>
+
+      <!-- Close -->
+      <button type="button" onclick="toggleFindReplaceBar(false)" title="Cerrar (Esc)" aria-label="Cerrar buscador" class="w-5 h-6 rounded hover:bg-white dark:hover:bg-zinc-700 text-slate-400 hover:text-slate-600 dark:hover:text-zinc-200 flex items-center justify-center shrink-0 transition">
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+
+      <!-- Collapsible Replace Drop-down Panel (Hidden by default, opens via Replace icon button) -->
+      <div id="replaceRowContainer" class="hidden absolute top-[calc(100%+6px)] left-0 right-0 bg-white dark:bg-[#202024] border border-slate-300 dark:border-zinc-700 rounded-md shadow-xl p-1.5 flex items-center gap-1.5 z-50">
+        <div class="flex-1 min-w-0 flex items-center bg-slate-50 dark:bg-zinc-900 border border-slate-300/90 dark:border-zinc-700 rounded px-2 py-1">
+          <input id="replaceInput" type="text" onkeydown="if(event.key==='Enter'){ event.preventDefault(); replaceNextMatch(); }" placeholder="Reemplazar por..." class="bg-transparent text-[11px] focus:outline-none w-full min-w-0 text-slate-800 dark:text-zinc-100 font-mono">
+        </div>
+        <button type="button" onclick="replaceNextMatch()" title="Reemplazar coincidencia actual" class="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 border border-slate-300/80 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 text-[11px] font-medium shrink-0 transition">Reemplazar</button>
+        <button type="button" onclick="replaceAllMatches()" title="Reemplazar todas las coincidencias" class="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 border border-slate-300/80 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 text-[11px] font-medium shrink-0 transition">Todos</button>
+      </div>
+    </div>
+
+    <!-- Right Quick Toolbar: Separate Icon-Only Size Dropdown + [B, I, S, Highlight, List Dropdown, Table, Diagram, Code Language Dropdown] -->
+    <div class="flex items-center gap-1.5 flex-wrap">
+
+      <!-- Unified Formatting Icons Group (includes Text Size dropdown + B, I, S, Highlight, Lists, Table, Diagram, Code) -->
+      <div id="mainFormattingGroup" class="flex items-center bg-slate-200/60 dark:bg-zinc-800/90 p-0.5 rounded-md border border-slate-300/60 dark:border-zinc-700 gap-0.5">
+        <!-- 1. Formato de texto (Tamaño + B, I, U, S, Resaltar) -->
+        <div class="relative">
+          <button id="btnTextFormatsMenu" onmousedown="event.preventDefault(); saveCurrentSelection(); toggleMenu('menuTextFormats');" title="Formato de texto" aria-label="Formato de texto" class="menu-trigger px-2 py-0.5 rounded hover:bg-white dark:hover:bg-zinc-700 flex items-center gap-1 transition">
+            <svg class="w-3.5 h-3.5 text-slate-700 dark:text-zinc-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 7V4h16v3M9 20h6M12 4v16"></path>
+            </svg>
+            <svg class="w-2.5 h-2.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+
+          <div id="menuTextFormats" class="dropdown-panel hidden absolute right-0 mt-1.5 w-48 rounded-lg bg-white dark:bg-zinc-900 shadow-xl border border-slate-200 dark:border-zinc-700 py-1 z-50 font-mono text-[11px]">
+            <div class="px-3 py-1 text-[10px] font-sans font-semibold uppercase tracking-wider text-slate-400">Tamaño</div>
+            <button onmousedown="event.preventDefault(); applyDirectSizeFormat('grande'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between text-slate-700 dark:text-zinc-200">
+              <span>Grande</span><span id="checkSizeGrande" class="font-bold"></span>
+            </button>
+            <button onmousedown="event.preventDefault(); applyDirectSizeFormat('mediano'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between text-slate-700 dark:text-zinc-200">
+              <span>Mediano</span><span id="checkSizeMediano" class="font-bold">✓</span>
+            </button>
+            <button onmousedown="event.preventDefault(); applyDirectSizeFormat('chico'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between text-slate-700 dark:text-zinc-200">
+              <span>Chico</span><span id="checkSizeChico" class="font-bold"></span>
+            </button>
+            <div class="border-t border-slate-200 dark:border-zinc-800 my-1"></div>
+            <div class="px-3 py-1 text-[10px] font-sans font-semibold uppercase tracking-wider text-slate-400">Estilo</div>
+            <button onmousedown="event.preventDefault(); applyDirectFormat('bold'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between text-slate-700 dark:text-zinc-200">
+              <span class="flex items-center gap-2"><span class="w-4 text-center font-bold">B</span><span>Negrita</span></span>
+              <kbd class="text-[10px] text-slate-400">Ctrl+B</kbd>
+            </button>
+            <button onmousedown="event.preventDefault(); applyDirectFormat('italic'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between text-slate-700 dark:text-zinc-200">
+              <span class="flex items-center gap-2"><span class="w-4 text-center italic">I</span><span>Cursiva</span></span>
+              <kbd class="text-[10px] text-slate-400">Ctrl+I</kbd>
+            </button>
+            <button onmousedown="event.preventDefault(); applyDirectFormat('underline'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between text-slate-700 dark:text-zinc-200">
+              <span class="flex items-center gap-2"><span class="w-4 text-center underline">U</span><span>Subrayado</span></span>
+              <kbd class="text-[10px] text-slate-400">Ctrl+U</kbd>
+            </button>
+            <button onmousedown="event.preventDefault(); applyDirectFormat('strike'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center justify-between text-slate-700 dark:text-zinc-200">
+              <span class="flex items-center gap-2"><span class="w-4 text-center line-through">S</span><span>Tachado</span></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Tipos de lista (monocromáticos + multinivel con Tab) -->
+        <div class="relative">
+          <button onmousedown="event.preventDefault(); saveCurrentSelection(); toggleMenu('menuListTypes');" title="Tipos de lista" aria-label="Tipos de lista" class="menu-trigger px-2 py-0.5 rounded hover:bg-white dark:hover:bg-zinc-700 flex items-center gap-1 text-[11px] font-medium transition">
+            <svg class="w-3.5 h-3.5 text-slate-700 dark:text-zinc-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+            <svg class="w-2.5 h-2.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+
+          <div id="menuListTypes" class="dropdown-panel hidden absolute right-0 mt-1.5 w-44 rounded-lg bg-white dark:bg-zinc-900 shadow-xl border border-slate-200 dark:border-zinc-700 py-1 z-50 font-mono text-[11px]">
+            <button onmousedown="event.preventDefault(); applyListType('disc'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center gap-2 text-slate-700 dark:text-zinc-200">
+              <span class="w-4 text-center">•</span><span>Viñetas</span>
+            </button>
+            <button onmousedown="event.preventDefault(); applyListType('circle'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center gap-2 text-slate-700 dark:text-zinc-200">
+              <span class="w-4 text-center">◦</span><span>Círculos</span>
+            </button>
+            <button onmousedown="event.preventDefault(); applyListType('square'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center gap-2 text-slate-700 dark:text-zinc-200">
+              <span class="w-4 text-center">▪</span><span>Cuadradas</span>
+            </button>
+            <button onmousedown="event.preventDefault(); applyListType('dash'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center gap-2 text-slate-700 dark:text-zinc-200">
+              <span class="w-4 text-center">–</span><span>Guiones</span>
+            </button>
+            <div class="border-t border-slate-200 dark:border-zinc-800 my-1"></div>
+            <button onmousedown="event.preventDefault(); applyListType('decimal'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center gap-2 text-slate-700 dark:text-zinc-200">
+              <span class="w-4 text-center">1.</span><span>Numeradas</span>
+            </button>
+            <button onmousedown="event.preventDefault(); applyListType('lower-alpha'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center gap-2 text-slate-700 dark:text-zinc-200">
+              <span class="w-4 text-center">a.</span><span>Alfabéticas</span>
+            </button>
+            <button onmousedown="event.preventDefault(); applyListType('lower-roman'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center gap-2 text-slate-700 dark:text-zinc-200">
+              <span class="w-4 text-center">i.</span><span>Romanas</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Yellow-only Highlight Icon Button (immediately to the right of List dropdown) -->
+        <button id="btnHighlightYellow" onmousedown="event.preventDefault(); applyDirectFormat('highlight')" title="Resaltar en amarillo" aria-label="Resaltar en amarillo" class="px-2 py-0.5 rounded hover:bg-white dark:hover:bg-zinc-700 flex flex-col items-center justify-center transition">
+          <svg class="w-3.5 h-3.5 text-slate-700 dark:text-zinc-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+          </svg>
+          <span class="w-3.5 h-1 rounded-xs bg-yellow-400 mt-0.5"></span>
+        </button>
+
+        <!-- 3. Insertar componentes (Tabla, Pizarra de diagramas y Código por lenguaje) -->
+        <div class="relative">
+          <button id="btnInsertWidgetsMenu" onmousedown="event.preventDefault(); saveCurrentSelection(); toggleMenu('menuInsertWidgets');" title="Insertar tabla, pizarra o bloque de código" aria-label="Insertar componente" class="menu-trigger px-2 py-0.5 rounded hover:bg-white dark:hover:bg-zinc-700 flex items-center gap-1 transition">
+            <svg class="w-3.5 h-3.5 text-slate-700 dark:text-zinc-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+              <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+              <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+              <path stroke-linecap="round" d="M17.5 14v7M14 17.5h7"></path>
+            </svg>
+            <svg class="w-2.5 h-2.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+
+          <div id="menuInsertWidgets" class="dropdown-panel hidden absolute right-0 mt-1.5 w-48 rounded-lg bg-white dark:bg-zinc-900 shadow-xl border border-slate-200 dark:border-zinc-700 py-1 z-50 font-mono text-[11px]">
+            <div class="px-3 py-1 text-[10px] font-sans font-semibold uppercase tracking-wider text-slate-400">Componentes</div>
+            <button onmousedown="event.preventDefault(); insertTableInSheet(); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center gap-2 text-slate-700 dark:text-zinc-200">
+              <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+              <span>Tabla</span>
+            </button>
+            <button id="btnInsertDiagram" onmousedown="event.preventDefault(); insertDiagramInSheet(); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center gap-2 text-slate-700 dark:text-zinc-200">
+              <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"></rect><circle cx="17.5" cy="17.5" r="3.5"></circle><path stroke-linecap="round" stroke-linejoin="round" d="M10 6.5h4a2 2 0 012 2v5.5"></path></svg>
+              <span>Pizarra de diagramas</span>
+            </button>
+            <div class="border-t border-slate-200 dark:border-zinc-800 my-1"></div>
+            <div class="px-3 py-1 text-[10px] font-sans font-semibold uppercase tracking-wider text-slate-400">Ciencias</div>
+            <button id="btnInsertMath" onmousedown="event.preventDefault(); insertMathWidgetInSheet(null, 'math'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center gap-2 text-slate-700 dark:text-zinc-200">
+              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 5H6l7 7-7 7h12"></path></svg>
+              <span>Bloque de matemática</span>
+            </button>
+            <button id="btnInsertPhysics" onmousedown="event.preventDefault(); insertMathWidgetInSheet(null, 'physics'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center gap-2 text-slate-700 dark:text-zinc-200">
+              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.8" fill="currentColor"></circle><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"></ellipse><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"></ellipse><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(90 12 12)"></ellipse></svg>
+              <span>Bloque de física</span>
+            </button>
+            <button id="btnInsertChemistry" onmousedown="event.preventDefault(); insertMathWidgetInSheet(null, 'chemistry'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center gap-2 text-slate-700 dark:text-zinc-200">
+              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"></path><path d="M10 3v6.2L4.6 18.4A2 2 0 0 0 6.3 21h11.4a2 2 0 0 0 1.7-2.6L14 9.2V3"></path><path d="M7.5 15h9"></path></svg>
+              <span>Bloque de química</span>
+            </button>
+            <div class="border-t border-slate-200 dark:border-zinc-800 my-1"></div>
+            <div class="px-3 py-1 text-[10px] font-sans font-semibold uppercase tracking-wider text-slate-400">Bloque de código</div>
+            <button onmousedown="event.preventDefault(); insertCodeWidgetWithLang('javascript'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200">JavaScript</button>
+            <button onmousedown="event.preventDefault(); insertCodeWidgetWithLang('python'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200">Python</button>
+            <button onmousedown="event.preventDefault(); insertCodeWidgetWithLang('c'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200">C / C++</button>
+            <button onmousedown="event.preventDefault(); insertCodeWidgetWithLang('sql'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200">SQL</button>
+            <button onmousedown="event.preventDefault(); insertCodeWidgetWithLang('html'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200">HTML / CSS</button>
+            <button onmousedown="event.preventDefault(); insertCodeWidgetWithLang('json'); closeAllMenus();" class="w-full px-3 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200">JSON</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========================================================= -->
+  <!-- 3. HIDDEN FIND & REPLACE BAR (ACCESSIBLE ONLY VIA CTRL+F) -->
+  <!-- ========================================================= -->
+  <!-- ========================================================= -->
+  <!-- 4. SINGLE LIVE FLEXIBLE WRITING SHEET                     -->
+  <!-- ========================================================= -->
+  <main class="flex-1 flex overflow-hidden bg-white dark:bg-[#1e1e22] relative">
+    <!-- Line Numbers Gutter -->
+    <div id="lineNumbersGutter" class="w-11 py-5 px-2 bg-slate-50 dark:bg-[#18181c] border-r border-slate-200/80 dark:border-zinc-800 text-right font-mono text-xs text-slate-400 dark:text-zinc-600 select-none overflow-hidden shrink-0 leading-[1.65]" style="font-size: 17px;"><div style="position:relative;height:541px;width:100%;"><div class="gutter-num-item" style="top:12px;height:28.05px;line-height:28.05px;">1</div><div class="gutter-num-item" style="top:40px;height:28.05px;line-height:28.05px;">2</div><div class="gutter-num-item" style="top:68px;height:28.05px;line-height:28.05px;">3</div><div class="gutter-num-item" style="top:96px;height:28.05px;line-height:28.05px;">4</div><div class="gutter-num-item" style="top:124px;height:28.05px;line-height:28.05px;">5</div><div class="gutter-num-item" style="top:152px;height:28.05px;line-height:28.05px;">6</div><div class="gutter-num-item" style="top:180px;height:28.05px;line-height:28.05px;">7</div><div class="gutter-num-item" style="top:208px;height:28.05px;line-height:28.05px;">8</div><div class="gutter-num-item" style="top:236px;height:28.05px;line-height:28.05px;">9</div><div class="gutter-num-item" style="top:264px;height:28.05px;line-height:28.05px;">10</div><div class="gutter-num-item" style="top:293px;height:28.05px;line-height:28.05px;">11</div><div class="gutter-num-item" style="top:321px;height:28.05px;line-height:28.05px;">12</div><div class="gutter-num-item" style="top:349px;height:28.05px;line-height:28.05px;">13</div><div class="gutter-num-item" style="top:377px;height:28.05px;line-height:28.05px;">14</div><div class="gutter-num-item" style="top:405px;height:28.05px;line-height:28.05px;">15</div><div class="gutter-num-item" style="top:433px;height:28.05px;line-height:28.05px;">16</div><div class="gutter-num-item" style="top:461px;height:28.05px;line-height:28.05px;">17</div><div class="gutter-num-item" style="top:489px;height:28.05px;line-height:28.05px;">18</div></div></div>
+
+    <!-- Single Live Editable Flexible Sheet -->
+    <div id="sheetScrollWrapper" onscroll="syncGutterScroll()" class="flex-1 h-full overflow-auto">
+      <div id="liveSheetEditor" contenteditable="true" spellcheck="true" data-placeholder="Escribí acá tus notas..." oninput="handleLiveSheetInput()" onclick="updateCursorMetrics()" onkeyup="updateCursorMetrics(); if (cmdPaletteState.open &amp;&amp; !['ArrowDown','ArrowUp','Enter','Tab','Shift','Control','Alt','Meta'].includes(event.key)) evaluateCommandPaletteAtCaret();" onmouseup="updateCursorMetrics()" onkeydown="handleEditorKeyDown(event)" onpaste="handleEditorPaste(event)" class="text-slate-900 dark:text-zinc-100 select-text" style="font-size: 17px; white-space: pre-wrap;"><div class="txt-grande">Apuntes de Reunión — Producto</div>
+<div class="txt-chico">Seguimiento semanal del proyecto</div>
+<div><br></div>
+<ol class="list-decimal-style">
+  <li>Pizarra y figuras redimensionables con soporte completo de formato de texto adentro de cada figura.</li>
+  <li>Tablas interactivas con botones verdes <strong>+</strong> para insertar filas y columnas.</li>
+  <li>Papelera con retención de <strong>15 días</strong> para restaurar cualquier <code>.txt</code> eliminado.</li></ol><div><br></div><div><br></div></div>
+    </div>
+
+    <!-- Secondary Split View Pane (Hidden by default) -->
+    <div id="splitPaneContainer" class="hidden flex-1 h-full flex flex-col border-l border-slate-300 dark:border-zinc-700 bg-white dark:bg-[#1e1e22] min-w-0">
+      <div class="h-8 px-2.5 bg-[#f3f3f5] dark:bg-[#18181b] border-b border-slate-200 dark:border-zinc-800 flex items-center justify-between gap-2 shrink-0 select-none">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-zinc-500 shrink-0">Derecha:</span>
+          <select id="splitTabSelect" onchange="selectSplitTab(this.value)" aria-label="Archivo en vista dividida" class="min-w-0 bg-white dark:bg-zinc-800 border border-slate-300 dark:border-zinc-700 rounded px-2 py-0.5 text-[11px] font-mono text-slate-700 dark:text-zinc-200 focus:outline-none cursor-pointer truncate"></select>
+        </div>
+        <button type="button" onclick="toggleSplitView(false)" title="Cerrar vista dividida" aria-label="Cerrar vista dividida" class="w-6 h-6 rounded hover:bg-slate-200 dark:hover:bg-zinc-800 text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-300 flex items-center justify-center shrink-0 transition">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div id="splitScrollWrapper" class="flex-1 overflow-auto">
+        <div id="splitSheetEditor" contenteditable="true" spellcheck="true" oninput="handleSplitSheetInput()" class="text-slate-900 dark:text-zinc-100 select-text" style="font-size: 17px;"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- 5. CLASSIC WINDOWS 11 NOTEPAD BOTTOM STATUS BAR           -->
+  <!-- ========================================================= -->
+  <footer id="classicStatusBar" class="h-7 bg-[#f3f3f5] dark:bg-[#141417] border-t border-slate-300/80 dark:border-zinc-800 px-3 flex items-center justify-between text-[11px] text-slate-600 dark:text-zinc-400 shrink-0 font-mono">
+    <div class="flex items-center gap-3 overflow-x-auto">
+      <span id="statusCursorPos" class="font-semibold text-slate-700 dark:text-zinc-300">Lín 7, Col 77</span>
+      <span class="text-slate-300 dark:text-zinc-700">|</span>
+      <span id="statusWordCharCount">22 lín | 46 palabras, 334 caracteres</span>
+      <span class="text-slate-300 dark:text-zinc-700">|</span>
+      <button id="statusTokenCount" type="button" onclick="toggleTokenCalculator(event)" title="Calculadora de tokens del archivo .txt actual" class="px-1.5 py-0.5 rounded hover:bg-slate-200/80 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-300 font-semibold transition">~101 tokens</button>
+      <span id="statusSelectionCount" class="text-sky-600 dark:text-sky-400 font-semibold hidden">(15 seleccionados)</span>
+    </div>
+
+    <div class="flex items-center gap-3 shrink-0">
+      <button onclick="toggleWordWrap()" id="statusWrapLabel" title="Clic para alternar Ajuste de línea" class="hover:text-slate-900 dark:hover:text-white transition">Ajuste de línea: Sí</button>
+      <span class="text-slate-300 dark:text-zinc-700">|</span>
+      <button onclick="resetZoom()" id="statusZoomLabel" title="Clic para restaurar Zoom a 100%" class="hover:text-slate-900 dark:hover:text-white transition">100%</button>
+      <span class="text-slate-300 dark:text-zinc-700 hidden sm:inline">|</span>
+      <span class="hidden sm:inline">Monospace</span>
+      <span class="text-slate-300 dark:text-zinc-700 hidden sm:inline">|</span>
+      <span class="hidden sm:inline">UTF-8</span>
+      <span class="win98-only win98-status-grip ml-1 hidden sm:inline-block" aria-hidden="true"></span>
+    </div>
+  </footer>
+
+  <!-- TOKEN CALCULATOR POPOVER (CENTERED ABOVE BOTTOM STATUS BAR) -->
+  <div id="tokenCalculatorPopover" class="fixed bottom-9 left-1/2 -translate-x-1/2 z-50 w-80 max-w-[calc(100vw-2rem)] rounded-lg bg-white dark:bg-[#1e1e22] border border-slate-300 dark:border-zinc-700 shadow-2xl text-xs font-mono overflow-hidden select-none hidden">
+    <div class="px-4 py-2.5 bg-[#f3f3f5] dark:bg-[#18181b] border-b border-slate-200 dark:border-zinc-800 flex items-center justify-between gap-3">
+      <span class="font-semibold text-slate-700 dark:text-zinc-200 truncate" id="tokenCalcTitle">Tokens · apuntes_reunion.txt</span>
+      <button type="button" onclick="closeTokenCalculator()" title="Cerrar" class="w-6 h-6 rounded hover:bg-slate-200 dark:hover:bg-zinc-800 text-slate-500 flex items-center justify-center shrink-0 transition">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="p-4 space-y-3.5 text-[11px]">
+      <div class="flex items-baseline justify-between gap-2">
+        <span class="text-slate-500 dark:text-zinc-400">Tokens estimados</span>
+        <span id="tokenCalcTotal" class="text-lg font-bold text-slate-900 dark:text-white">101</span>
+      </div>
+
+      <div id="tokenCalcSelectionRow" class="flex items-center justify-between text-sky-700 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/40 px-2.5 py-1.5 rounded hidden">
+        <span>En selección</span>
+        <span id="tokenCalcSelectionVal" class="font-bold">~4 tokens</span>
+      </div>
+
+      <div class="flex items-center justify-between gap-3 pt-2.5 border-t border-slate-200/80 dark:border-zinc-800">
+        <label for="tokenCalcProfile" class="text-slate-500 dark:text-zinc-400 shrink-0">Compañía:</label>
+        <select id="tokenCalcProfile" onchange="updateCursorMetrics()" class="min-w-0 flex-1 bg-slate-50 dark:bg-zinc-900 border border-slate-300 dark:border-zinc-700 rounded px-2 py-1 text-[11px] text-slate-700 dark:text-zinc-200 focus:outline-none truncate cursor-pointer">
+          <option value="openai">OpenAI (GPT / o200k)</option>
+          <option value="google">Google (Gemini)</option>
+          <option value="anthropic">Anthropic (Claude)</option>
+          <option value="meta">Meta (Llama)</option>
+          <option value="deepseek">DeepSeek</option>
+          <option value="xai">xAI (Grok)</option>
+        </select>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2 pt-2.5 border-t border-slate-200/80 dark:border-zinc-800 text-center">
+        <div class="bg-slate-50 dark:bg-zinc-900/70 rounded p-2 border border-slate-200/60 dark:border-zinc-800">
+          <div class="text-[10px] text-slate-400 mb-0.5">Palabras</div>
+          <div id="tokenCalcWords" class="font-semibold text-slate-700 dark:text-zinc-200">46</div>
+        </div>
+        <div class="bg-slate-50 dark:bg-zinc-900/70 rounded p-2 border border-slate-200/60 dark:border-zinc-800">
+          <div class="text-[10px] text-slate-400 mb-0.5">Caracteres</div>
+          <div id="tokenCalcChars" class="font-semibold text-slate-700 dark:text-zinc-200">334</div>
+        </div>
+        <div class="bg-slate-50 dark:bg-zinc-900/70 rounded p-2 border border-slate-200/60 dark:border-zinc-800">
+          <div class="text-[10px] text-slate-400 mb-0.5">Car/tok</div>
+          <div id="tokenCalcRatio" class="font-semibold text-slate-700 dark:text-zinc-200">3.3</div>
+        </div>
+      </div>
+
+      <div class="pt-2.5 border-t border-slate-200/80 dark:border-zinc-800 space-y-1.5">
+        <div class="flex items-center justify-between text-[10px] text-slate-500 dark:text-zinc-400">
+          <span id="tokenCalcCtxLabel">Contexto 128K (OpenAI)</span>
+          <span id="tokenCalcCtx128">0.08%</span>
+        </div>
+        <div class="w-full h-1.5 bg-slate-200 dark:bg-zinc-800 rounded-full overflow-hidden">
+          <div id="tokenCalcCtxBar" class="h-full bg-slate-600 dark:bg-zinc-400 transition-all" style="width: 1%;"></div>
+        </div>
+      </div>
+
+      <div class="pt-2.5 border-t border-slate-200/80 dark:border-zinc-800">
+        <button id="btnCopyForAI" type="button" onclick="copyActiveTabForAI(this)" class="w-full py-1.5 px-3 rounded bg-slate-100 hover:bg-slate-200/80 dark:bg-zinc-800 dark:hover:bg-zinc-700 border border-slate-300/80 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 font-medium flex items-center justify-center gap-1.5 transition">
+          <svg class="w-3.5 h-3.5 text-slate-500 dark:text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          <span>Copiar para IA (Markdown)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB RIGHT-CLICK CONTEXT MENU -->
+  <div id="tabContextMenu" class="hidden fixed z-50 w-48 rounded-lg bg-white dark:bg-zinc-900 shadow-xl border border-slate-200 dark:border-zinc-700 py-1 text-xs">
+    <button onclick="triggerRenameFromContextMenu()" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center gap-2 text-slate-700 dark:text-zinc-200 font-medium">
+      <svg class="w-3.5 h-3.5 text-sky-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+      <span>Renombrar pestaña</span>
+    </button>
+    <button onclick="triggerSplitFromContextMenu()" class="w-full px-3.5 py-1.5 text-left hover:bg-slate-100 dark:hover:bg-zinc-800 flex items-center gap-2 text-slate-700 dark:text-zinc-200">
+      <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+      <span>Abrir en vista dividida</span>
+    </button>
+    <div class="border-t border-slate-200 dark:border-zinc-800 my-1"></div>
+    <button onclick="triggerCloseFromContextMenu()" class="w-full px-3.5 py-1.5 text-left hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2 text-rose-600 dark:text-rose-400">
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+      <span>Enviar a Papelera (15 días)</span>
+    </button>
+  </div>
+
+  <!-- Hidden File Input for Opening .txt / .md / .json -->
+  <!-- Diagram Right-Click Context Menu -->
+  <div id="diagramContextMenu" class="hidden fixed z-50 w-52 rounded-lg bg-white dark:bg-zinc-900 shadow-xl border border-slate-200 dark:border-zinc-700 py-1 text-xs font-mono">
+    <div id="diagramContextMenuItems"></div>
+  </div>
+
+  <input id="hiddenFileOpenInput" type="file" accept=".txt,.md,.html,.json" onchange="handleFileOpened(event)" class="hidden">
+
+  <!-- RENAME TAB MODAL -->
+  <div id="renameTabModal" class="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 rounded-xl max-w-sm w-full p-4 shadow-2xl space-y-3">
+      <div class="flex items-center justify-between">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-zinc-200">Renombrar Pestaña</h3>
+        <button onclick="closeRenameTabModal()" class="text-slate-400 hover:text-slate-600">✕</button>
+      </div>
+      <input id="renameTabInput" type="text" onkeydown="if(event.key==='Enter') confirmRenameTab();" placeholder="Nombre del archivo (ej. notas.txt)" class="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-950 text-xs text-slate-900 dark:text-zinc-100 focus:outline-none focus:border-sky-500 font-mono">
+      <div class="flex justify-end gap-2">
+        <button onclick="closeRenameTabModal()" class="px-3 py-1 rounded-md border border-slate-200 dark:border-zinc-700 text-xs">Cancelar</button>
+        <button onclick="confirmRenameTab()" class="px-3 py-1 rounded-md bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRADITIONAL DESKTOP RECYCLE BIN WINDOW (15-DAY RETENTION) -->
+  <div id="trashModal" onclick="if(event.target===this) closeTrashModal();" class="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-[#1e1e22] border border-slate-300 dark:border-zinc-700 rounded-lg max-w-2xl w-full shadow-2xl flex flex-col overflow-hidden" style="height: 430px; max-height: 84vh;">
+      <!-- Classic Window Title Bar -->
+      <div class="h-9 px-3 bg-[#f3f3f5] dark:bg-[#18181b] border-b border-slate-200 dark:border-zinc-800 flex items-center justify-between shrink-0 select-none">
+        <div class="flex items-center gap-2 text-xs font-medium text-slate-700 dark:text-zinc-200">
+          <svg class="w-3.5 h-3.5 text-slate-500 dark:text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+          </svg>
+          <span>Papelera de reciclaje</span>
+        </div>
+        <button onclick="closeTrashModal()" title="Cerrar" aria-label="Cerrar papelera" class="w-7 h-7 rounded hover:bg-slate-200/80 dark:hover:bg-zinc-800 text-slate-500 dark:text-zinc-400 flex items-center justify-center transition">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- Classic Explorer Command Bar -->
+      <div class="px-2.5 py-1.5 bg-[#fafafa] dark:bg-[#202024] border-b border-slate-200 dark:border-zinc-800 flex flex-wrap items-center justify-between gap-2 text-[11px] shrink-0 select-none">
+        <div class="flex items-center gap-1 flex-wrap">
+          <button id="btnTrashEmpty" type="button" onclick="emptyAllTrash()" class="px-2 py-1 rounded hover:bg-slate-200/70 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200 disabled:opacity-40 disabled:pointer-events-none flex items-center gap-1.5 transition">
+            <svg class="w-3.5 h-3.5 text-slate-500 dark:text-zinc-400" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+            <span>Vaciar papelera</span>
+          </button>
+          <div class="h-4 w-px bg-slate-200 dark:bg-zinc-700 mx-0.5"></div>
+          <button id="btnTrashRestoreSel" type="button" onclick="restoreSelectedTrashItem()" class="px-2 py-1 rounded hover:bg-slate-200/70 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200 disabled:opacity-40 disabled:pointer-events-none flex items-center gap-1.5 transition">
+            <svg class="w-3.5 h-3.5 text-slate-500 dark:text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a5 5 0 015 5v2M3 10l5-5m-5 5l5 5"></path></svg>
+            <span>Restaurar</span>
+          </button>
+          <button id="btnTrashRestoreAll" type="button" onclick="restoreAllFromTrash()" class="px-2 py-1 rounded hover:bg-slate-200/70 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200 disabled:opacity-40 disabled:pointer-events-none flex items-center gap-1.5 transition">
+            <span>Restaurar todo</span>
+          </button>
+          <button id="btnTrashDeleteSel" type="button" onclick="deleteSelectedTrashItem()" class="px-2 py-1 rounded hover:bg-slate-200/70 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200 disabled:opacity-40 disabled:pointer-events-none flex items-center gap-1.5 transition">
+            <span>Eliminar</span>
+          </button>
+        </div>
+
+        <div class="flex items-center bg-white dark:bg-zinc-900 border border-slate-300/80 dark:border-zinc-700 rounded px-2 py-0.5 gap-1.5">
+          <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          <input id="trashSearchInput" type="text" oninput="renderTrashList()" placeholder="Buscar en Papelera" class="bg-transparent text-[11px] focus:outline-none w-32 sm:w-40 text-slate-700 dark:text-zinc-200">
+        </div>
+      </div>
+
+      <!-- Classic File Explorer Details List -->
+      <div id="trashListContainer" class="flex-1 overflow-y-auto bg-white dark:bg-[#1e1e22] text-xs">
+        <table class="w-full border-collapse text-left select-none">
+          <thead class="sticky top-0 bg-white dark:bg-[#1e1e22] border-b border-slate-200 dark:border-zinc-800 text-[11px] text-slate-500 dark:text-zinc-400 font-normal">
+            <tr>
+              <th class="py-1.5 pl-3 pr-2 font-normal">Nombre</th>
+              <th class="py-1.5 px-2 font-normal w-36">Fecha de eliminación</th>
+              <th class="py-1.5 px-2 font-normal w-24">Vence en</th>
+              <th class="py-1.5 pl-2 pr-3 font-normal text-right w-20">Tamaño</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr data-trash-id="trash-sample-1" onclick="selectTrashItem('trash-sample-1')" ondblclick="restoreTabFromTrash('trash-sample-1')" title="Clic para seleccionar · Doble clic para restaurar" class="trash-row cursor-default border-b border-slate-100 dark:border-zinc-800/60 transition bg-sky-100/80 dark:bg-sky-900/40 text-slate-900 dark:text-white">
+            <td class="py-1.5 pl-3 pr-2 font-mono text-[11.5px]">
+              <div class="flex items-center gap-2 min-w-0">
+                <svg class="w-3.5 h-3.5 text-slate-400 dark:text-zinc-500 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                <span class="truncate">borrador_anterior.txt</span>
+              </div>
+            </td>
+            <td class="py-1.5 px-2 text-[11px] text-slate-500 dark:text-zinc-400 whitespace-nowrap">21/11/2026 02:57</td>
+            <td class="py-1.5 px-2 text-[11px] text-slate-500 dark:text-zinc-400 whitespace-nowrap">13 días</td>
+            <td class="py-1.5 pl-2 pr-3 text-[11px] text-slate-500 dark:text-zinc-400 text-right whitespace-nowrap">184 B</td>
+          </tr>
+        </tbody>
+        </table>
+      </div>
+
+      <!-- Classic Bottom Window Status Bar -->
+      <div class="h-7 px-3 bg-[#f3f3f5] dark:bg-[#141417] border-t border-slate-200 dark:border-zinc-800 flex items-center justify-between text-[11px] text-slate-500 dark:text-zinc-400 shrink-0 select-none">
+        <span id="trashStatusLeft">1 elemento  |  1 elemento seleccionado</span>
+        <span>Retención automática: 15 días</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- GLOBAL SEARCH ACROSS ALL TABS (CTRL+SHIFT+F) -->
+  <div id="globalSearchModal" onclick="if(event.target===this) closeGlobalSearchModal();" class="hidden fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#1e1e22] border border-slate-300 dark:border-zinc-700 rounded-lg max-w-2xl w-full shadow-2xl flex flex-col overflow-hidden" style="height: 440px; max-height: 84vh;">
+      <div class="h-9 px-3 bg-[#f3f3f5] dark:bg-[#18181b] border-b border-slate-200 dark:border-zinc-800 flex items-center justify-between shrink-0 select-none">
+        <div class="flex items-center gap-2 text-xs font-medium text-slate-700 dark:text-zinc-200">
+          <svg class="w-3.5 h-3.5 text-slate-500 dark:text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          <span>Buscar en todas las pestañas</span>
+          <span class="text-[10px] font-mono text-slate-400">Ctrl+Shift+F</span>
+        </div>
+        <button type="button" onclick="closeGlobalSearchModal()" title="Cerrar (Esc)" class="w-7 h-7 rounded hover:bg-slate-200/80 dark:hover:bg-zinc-800 text-slate-500 dark:text-zinc-400 flex items-center justify-center transition">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div class="px-3 py-2 bg-[#fafafa] dark:bg-[#202024] border-b border-slate-200 dark:border-zinc-800 flex items-center gap-2 shrink-0">
+        <div class="flex-1 flex items-center bg-white dark:bg-zinc-900 border border-slate-300 dark:border-zinc-700 rounded px-2.5 py-1 gap-2">
+          <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          <input id="globalSearchInput" type="text" oninput="runGlobalSearch()" onkeydown="if(event.key==='Escape') closeGlobalSearchModal();" placeholder="Escribí una palabra o frase para buscar en todos tus .txt..." class="w-full bg-transparent text-xs font-mono focus:outline-none text-slate-800 dark:text-zinc-100">
+          <button id="btnGlobalSearchCase" type="button" onclick="toggleGlobalSearchCase()" title="Coincidir mayúsculas y minúsculas (Aa)" class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold border border-transparent text-slate-500 hover:bg-slate-100 dark:hover:bg-zinc-800 shrink-0">Aa</button>
+        </div>
+      </div>
+
+      <div id="globalSearchResults" class="flex-1 overflow-y-auto bg-white dark:bg-[#1e1e22] font-mono text-xs"></div>
+
+      <div class="h-7 px-3 bg-[#f3f3f5] dark:bg-[#141417] border-t border-slate-200 dark:border-zinc-800 flex items-center justify-between text-[11px] text-slate-500 dark:text-zinc-400 shrink-0 select-none">
+        <span id="globalSearchStatus">Escribí para buscar en tus pestañas abiertas</span>
+        <span>Clic en un resultado para saltar al archivo</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEYBOARD SHORTCUTS GUIDE MODAL -->
+  <div id="shortcutsGuideModal" onclick="if(event.target===this) closeShortcutsGuideModal();" class="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-[#1e1e22] border border-slate-300 dark:border-zinc-700 rounded-lg max-w-xl w-full shadow-2xl flex flex-col overflow-hidden" style="max-height: 84vh;">
+      <div class="h-9 px-3 bg-[#f3f3f5] dark:bg-[#18181b] border-b border-slate-200 dark:border-zinc-800 flex items-center justify-between shrink-0 select-none">
+        <div class="flex items-center gap-2 text-xs font-medium text-slate-700 dark:text-zinc-200">
+          <svg class="w-3.5 h-3.5 text-slate-500 dark:text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"></rect><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"></path></svg>
+          <span>Guía de comandos de teclado</span>
+        </div>
+        <button type="button" onclick="closeShortcutsGuideModal()" title="Cerrar (Esc)" class="w-7 h-7 rounded hover:bg-slate-200/80 dark:hover:bg-zinc-800 text-slate-500 dark:text-zinc-400 flex items-center justify-center transition">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div class="p-4 overflow-y-auto space-y-4 text-xs">
+        <div>
+          <div class="text-[10.5px] font-semibold uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-1.5">Pestañas y archivos</div>
+          <div class="divide-y divide-slate-100 dark:divide-zinc-800/70 border border-slate-200 dark:border-zinc-800 rounded-md">
+            <div class="px-3 py-1.5 flex items-center justify-between"><span class="text-slate-700 dark:text-zinc-200">Nueva pestaña (.txt)</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">Alt + N</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between"><span class="text-slate-700 dark:text-zinc-200">Abrir archivo local (.txt, .md, .json)</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">Alt + O</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between"><span class="text-slate-700 dark:text-zinc-200">Guardar pestaña actual como .TXT</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">Alt + S</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between"><span class="text-slate-700 dark:text-zinc-200">Cerrar pestaña (envía a Papelera 15 días)</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">Alt + W</kbd></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-[10.5px] font-semibold uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-1.5">Búsqueda y vista</div>
+          <div class="divide-y divide-slate-100 dark:divide-zinc-800/70 border border-slate-200 dark:border-zinc-800 rounded-md">
+            <div class="px-3 py-1.5 flex items-center justify-between"><span class="text-slate-700 dark:text-zinc-200">Buscar en la hoja actual</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">Ctrl + F</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between"><span class="text-slate-700 dark:text-zinc-200">Buscar y reemplazar en la hoja actual</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">Ctrl + H</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between"><span class="text-slate-700 dark:text-zinc-200">Buscar en todas las pestañas</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">Ctrl + Shift + F</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between"><span class="text-slate-700 dark:text-zinc-200">Alternar vista dividida (Split View)</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">Alt + D</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between"><span class="text-slate-700 dark:text-zinc-200">Alternar modo oscuro / claro</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">Alt + T</kbd></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-[10.5px] font-semibold uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-1.5">Edición, formato y pizarra de diagramas</div>
+          <div class="divide-y divide-slate-100 dark:divide-zinc-800/70 border border-slate-200 dark:border-zinc-800 rounded-md">
+            <div class="px-3 py-1.5 flex items-center justify-between"><span class="text-slate-700 dark:text-zinc-200">Negrita / Cursiva / Subrayado en texto o figuras</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">Ctrl + B / I / U</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between"><span class="text-slate-700 dark:text-zinc-200">Subnivel / subir nivel en listas (1. → a. → i.)</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">Tab / Shift + Tab</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between"><span class="text-slate-700 dark:text-zinc-200">Copiar / Cortar / Pegar (texto, figuras, tablas o pizarra)</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">Ctrl + C / X / V</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between"><span class="text-slate-700 dark:text-zinc-200">Deshacer / Rehacer</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">Ctrl + Z / Ctrl + Y</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between"><span class="text-slate-700 dark:text-zinc-200">Eliminar figura, conexión o pizarra seleccionada</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">Supr / Backspace</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between"><span class="text-slate-700 dark:text-zinc-200">Cerrar buscador, menú o ventana activa</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">Esc</kbd></div>
+          </div>
+        </div>
+
+        <div id="inlineCommandsSection">
+          <div class="text-[10.5px] font-semibold uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-1.5">Comandos en línea (/ y @)</div>
+          <div class="divide-y divide-slate-100 dark:divide-zinc-800/70 border border-slate-200 dark:border-zinc-800 rounded-md">
+            <div class="px-3 py-1.5 flex items-center justify-between gap-2"><span class="text-slate-700 dark:text-zinc-200">Insertar tabla interactiva</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">/tabla</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between gap-2"><span class="text-slate-700 dark:text-zinc-200">Insertar pizarra de diagramas</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">/diagrama</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between gap-2"><span class="text-slate-700 dark:text-zinc-200">Insertar bloque de matemática, física o química</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">/matematica · /fisica · /quimica</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between gap-2"><span class="text-slate-700 dark:text-zinc-200">Insertar bloque de código por lenguaje</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">/js · /py · /c · /sql · /html · /json</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between gap-2"><span class="text-slate-700 dark:text-zinc-200">Insertar lista con viñetas o numerada</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">/lista · /numerada</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between gap-2"><span class="text-slate-700 dark:text-zinc-200">Cambiar tamaño de texto de la línea</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">/grande · /mediano · /chico</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between gap-2"><span class="text-slate-700 dark:text-zinc-200">Aplicar formato a toda la línea actual</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">/negrita · /cursiva · /subrayado · /tachado · /resaltado</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between gap-2"><span class="text-slate-700 dark:text-zinc-200">Insertar enlace clickeable a otra pestaña .txt</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">@nombre_archivo</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between gap-2"><span class="text-slate-700 dark:text-zinc-200">Insertar fecha actual, hora o timestamp</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">@hoy · @hora · @fecha</kbd></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-[10.5px] font-semibold uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-1.5">Dentro de tablas</div>
+          <div class="divide-y divide-slate-100 dark:divide-zinc-800/70 border border-slate-200 dark:border-zinc-800 rounded-md">
+            <div class="px-3 py-1.5 flex items-center justify-between gap-2"><span class="text-slate-700 dark:text-zinc-200">Saltar a celda siguiente / anterior (crea fila al final)</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">Tab / Shift + Tab</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between gap-2"><span class="text-slate-700 dark:text-zinc-200">Agregar / eliminar fila</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">Alt + ↓ / Alt + ↑</kbd></div>
+            <div class="px-3 py-1.5 flex items-center justify-between gap-2"><span class="text-slate-700 dark:text-zinc-200">Agregar / eliminar columna</span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 font-mono text-[10.5px]">Alt + → / Alt + ←</kbd></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SCIENCE NOTATION COMMANDS MODAL (ONLY SCIENCE COMMANDS WITH COPY BUTTONS) -->
+  <div id="scienceCommandsModal" onclick="if(event.target===this) closeScienceCommandsModal();" class="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-[#1e1e22] border border-slate-300 dark:border-zinc-700 rounded-lg max-w-2xl w-full shadow-2xl flex flex-col overflow-hidden" style="max-height: 84vh;">
+      <div class="h-9 px-3 bg-[#f3f3f5] dark:bg-[#18181b] border-b border-slate-200 dark:border-zinc-800 flex items-center justify-between shrink-0 select-none">
+        <div class="flex items-center gap-2 text-xs font-medium text-slate-700 dark:text-zinc-200">
+          <svg class="w-3.5 h-3.5 text-slate-600 dark:text-zinc-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 5H6l7 7-7 7h12"></path></svg>
+          <span>Comandos de notación científica</span>
+        </div>
+        <button type="button" onclick="closeScienceCommandsModal()" title="Cerrar (Esc)" class="w-7 h-7 rounded hover:bg-slate-200/80 dark:hover:bg-zinc-800 text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-100 flex items-center justify-center transition">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div class="sci-tabs-bar px-4 py-2 bg-slate-50/80 dark:bg-[#18181b]/70 border-b border-slate-200 dark:border-zinc-800 flex flex-wrap items-center justify-between gap-2 shrink-0 select-none">
+        <div class="flex items-center gap-1 text-[11px] font-mono">
+          <button type="button" data-sci-tab="all" onclick="renderScienceCommandsModal('all')" class="sci-tab-btn px-2 py-1 rounded border border-transparent text-slate-700 dark:text-zinc-200 hover:bg-slate-200/70 dark:hover:bg-zinc-800 transition">Todas</button>
+          <button type="button" data-sci-tab="math" onclick="renderScienceCommandsModal('math')" class="sci-tab-btn px-2 py-1 rounded border border-transparent text-slate-700 dark:text-zinc-200 hover:bg-slate-200/70 dark:hover:bg-zinc-800 flex items-center gap-1.5 transition">
+            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 5H6l7 7-7 7h12"></path></svg>
+            <span>Matemática</span>
+          </button>
+          <button type="button" data-sci-tab="physics" onclick="renderScienceCommandsModal('physics')" class="sci-tab-btn px-2 py-1 rounded border border-transparent text-slate-700 dark:text-zinc-200 hover:bg-slate-200/70 dark:hover:bg-zinc-800 flex items-center gap-1.5 transition">
+            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.8" fill="currentColor"></circle><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"></ellipse><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"></ellipse><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(90 12 12)"></ellipse></svg>
+            <span>Física</span>
+          </button>
+          <button type="button" data-sci-tab="chemistry" onclick="renderScienceCommandsModal('chemistry')" class="sci-tab-btn px-2 py-1 rounded border border-transparent text-slate-700 dark:text-zinc-200 hover:bg-slate-200/70 dark:hover:bg-zinc-800 flex items-center gap-1.5 transition">
+            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"></path><path d="M10 3v6.2L4.6 18.4A2 2 0 0 0 6.3 21h11.4a2 2 0 0 0 1.7-2.6L14 9.2V3"></path><path d="M7.5 15h9"></path></svg>
+            <span>Química</span>
+          </button>
+        </div>
+        <span class="text-[10.5px] text-slate-400 dark:text-zinc-500">Hacé clic en copiar para pegar el comando en tu bloque</span>
+      </div>
+
+      <div id="scienceCommandsBody" class="p-4 overflow-y-auto space-y-4 text-xs"></div>
+    </div>
+  </div>
+
+  <!-- SCIENCE FORMULA AUTOCOMPLETE POPUP -->
+  <div id="scienceAutocompletePopup" class="hidden rounded-md bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 shadow-xl py-1 font-mono text-[11px] select-none"></div>
+
+  <!-- SLASH (/) & AT (@) INLINE COMMAND PALETTE -->
+  <div id="commandPalettePopup" class="fixed z-50 w-64 rounded-lg bg-white dark:bg-[#1e1e22] border border-slate-300 dark:border-zinc-700 shadow-xl overflow-hidden font-mono text-xs select-none hidden" style="left: 79px; top: 123px;">
+    <div id="commandPaletteHeader" class="px-2.5 py-1 bg-[#f3f3f5] dark:bg-[#18181b] border-b border-slate-200 dark:border-zinc-800 text-[10px] text-slate-500 dark:text-zinc-400 flex items-center justify-between">
+      <span id="commandPaletteTitle">Insertar (/)</span>
+      <span>↑↓ · Enter</span>
+    </div>
+    <div id="commandPaletteList" class="relative max-h-56 overflow-y-auto py-1">
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(0);" onmousemove="handleCmdPaletteMouseMove(event, 0)" data-cmd-idx="0" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Texto grande</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/grande</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(1);" onmousemove="handleCmdPaletteMouseMove(event, 1)" data-cmd-idx="1" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Texto mediano</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/mediano</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(2);" onmousemove="handleCmdPaletteMouseMove(event, 2)" data-cmd-idx="2" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Texto chico</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/chico</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(3);" onmousemove="handleCmdPaletteMouseMove(event, 3)" data-cmd-idx="3" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Negrita (línea)</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/negrita</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(4);" onmousemove="handleCmdPaletteMouseMove(event, 4)" data-cmd-idx="4" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Cursiva (línea)</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/cursiva</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(5);" onmousemove="handleCmdPaletteMouseMove(event, 5)" data-cmd-idx="5" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Subrayado (línea)</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/subrayado</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(6);" onmousemove="handleCmdPaletteMouseMove(event, 6)" data-cmd-idx="6" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Tachado (línea)</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/tachado</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(7);" onmousemove="handleCmdPaletteMouseMove(event, 7)" data-cmd-idx="7" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition bg-sky-50 dark:bg-sky-950/50 text-sky-700 dark:text-sky-300 font-semibold">
+            <span class="truncate">Resaltado (línea)</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/resaltado</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(8);" onmousemove="handleCmdPaletteMouseMove(event, 8)" data-cmd-idx="8" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Lista con viñetas</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/lista</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(9);" onmousemove="handleCmdPaletteMouseMove(event, 9)" data-cmd-idx="9" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Lista numerada</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/numerada</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(10);" onmousemove="handleCmdPaletteMouseMove(event, 10)" data-cmd-idx="10" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Tabla</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/tabla</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(11);" onmousemove="handleCmdPaletteMouseMove(event, 11)" data-cmd-idx="11" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Pizarra diagramas</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/diagrama</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(12);" onmousemove="handleCmdPaletteMouseMove(event, 12)" data-cmd-idx="12" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Bloque matemática</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/matematica</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(13);" onmousemove="handleCmdPaletteMouseMove(event, 13)" data-cmd-idx="13" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Bloque física</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/fisica</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(14);" onmousemove="handleCmdPaletteMouseMove(event, 14)" data-cmd-idx="14" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Bloque química</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/quimica</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(15);" onmousemove="handleCmdPaletteMouseMove(event, 15)" data-cmd-idx="15" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Código JavaScript</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/js</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(16);" onmousemove="handleCmdPaletteMouseMove(event, 16)" data-cmd-idx="16" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Código Python</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/py</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(17);" onmousemove="handleCmdPaletteMouseMove(event, 17)" data-cmd-idx="17" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Código C / C++</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/c</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(18);" onmousemove="handleCmdPaletteMouseMove(event, 18)" data-cmd-idx="18" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Código SQL</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/sql</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(19);" onmousemove="handleCmdPaletteMouseMove(event, 19)" data-cmd-idx="19" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Código HTML / CSS</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/html</span>
+          </button>
+        
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); executeCommandPaletteItem(20);" onmousemove="handleCmdPaletteMouseMove(event, 20)" data-cmd-idx="20" class="w-full px-2.5 py-1.5 text-left flex items-center justify-between gap-2 text-[11px] transition text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <span class="truncate">Código JSON</span>
+            <span class="text-[10px] text-slate-400 dark:text-zinc-500 shrink-0">/json</span>
+          </button>
+        </div>
+  </div>
+
+  <!-- WORD AUTOCOMPLETE POPUP (NOTEPAD++ STYLE FROM ACTIVE .TXT) -->
+  <div id="wordAutocompletePopup" class="fixed z-50 w-56 rounded-lg bg-white dark:bg-[#1e1e22] border border-slate-300 dark:border-zinc-700 shadow-xl overflow-hidden font-mono text-xs select-none hidden" style="left: 206px; top: 181px;">
+    <div class="px-2.5 py-1 bg-[#f3f3f5] dark:bg-[#18181b] border-b border-slate-200 dark:border-zinc-800 text-[10px] text-slate-500 dark:text-zinc-400 flex items-center justify-between">
+      <span>Autocompletar</span>
+      <span>Tab · Enter</span>
+    </div>
+    <div id="wordAutocompleteList" class="max-h-44 overflow-y-auto py-0.5">
+          <button type="button" onmousedown="event.preventDefault(); event.stopPropagation(); acceptWordAutocomplete(0);" onmousemove="if(wordAcState.selectedIdx!==0){ wordAcState.selectedIdx=0; highlightWordAutocompleteSelection(); }" data-ac-idx="0" class="w-full px-2.5 py-1 text-left flex items-center justify-between text-[11px] transition bg-sky-50 dark:bg-sky-950/50 text-sky-700 dark:text-sky-300 font-semibold">
+            <span class="truncate"><strong class="underline decoration-dotted">text</strong>o</span>
+          </button>
+        </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="notepadToast" class="fixed bottom-9 right-4 z-50 px-3.5 py-2 rounded-lg bg-slate-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs font-medium shadow-lg font-mono">
+    <span id="notepadToastText">Nueva pestaña creada</span>
+  </div>
+
+    <script src="src/js/state.js"></script>
+  <script src="src/js/diagram.js"></script>
+  <script src="src/js/table-code.js"></script>
+  <script src="src/js/science.js"></script>
+  <script src="src/js/tabs-trash.js"></script>
+  <script src="src/js/editor.js"></script>
+  <script src="src/js/io-markdown.js"></script>
+  <script src="src/js/ui-search.js"></script>
+
+</body></html>

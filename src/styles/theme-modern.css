@@ -1,0 +1,232 @@
+/* ========================================================= */
+    /* THEME: MODERNO (AFILADO Y PRODUCTIVO)                 */
+    /* ========================================================= */
+    html.theme-modern body {
+      background-color: #f4f4f5 !important;
+      color: #09090b !important;
+      font-family: 'Saira', 'Segoe UI', system-ui, sans-serif !important;
+      letter-spacing: -0.012em;
+      -webkit-font-smoothing: antialiased;
+    }
+    html.theme-modern.dark body {
+      background-color: #111114 !important;
+      color: #f4f4f5 !important;
+    }
+    html.theme-modern header,
+    html.theme-modern nav,
+    html.theme-modern footer,
+    html.theme-modern .dropdown-panel,
+    html.theme-modern #trashModal,
+    html.theme-modern #globalSearchModal,
+    html.theme-modern #shortcutsGuideModal,
+    html.theme-modern #scienceCommandsModal,
+    html.theme-modern #tokenCalculatorPopover {
+      font-family: 'Saira', 'Segoe UI', system-ui, sans-serif !important;
+    }
+    /* Sharp, crisp architectural geometry (no bubbly rounded corners) */
+    html.theme-modern button,
+    html.theme-modern input,
+    html.theme-modern select,
+    html.theme-modern .dropdown-panel,
+    html.theme-modern .widget-dropdown-btn,
+    html.theme-modern .widget-dropdown-menu,
+    html.theme-modern #mainFormattingGroup,
+    html.theme-modern #findReplaceBar,
+    html.theme-modern #commandPalettePopup,
+    html.theme-modern #wordAutocompletePopup,
+    html.theme-modern #scienceAutocompletePopup,
+    html.theme-modern #tabContextMenu,
+    html.theme-modern #diagramContextMenu,
+    html.theme-modern #tokenCalculatorPopover,
+    html.theme-modern #notepadToast,
+    html.theme-modern #trashModal > div,
+    html.theme-modern #globalSearchModal > div,
+    html.theme-modern #shortcutsGuideModal > div,
+    html.theme-modern #scienceCommandsModal > div,
+    html.theme-modern #renameTabModal > div,
+    html.theme-modern .table-widget,
+    html.theme-modern .code-widget,
+    html.theme-modern .math-widget,
+    html.theme-modern .diagram-widget {
+      border-radius: 2px !important;
+    }
+    html.theme-modern .code-widget-header,
+    html.theme-modern .math-widget-header {
+      border-radius: 0 !important;
+    }
+    html.theme-modern header {
+      background: #ececef !important;
+      border-bottom: 1px solid #d4d4d8 !important;
+    }
+    html.theme-modern.dark header {
+      background: #111114 !important;
+      border-bottom: 1px solid #27272a !important;
+    }
+    /* Sharp graphite app icon badge instead of rounded blue */
+    html.theme-modern header .modern-only > div {
+      background-color: #18181b !important;
+      border-radius: 2px !important;
+    }
+    html.theme-modern.dark header .modern-only > div {
+      background-color: #f4f4f5 !important;
+      color: #09090b !important;
+    }
+    /* Sharp productive tabs with crisp top accent line */
+    html.theme-modern .notepad-tab {
+      border-radius: 2px 2px 0 0 !important;
+      border: 1px solid transparent !important;
+      border-bottom: none !important;
+      font-size: 12px !important;
+      font-weight: 500 !important;
+      letter-spacing: -0.01em !important;
+    }
+    html.theme-modern .notepad-tab.active-tab {
+      background-color: #ffffff !important;
+      color: #09090b !important;
+      border-color: #d4d4d8 !important;
+      border-top: 2px solid #09090b !important;
+      box-shadow: none !important;
+    }
+    html.theme-modern.dark .notepad-tab.active-tab {
+      background-color: #16161a !important;
+      color: #ffffff !important;
+      border-color: #2e2e34 !important;
+      border-top: 2px solid #e4e4e7 !important;
+    }
+    html.theme-modern nav {
+      background-color: #f8f8f9 !important;
+      border-bottom: 1px solid #d4d4d8 !important;
+    }
+    html.theme-modern.dark nav {
+      background-color: #16161a !important;
+      border-bottom: 1px solid #27272a !important;
+    }
+    html.theme-modern main {
+      background-color: #ffffff !important;
+    }
+    html.theme-modern.dark main {
+      background-color: #16161a !important;
+    }
+    /* Razor-sharp IBM Plex Mono on the editing sheet and gutter */
+    html.theme-modern #lineNumbersGutter {
+      background-color: #f8f8f9 !important;
+      border-right: 1px solid #e4e4e7 !important;
+      color: #a1a1aa !important;
+      padding-top: 22px !important;
+      line-height: 1.66 !important;
+      font-family: 'Share Tech Mono', 'Consolas', monospace !important;
+      font-variant-numeric: tabular-nums;
+    }
+    html.theme-modern.dark #lineNumbersGutter {
+      background-color: #121216 !important;
+      border-right: 1px solid #27272a !important;
+      color: #52525b !important;
+    }
+    html.theme-modern #liveSheetEditor,
+    html.theme-modern #splitSheetEditor {
+      padding: 22px 28px !important;
+      line-height: 1.66 !important;
+      font-family: 'Share Tech Mono', 'Consolas', monospace !important;
+      font-feature-settings: "zero" 1;
+    }
+    html.theme-modern .code-editor-area,
+    html.theme-modern .code-highlight-layer,
+    html.theme-modern .code-input-layer,
+    html.theme-modern .math-input-layer {
+      font-family: 'Share Tech Mono', 'Consolas', monospace !important;
+    }
+    html.theme-modern #mainFormattingGroup,
+    html.theme-modern #findReplaceBar {
+      background-color: #f4f4f5 !important;
+      border: 1px solid #d4d4d8 !important;
+    }
+    html.theme-modern.dark #mainFormattingGroup,
+    html.theme-modern.dark #findReplaceBar {
+      background-color: #1e1e23 !important;
+      border: 1px solid #2e2e36 !important;
+    }
+    html.theme-modern .dropdown-panel,
+    html.theme-modern .widget-dropdown-menu,
+    html.theme-modern #commandPalettePopup,
+    html.theme-modern #wordAutocompletePopup,
+    html.theme-modern #scienceAutocompletePopup {
+      border-color: #d4d4d8 !important;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.10) !important;
+    }
+    html.theme-modern.dark .dropdown-panel,
+    html.theme-modern.dark .widget-dropdown-menu,
+    html.theme-modern.dark #commandPalettePopup,
+    html.theme-modern.dark #wordAutocompletePopup,
+    html.theme-modern.dark #scienceAutocompletePopup {
+      border-color: #32323a !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+    }
+    html.theme-modern .table-widget,
+    html.theme-modern .code-widget,
+    html.theme-modern .math-widget,
+    html.theme-modern .diagram-widget {
+      border-color: #d4d4d8 !important;
+    }
+    html.theme-modern.dark .table-widget,
+    html.theme-modern.dark .code-widget,
+    html.theme-modern.dark .math-widget,
+    html.theme-modern.dark .diagram-widget {
+      border-color: #2e2e36 !important;
+    }
+    html.theme-modern #classicStatusBar {
+      background-color: #f4f4f5 !important;
+      border-top: 1px solid #d4d4d8 !important;
+      color: #52525b !important;
+      font-family: 'Share Tech Mono', 'Consolas', monospace !important;
+    }
+    html.theme-modern.dark #classicStatusBar {
+      background-color: #111114 !important;
+      border-top: 1px solid #27272a !important;
+      color: #a1a1aa !important;
+    }
+    html.theme-modern nav u {
+      text-decoration: none !important;
+    }
+    html.theme-modern .win98-only {
+      display: none !important;
+    }
+    html.theme-win98 .modern-only {
+      display: none !important;
+    }
+
+    /* Authentic Windows 98 Typography (Tahoma/MS Sans Serif for UI + Lucida Console/Courier New for Notepad Sheet) */
+    html.theme-win98 body,
+    html.theme-win98 header,
+    html.theme-win98 header *,
+    html.theme-win98 nav,
+    html.theme-win98 nav *,
+    html.theme-win98 footer,
+    html.theme-win98 footer *,
+    html.theme-win98 .dropdown-panel,
+    html.theme-win98 .dropdown-panel *,
+    html.theme-win98 #trashModal,
+    html.theme-win98 #trashModal *,
+    html.theme-win98 #globalSearchModal,
+    html.theme-win98 #globalSearchModal *,
+    html.theme-win98 #shortcutsGuideModal,
+    html.theme-win98 #shortcutsGuideModal *,
+    html.theme-win98 #tokenCalculatorPopover,
+    html.theme-win98 #tokenCalculatorPopover *,
+    html.theme-win98 #diagramContextMenu,
+    html.theme-win98 #diagramContextMenu *,
+    html.theme-win98 #tabContextMenu,
+    html.theme-win98 #tabContextMenu *,
+    html.theme-win98 #commandPalettePopup, html.theme-win98 #wordAutocompletePopup,
+    html.theme-win98 #commandPalettePopup *, html.theme-win98 #wordAutocompletePopup, html.theme-win98 #wordAutocompletePopup * {
+      font-family: 'MS Sans Serif', 'Tahoma', 'Geneva', Arial, sans-serif !important;
+    }
+    html.theme-win98 #liveSheetEditor,
+    html.theme-win98 #splitSheetEditor,
+    html.theme-win98 #lineNumbersGutter,
+    html.theme-win98 .diagram-shape-text,
+    html.theme-win98 .code-editor-area,
+    html.theme-win98 .code-highlight-layer,
+    html.theme-win98 .code-input-layer,
+    html.theme-win98 .table-widget table {
+      font-family: 'Lucida Console', 'Courier New', 'Courier Prime', monospace !important;
+    }

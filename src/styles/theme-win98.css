@@ -1,0 +1,643 @@
+/* ========================================================= */
+    /* THEME: BLOC DE NOTAS WINDOWS 98 CLÁSICO (RETRO 3D BEVEL)  */
+    /* ========================================================= */
+    :root {
+      --w98-face: #c0c0c0;
+      --w98-light: #ffffff;
+      --w98-highlight: #dfdfdf;
+      --w98-shadow: #808080;
+      --w98-dark: #404040;
+      --w98-black: #000000;
+      --w98-navy: #000080;
+      --w98-teal: #1084d0;
+    }
+
+    html.theme-win98 body {
+      background-color: #c0c0c0 !important;
+      color: #000000 !important;
+      font-family: 'Tahoma', 'MS Sans Serif', 'Segoe UI', Arial, sans-serif !important;
+      -webkit-font-smoothing: none;
+    }
+    html.theme-win98.dark body {
+      background-color: #2b2b2b !important;
+      color: #e5e5e5 !important;
+    }
+
+    /* Classic Win98 Rectangular Scrollbars */
+    html.theme-win98 ::-webkit-scrollbar { width: 14px; height: 14px; }
+    html.theme-win98 ::-webkit-scrollbar-track { background: #dfdfdf; border-left: 1px solid #808080; }
+    html.theme-win98 ::-webkit-scrollbar-thumb {
+      background: #c0c0c0;
+      border-radius: 0 !important;
+      border-top: 2px solid #ffffff;
+      border-left: 2px solid #ffffff;
+      border-right: 2px solid #404040;
+      border-bottom: 2px solid #404040;
+    }
+    html.theme-win98 ::-webkit-scrollbar-thumb:hover { background: #d0d0d0; }
+    html.theme-win98.dark ::-webkit-scrollbar-track { background: #1c1c1c; border-left: 1px solid #111; }
+    html.theme-win98.dark ::-webkit-scrollbar-thumb {
+      background: #3a3a3a;
+      border-top: 2px solid #555;
+      border-left: 2px solid #555;
+      border-right: 2px solid #111;
+      border-bottom: 2px solid #111;
+    }
+
+    /* Sharp 0px corners everywhere for authentic Win98 geometry */
+    html.theme-win98 header, nav, main, footer,
+    html.theme-win98 header button, nav button, footer button,
+    html.theme-win98 .dropdown-panel, .diagram-widget, .diagram-toolbar, .diagram-toolbar button,
+    html.theme-win98 .code-widget, .table-widget table, .table-widget button,
+    html.theme-win98 #mainFormattingGroup, #findReplaceBar, #findReplaceBar input, #findReplaceBar button,
+    html.theme-win98 #tabContextMenu, #diagramContextMenu, #commandPalettePopup,
+    html.theme-win98 #trashModal > div, html.theme-win98 #globalSearchModal > div, html.theme-win98 #shortcutsGuideModal > div, html.theme-win98 #scienceCommandsModal > div, html.theme-win98 #renameTabModal > div, html.theme-win98 #scienceAutocompletePopup,
+    html.theme-win98 #tokenCalculatorPopover, html.theme-win98 #notepadToast {
+      border-radius: 0px !important;
+    }
+
+    /* Top Title & Tabs Bar (Classic Win98 Navy Gradient Title Accent + Gray Tabs) */
+    html.theme-win98 header {
+      background: linear-gradient(90deg, #000080 0%, #1084d0 100%) !important;
+      border-bottom: 2px solid #404040 !important;
+      padding: 4px 6px 0 6px !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+    html.theme-win98.dark header {
+      background: linear-gradient(90deg, #000050 0%, #0b4a7a 100%) !important;
+      border-bottom: 2px solid #111111 !important;
+    }
+    html.theme-win98 header button[onclick="createNewTab()"],
+    html.theme-win98 #btnOpenTrash {
+      background-color: #c0c0c0 !important;
+      color: #000000 !important;
+      border-top: 2px solid #ffffff !important;
+      border-left: 2px solid #ffffff !important;
+      border-right: 2px solid #404040 !important;
+      border-bottom: 2px solid #404040 !important;
+      padding: 2px 5px !important;
+    }
+    html.theme-win98 header button[onclick="createNewTab()"]:active,
+    html.theme-win98 #btnOpenTrash:active {
+      border-top: 2px solid #404040 !important;
+      border-left: 2px solid #404040 !important;
+      border-right: 2px solid #ffffff !important;
+      border-bottom: 2px solid #ffffff !important;
+    }
+    html.theme-win98.dark header button[onclick="createNewTab()"],
+    html.theme-win98.dark #btnOpenTrash {
+      background-color: #3a3a3a !important;
+      color: #f0f0f0 !important;
+      border-top-color: #5a5a5a !important;
+      border-left-color: #5a5a5a !important;
+      border-right-color: #141414 !important;
+      border-bottom-color: #141414 !important;
+    }
+    html.theme-win98 #trashCountBadge {
+      background-color: #ffffff !important;
+      color: #000080 !important;
+      border: 1px solid #808080 !important;
+      border-radius: 0 !important;
+    }
+
+    /* Classic Win98 Menu Bar (Archivo, Edición, Formato, Ver) */
+    html.theme-win98 nav {
+      background-color: #c0c0c0 !important;
+      border-bottom: 2px solid #808080 !important;
+      box-shadow: inset 0 1px 0 #ffffff;
+      padding: 3px 6px !important;
+    }
+    html.theme-win98.dark nav {
+      background-color: #2b2b2b !important;
+      border-bottom: 2px solid #141414 !important;
+      box-shadow: inset 0 1px 0 #444444;
+    }
+    html.theme-win98 nav > div:first-child .menu-trigger {
+      color: #000000 !important;
+      font-weight: 400 !important;
+      padding: 2px 8px !important;
+      border: 1px solid transparent;
+    }
+    html.theme-win98 nav > div:first-child .menu-trigger:hover {
+      background-color: #000080 !important;
+      color: #ffffff !important;
+    }
+    html.theme-win98.dark nav > div:first-child .menu-trigger {
+      color: #e5e5e5 !important;
+    }
+    html.theme-win98.dark nav > div:first-child .menu-trigger:hover {
+      background-color: #1084d0 !important;
+      color: #ffffff !important;
+    }
+
+    /* Raised 3D Win98 Toolbar Pills (#mainFormattingGroup & #findReplaceBar) */
+    html.theme-win98 #mainFormattingGroup,
+    html.theme-win98 #findReplaceBar {
+      background-color: #c0c0c0 !important;
+      border-top: 2px solid #ffffff !important;
+      border-left: 2px solid #ffffff !important;
+      border-right: 2px solid #808080 !important;
+      border-bottom: 2px solid #808080 !important;
+      padding: 2px 4px !important;
+    }
+    html.theme-win98.dark #mainFormattingGroup,
+    html.theme-win98.dark #findReplaceBar {
+      background-color: #333333 !important;
+      border-top: 2px solid #555555 !important;
+      border-left: 2px solid #555555 !important;
+      border-right: 2px solid #141414 !important;
+      border-bottom: 2px solid #141414 !important;
+    }
+    html.theme-win98 #mainFormattingGroup > button,
+    html.theme-win98 #mainFormattingGroup .menu-trigger,
+    html.theme-win98 #findReplaceBar > button,
+    html.theme-win98 #findReplaceBar .menu-trigger {
+      color: #000000 !important;
+      border: 1px solid transparent;
+    }
+    html.theme-win98 #mainFormattingGroup > button:hover,
+    html.theme-win98 #mainFormattingGroup .menu-trigger:hover,
+    html.theme-win98 #findReplaceBar > button:hover,
+    html.theme-win98 #findReplaceBar .menu-trigger:hover {
+      background-color: #d4d0c8 !important;
+      border-top: 1px solid #ffffff !important;
+      border-left: 1px solid #ffffff !important;
+      border-right: 1px solid #808080 !important;
+      border-bottom: 1px solid #808080 !important;
+    }
+    html.theme-win98 #mainFormattingGroup > button:active,
+    html.theme-win98 #mainFormattingGroup .menu-trigger:active {
+      border-top: 1px solid #808080 !important;
+      border-left: 1px solid #808080 !important;
+      border-right: 1px solid #ffffff !important;
+      border-bottom: 1px solid #ffffff !important;
+    }
+    html.theme-win98.dark #mainFormattingGroup > button,
+    html.theme-win98.dark #mainFormattingGroup .menu-trigger,
+    html.theme-win98.dark #findReplaceBar > button,
+    html.theme-win98.dark #findReplaceBar .menu-trigger {
+      color: #e5e5e5 !important;
+    }
+    html.theme-win98.dark #mainFormattingGroup > button:hover,
+    html.theme-win98.dark #mainFormattingGroup .menu-trigger:hover {
+      background-color: #444444 !important;
+    }
+
+    /* Sunken Win98 Main Notepad Well */
+    html.theme-win98 main {
+      background-color: #ffffff !important;
+      margin: 3px 4px !important;
+      border-top: 2px solid #808080 !important;
+      border-left: 2px solid #808080 !important;
+      border-right: 2px solid #ffffff !important;
+      border-bottom: 2px solid #ffffff !important;
+      box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+    }
+    html.theme-win98.dark main {
+      background-color: #161616 !important;
+      border-top: 2px solid #0a0a0a !important;
+      border-left: 2px solid #0a0a0a !important;
+      border-right: 2px solid #444444 !important;
+      border-bottom: 2px solid #444444 !important;
+      box-shadow: none;
+    }
+    html.theme-win98 #lineNumbersGutter {
+      background-color: #dfdfdf !important;
+      border-right: 1px solid #808080 !important;
+      color: #404040 !important;
+      padding-top: 16px !important;
+      padding-bottom: 16px !important;
+      line-height: 1.65 !important;
+      width: 2.75rem !important;
+    }
+    html.theme-win98.dark #lineNumbersGutter {
+      background-color: #222222 !important;
+      border-right: 1px solid #111111 !important;
+      color: #888888 !important;
+    }
+    html.theme-win98 #liveSheetEditor,
+    html.theme-win98 #splitSheetEditor {
+      padding: 16px 20px !important;
+      line-height: 1.65 !important;
+      color: #000000 !important;
+    }
+    html.theme-win98.dark #liveSheetEditor,
+    html.theme-win98.dark #splitSheetEditor {
+      color: #e5e5e5 !important;
+    }
+
+    /* Win98 Diagram Board */
+    html.theme-win98 .diagram-widget {
+      margin: 0.75rem 0 !important;
+      border-top: 2px solid #ffffff !important;
+      border-left: 2px solid #ffffff !important;
+      border-right: 2px solid #404040 !important;
+      border-bottom: 2px solid #404040 !important;
+      background-color: #c0c0c0 !important;
+      padding: 2px;
+      box-shadow: none !important;
+    }
+    html.theme-win98.dark .diagram-widget {
+      background-color: #2b2b2b !important;
+      border-top-color: #4a4a4a !important;
+      border-left-color: #4a4a4a !important;
+      border-right-color: #111111 !important;
+      border-bottom-color: #111111 !important;
+    }
+    html.theme-win98 .diagram-widget.widget-focused {
+      outline: 1px dotted #000080 !important;
+    }
+    html.theme-win98 .diagram-toolbar {
+      background-color: #c0c0c0 !important;
+      border-bottom: 1px solid #808080 !important;
+      padding: 4px 6px !important;
+    }
+    html.theme-win98.dark .diagram-toolbar {
+      background-color: #2b2b2b !important;
+      border-bottom: 1px solid #141414 !important;
+    }
+    html.theme-win98 .diagram-toolbar button {
+      background-color: #c0c0c0 !important;
+      color: #000000 !important;
+      border-top: 2px solid #ffffff !important;
+      border-left: 2px solid #ffffff !important;
+      border-right: 2px solid #404040 !important;
+      border-bottom: 2px solid #404040 !important;
+    }
+    html.theme-win98.dark .diagram-toolbar button {
+      background-color: #3a3a3a !important;
+      color: #e5e5e5 !important;
+      border-top-color: #5a5a5a !important;
+      border-left-color: #5a5a5a !important;
+      border-right-color: #111111 !important;
+      border-bottom-color: #111111 !important;
+    }
+    html.theme-win98 .diagram-canvas {
+      background-color: #ffffff !important;
+      border-top: 2px solid #808080 !important;
+      border-left: 2px solid #808080 !important;
+      border-right: 2px solid #ffffff !important;
+      border-bottom: 2px solid #ffffff !important;
+      background-image: radial-gradient(#808080 1px, transparent 1px) !important;
+      background-size: 16px 16px !important;
+    }
+    html.theme-win98.dark .diagram-canvas {
+      background-color: #181818 !important;
+      border-top-color: #0c0c0c !important;
+      border-left-color: #0c0c0c !important;
+      border-right-color: #444444 !important;
+      border-bottom-color: #444444 !important;
+    }
+    html.theme-win98 .diagram-shape {
+      background-color: #ffffff !important;
+      border: 2px solid #000000 !important;
+      color: #000000 !important;
+      box-shadow: 2px 2px 0 #808080 !important;
+    }
+    html.theme-win98.dark .diagram-shape {
+      background-color: #252525 !important;
+      border-color: #cccccc !important;
+      color: #f0f0f0 !important;
+      box-shadow: 2px 2px 0 #000000 !important;
+    }
+    html.theme-win98 .diagram-shape.shape-square,
+    html.theme-win98 .diagram-shape.shape-rect {
+      border-radius: 0px !important;
+    }
+    html.theme-win98 .diagram-shape.shape-selected {
+      border-color: #000080 !important;
+      box-shadow: 0 0 0 2px #1084d0 !important;
+    }
+    html.theme-win98 .diagram-shape.shape-text {
+      background-color: transparent !important;
+      border-color: transparent !important;
+      box-shadow: none !important;
+    }
+    html.theme-win98 .diagram-shape.shape-text:hover {
+      border: 1px dashed #808080 !important;
+    }
+    html.theme-win98 .diagram-shape.shape-text.shape-selected,
+    html.theme-win98 .diagram-shape.shape-text.shape-editing {
+      border: 1px dashed #000080 !important;
+    }
+
+    /* Win98 Code Block */
+    html.theme-win98 .code-widget {
+      margin: 0.75rem 0 !important;
+      border-top: 2px solid #ffffff !important;
+      border-left: 2px solid #ffffff !important;
+      border-right: 2px solid #404040 !important;
+      border-bottom: 2px solid #404040 !important;
+      background-color: #f7f7f7 !important;
+      color: #000000 !important;
+    }
+    html.theme-win98.dark .code-widget {
+      background-color: #181818 !important;
+      color: #e5e5e5 !important;
+      border-top-color: #4a4a4a !important;
+      border-left-color: #4a4a4a !important;
+      border-right-color: #111111 !important;
+      border-bottom-color: #111111 !important;
+    }
+    html.theme-win98 .code-widget > div:first-child {
+      background-color: #c0c0c0 !important;
+      border-bottom: 1px solid #808080 !important;
+      color: #000000 !important;
+    }
+    html.theme-win98.dark .code-widget > div:first-child {
+      background-color: #2b2b2b !important;
+      border-bottom: 1px solid #111111 !important;
+      color: #e5e5e5 !important;
+    }
+
+    /* Win98 Classic Tables */
+    html.theme-win98 .table-widget table {
+      background: #ffffff !important;
+      border: 1px solid #808080 !important;
+    }
+    html.theme-win98.dark .table-widget table {
+      background: #1a1a1a !important;
+      border: 1px solid #444444 !important;
+    }
+    html.theme-win98 .table-widget th {
+      background: #c0c0c0 !important;
+      color: #000000 !important;
+      border-top: 2px solid #ffffff !important;
+      border-left: 2px solid #ffffff !important;
+      border-right: 1px solid #808080 !important;
+      border-bottom: 2px solid #808080 !important;
+    }
+    html.theme-win98.dark .table-widget th {
+      background: #2f2f2f !important;
+      color: #f0f0f0 !important;
+      border-color: #444444 !important;
+    }
+    html.theme-win98 .table-widget td {
+      border: 1px solid #808080 !important;
+    }
+    html.theme-win98 .table-widget .btn-add-col,
+    html.theme-win98 .table-widget .btn-del-col,
+    html.theme-win98 .table-widget .btn-add-row,
+    html.theme-win98 .table-widget .btn-del-row {
+      background-color: #c0c0c0 !important;
+      color: #000000 !important;
+      border-top: 2px solid #ffffff !important;
+      border-left: 2px solid #ffffff !important;
+      border-right: 2px solid #404040 !important;
+      border-bottom: 2px solid #404040 !important;
+    }
+    html.theme-win98.dark .table-widget .btn-add-col,
+    html.theme-win98.dark .table-widget .btn-del-col,
+    html.theme-win98.dark .table-widget .btn-add-row,
+    html.theme-win98.dark .table-widget .btn-del-row {
+      background-color: #3a3a3a !important;
+      color: #f0f0f0 !important;
+      border-top-color: #5a5a5a !important;
+      border-left-color: #5a5a5a !important;
+      border-right-color: #141414 !important;
+      border-bottom-color: #141414 !important;
+    }
+
+    /* Classic Win98 Recessed Bottom Status Bar */
+    html.theme-win98 #classicStatusBar {
+      background-color: #c0c0c0 !important;
+      border-top: 2px solid #ffffff !important;
+      color: #000000 !important;
+      height: 26px !important;
+      padding: 2px 6px !important;
+    }
+    html.theme-win98.dark #classicStatusBar {
+      background-color: #2b2b2b !important;
+      border-top: 2px solid #444444 !important;
+      color: #d4d4d4 !important;
+    }
+    html.theme-win98 #statusCursorPos,
+    html.theme-win98 #statusWordCharCount,
+    html.theme-win98 #statusTokenCount,
+    html.theme-win98 #statusWrapLabel,
+    html.theme-win98 #statusZoomLabel {
+      border-top: 1px solid #808080;
+      border-left: 1px solid #808080;
+      border-right: 1px solid #ffffff;
+      border-bottom: 1px solid #ffffff;
+      padding: 0 6px !important;
+      background-color: #c0c0c0;
+      color: #000000;
+    }
+    html.theme-win98.dark #statusCursorPos,
+    html.theme-win98.dark #statusWordCharCount,
+    html.theme-win98.dark #statusTokenCount,
+    html.theme-win98.dark #statusWrapLabel,
+    html.theme-win98.dark #statusZoomLabel {
+      border-top-color: #111111;
+      border-left-color: #111111;
+      border-right-color: #4a4a4a;
+      border-bottom-color: #4a4a4a;
+      background-color: #2b2b2b;
+      color: #e5e5e5;
+    }
+
+    /* Classic Win98 Menus, Context Menus, and Dialog Windows */
+    html.theme-win98 .dropdown-panel,
+    html.theme-win98 #diagramContextMenu,
+    html.theme-win98 #tabContextMenu,
+    html.theme-win98 #commandPalettePopup, html.theme-win98 #wordAutocompletePopup,
+    html.theme-win98 #tokenCalculatorPopover {
+      background-color: #c0c0c0 !important;
+      color: #000000 !important;
+      border-top: 2px solid #ffffff !important;
+      border-left: 2px solid #ffffff !important;
+      border-right: 2px solid #404040 !important;
+      border-bottom: 2px solid #404040 !important;
+      box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35) !important;
+    }
+    html.theme-win98.dark .dropdown-panel,
+    html.theme-win98.dark #diagramContextMenu,
+    html.theme-win98.dark #tabContextMenu,
+    html.theme-win98.dark #commandPalettePopup, html.theme-win98.dark #wordAutocompletePopup,
+    html.theme-win98.dark #tokenCalculatorPopover {
+      background-color: #2b2b2b !important;
+      color: #f0f0f0 !important;
+      border-top-color: #555555 !important;
+      border-left-color: #555555 !important;
+      border-right-color: #111111 !important;
+      border-bottom-color: #111111 !important;
+    }
+    html.theme-win98 .dropdown-panel button:hover,
+    html.theme-win98 #diagramContextMenu button:hover,
+    html.theme-win98 #tabContextMenu button:hover {
+      background-color: #000080 !important;
+      color: #ffffff !important;
+    }
+    html.theme-win98 .dropdown-panel button:hover kbd,
+    html.theme-win98 .dropdown-panel button:hover span {
+      color: #ffffff !important;
+    }
+
+    /* Classic Win98 Navy Title Bars on Dialog Modals (Papelera, Búsqueda Global, Atajos, Tokens) */
+    html.theme-win98 #trashModal > div,
+    html.theme-win98 #globalSearchModal > div,
+    html.theme-win98 #shortcutsGuideModal > div,
+    html.theme-win98 #scienceCommandsModal > div,
+    html.theme-win98 #renameTabModal > div {
+      background-color: #c0c0c0 !important;
+      border-top: 2px solid #ffffff !important;
+      border-left: 2px solid #ffffff !important;
+      border-right: 2px solid #404040 !important;
+      border-bottom: 2px solid #404040 !important;
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.45) !important;
+      padding: 3px !important;
+    }
+    html.theme-win98.dark #trashModal > div,
+    html.theme-win98.dark #globalSearchModal > div,
+    html.theme-win98.dark #shortcutsGuideModal > div,
+    html.theme-win98.dark #scienceCommandsModal > div,
+    html.theme-win98.dark #renameTabModal > div {
+      background-color: #2b2b2b !important;
+      border-top-color: #555555 !important;
+      border-left-color: #555555 !important;
+      border-right-color: #111111 !important;
+      border-bottom-color: #111111 !important;
+    }
+    html.theme-win98 #trashModal > div > div:first-child,
+    html.theme-win98 #globalSearchModal > div > div:first-child,
+    html.theme-win98 #shortcutsGuideModal > div > div:first-child,
+    html.theme-win98 #scienceCommandsModal > div > div:first-child,
+    html.theme-win98 #tokenCalculatorPopover > div:first-child {
+      background: linear-gradient(90deg, #000080 0%, #1084d0 100%) !important;
+      color: #ffffff !important;
+      border-bottom: none !important;
+    }
+    html.theme-win98 #trashModal > div > div:first-child *,
+    html.theme-win98 #globalSearchModal > div > div:first-child *,
+    html.theme-win98 #shortcutsGuideModal > div > div:first-child *,
+    html.theme-win98 #scienceCommandsModal > div > div:first-child *,
+    html.theme-win98 #tokenCalculatorPopover > div:first-child * {
+      color: #ffffff !important;
+    }
+    html.theme-win98 #trashModal > div > div:first-child button,
+    html.theme-win98 #globalSearchModal > div > div:first-child button,
+    html.theme-win98 #shortcutsGuideModal > div > div:first-child button,
+    html.theme-win98 #scienceCommandsModal > div > div:first-child button,
+    html.theme-win98 #tokenCalculatorPopover > div:first-child button {
+      background-color: #c0c0c0 !important;
+      color: #000000 !important;
+      border-top: 2px solid #ffffff !important;
+      border-left: 2px solid #ffffff !important;
+      border-right: 2px solid #404040 !important;
+      border-bottom: 2px solid #404040 !important;
+      width: 20px !important;
+      height: 18px !important;
+    }
+    html.theme-win98 #trashModal > div > div:first-child button svg,
+    html.theme-win98 #globalSearchModal > div > div:first-child button svg,
+    html.theme-win98 #shortcutsGuideModal > div > div:first-child button svg,
+    html.theme-win98 #tokenCalculatorPopover > div:first-child button svg {
+      color: #000000 !important;
+    }
+
+    /* Split View Pane Win98 */
+    html.theme-win98 #splitPaneContainer {
+      border-left: 3px solid #c0c0c0 !important;
+      background-color: #ffffff !important;
+    }
+    html.theme-win98.dark #splitPaneContainer {
+      border-left: 3px solid #2b2b2b !important;
+      background-color: #161616 !important;
+    }
+    html.theme-win98 #splitPaneContainer > div:first-child {
+      background-color: #c0c0c0 !important;
+      border-bottom: 1px solid #808080 !important;
+    }
+    html.theme-win98.dark #splitPaneContainer > div:first-child {
+      background-color: #2b2b2b !important;
+      border-bottom: 1px solid #141414 !important;
+    }
+
+    /* --- CUSTOM WINDOWS 98 SIGNATURE RETRO DETAILS --- */
+    /* Crisp lightweight Win98 scrollbar track */
+    html.theme-win98 ::-webkit-scrollbar-track {
+      background: #dfdfdf !important;
+    }
+    html.theme-win98.dark ::-webkit-scrollbar-track {
+      background: #1c1c1c !important;
+    }
+
+    /* Classic Win98 3D vertical toolbar gripper handle */
+    html.theme-win98 #mainFormattingGroup::before,
+    html.theme-win98 #findReplaceBar::before {
+      content: '';
+      display: inline-block;
+      width: 3px;
+      height: 16px;
+      margin-right: 4px;
+      margin-left: 1px;
+      border-left: 1px solid #ffffff;
+      border-right: 1px solid #808080;
+      flex-shrink: 0;
+    }
+    html.theme-win98.dark #mainFormattingGroup::before,
+    html.theme-win98.dark #findReplaceBar::before {
+      border-left-color: #555555;
+      border-right-color: #111111;
+    }
+
+    /* Classic Win98 system titlebar button */
+    html.theme-win98 .win98-sys-btn {
+      background-color: #c0c0c0 !important;
+      color: #000000 !important;
+      border-top: 2px solid #ffffff !important;
+      border-left: 2px solid #ffffff !important;
+      border-right: 2px solid #404040 !important;
+      border-bottom: 2px solid #404040 !important;
+    }
+    html.theme-win98 .win98-sys-btn:active {
+      border-top: 2px solid #404040 !important;
+      border-left: 2px solid #404040 !important;
+      border-right: 2px solid #ffffff !important;
+      border-bottom: 2px solid #ffffff !important;
+    }
+    html.theme-win98.dark .win98-sys-btn {
+      background-color: #3a3a3a !important;
+      color: #f0f0f0 !important;
+      border-top-color: #5a5a5a !important;
+      border-left-color: #5a5a5a !important;
+      border-right-color: #141414 !important;
+      border-bottom-color: #141414 !important;
+    }
+
+    /* Authentic Win98 1px dotted focus outline on buttons */
+    html.theme-win98 button:focus-visible {
+      outline: 1px dotted #000000 !important;
+      outline-offset: -3px;
+    }
+    html.theme-win98.dark button:focus-visible {
+      outline: 1px dotted #ffffff !important;
+      outline-offset: -3px;
+    }
+
+    /* Classic Win98 bottom-right embossed status bar corner grip */
+    html.theme-win98 .win98-status-grip {
+      width: 12px;
+      height: 12px;
+      background-image: linear-gradient(
+        135deg,
+        transparent 40%, #ffffff 40%, #ffffff 48%, #808080 48%, #808080 56%,
+        transparent 56%, transparent 66%, #ffffff 66%, #ffffff 74%, #808080 74%, #808080 82%,
+        transparent 82%, transparent 90%, #ffffff 90%, #ffffff 96%, #808080 96%
+      );
+      opacity: 0.9;
+    }
+
+    /* Classic Win98 beveled toast notification */
+    html.theme-win98 #notepadToast {
+      background-color: #ffffe1 !important;
+      color: #000000 !important;
+      border: 1px solid #000000 !important;
+      box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35) !important;
+    }
+    html.theme-win98.dark #notepadToast {
+      background-color: #333322 !important;
+      color: #ffffd0 !important;
+      border: 1px solid #888866 !important;
+    }

@@ -1,0 +1,45 @@
+{
+  "name": "simple-pad",
+  "version": "1.0.0",
+  "description": "Simple Pad — Bloc de notas técnico offline con pestañas, pizarras de diagramas, tablas, código y bloques de matemática, física y química.",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win",
+    "dist:portable": "electron-builder --win portable"
+  },
+  "keywords": [
+    "notepad",
+    "markdown",
+    "win98",
+    "math",
+    "physics",
+    "chemistry",
+    "diagrams",
+    "electron"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.simplepad.app",
+    "productName": "Simple Pad",
+    "files": [
+      "index.html",
+      "src/**/*",
+      "electron/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}

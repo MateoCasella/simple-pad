@@ -1,0 +1,1192 @@
+* { box-sizing: border-box; }
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.45); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(100, 116, 139, 0.7); }
+
+    /* Single Live Flexible Sheet (Monospace) — No horizontal scroll */
+    #sheetScrollWrapper,
+    #splitScrollWrapper {
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+    }
+    #liveSheetEditor {
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      line-height: 1.65;
+      outline: none;
+      min-height: 100%;
+      width: 100%;
+      padding: 20px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    #liveSheetEditor:empty:before {
+      content: attr(data-placeholder);
+      color: #94a3b8;
+      pointer-events: none;
+    }
+    .dark #liveSheetEditor:empty:before {
+      color: #52525b;
+    }
+
+    /* Block-level sizes (Sheet & Diagram Shapes) */
+    #liveSheetEditor .txt-grande,
+    #liveSheetEditor h1,
+    .diagram-shape-text .txt-grande,
+    .diagram-shape-text.txt-grande {
+      font-size: 1.45em;
+      font-weight: 700;
+      line-height: 1.35;
+      margin: 0.15em 0;
+    }
+    #liveSheetEditor .txt-mediano,
+    #liveSheetEditor div,
+    #liveSheetEditor p,
+    .diagram-shape-text .txt-mediano,
+    .diagram-shape-text.txt-mediano {
+      font-size: 1em;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+    #liveSheetEditor .txt-chico,
+    #liveSheetEditor small,
+    .diagram-shape-text .txt-chico,
+    .diagram-shape-text.txt-chico {
+      font-size: 0.78em;
+      opacity: 0.88;
+      line-height: 1.4;
+    }
+
+    /* Inline-level sizes */
+    #liveSheetEditor .inline-grande,
+    .diagram-shape-text .inline-grande {
+      font-size: 1.45em;
+      font-weight: 700;
+      line-height: 1;
+      display: inline;
+      padding: 0;
+      margin: 0;
+    }
+    #liveSheetEditor .inline-mediano,
+    .diagram-shape-text .inline-mediano {
+      font-size: 1em;
+      font-weight: 400;
+      line-height: 1;
+      display: inline;
+      padding: 0;
+      margin: 0;
+    }
+    #liveSheetEditor .inline-chico,
+    .diagram-shape-text .inline-chico {
+      font-size: 0.78em;
+      opacity: 0.88;
+      line-height: 1;
+      display: inline;
+      padding: 0;
+      margin: 0;
+    }
+
+    #liveSheetEditor ul,
+    #liveSheetEditor ol,
+    .diagram-shape-text ul,
+    .diagram-shape-text ol {
+      padding-left: 1.4rem;
+      margin: 0.2em 0;
+      text-align: left;
+    }
+    #liveSheetEditor ul,
+    #splitSheetEditor ul,
+    .diagram-shape-text ul { list-style-type: disc; }
+    #liveSheetEditor ul.list-disc-style,
+    #splitSheetEditor ul.list-disc-style,
+    .diagram-shape-text ul.list-disc-style { list-style-type: disc; }
+    #liveSheetEditor ul.list-circle-style,
+    #splitSheetEditor ul.list-circle-style,
+    .diagram-shape-text ul.list-circle-style { list-style-type: circle; }
+    #liveSheetEditor ul.list-square-style,
+    #splitSheetEditor ul.list-square-style,
+    .diagram-shape-text ul.list-square-style { list-style-type: square; }
+    #liveSheetEditor ul.list-dash-style,
+    #splitSheetEditor ul.list-dash-style,
+    .diagram-shape-text ul.list-dash-style { list-style-type: '– '; }
+
+    #liveSheetEditor ol,
+    #splitSheetEditor ol,
+    .diagram-shape-text ol { list-style-type: decimal; }
+    #liveSheetEditor ol.list-decimal-style,
+    #splitSheetEditor ol.list-decimal-style,
+    .diagram-shape-text ol.list-decimal-style { list-style-type: decimal; }
+    #liveSheetEditor ol.list-alpha-style,
+    #splitSheetEditor ol.list-alpha-style,
+    .diagram-shape-text ol.list-alpha-style { list-style-type: lower-alpha; }
+    #liveSheetEditor ol.list-roman-style,
+    #splitSheetEditor ol.list-roman-style,
+    .diagram-shape-text ol.list-roman-style { list-style-type: lower-roman; }
+
+    /* Multi-level nested lists (Tab -> sublevel: 1. -> a. -> i. and • -> ◦ -> ▪) */
+    #liveSheetEditor ol ol,
+    #splitSheetEditor ol ol,
+    .diagram-shape-text ol ol {
+      list-style-type: lower-alpha !important;
+      margin-top: 0.15rem;
+      margin-bottom: 0.15rem;
+    }
+    #liveSheetEditor ol ol ol,
+    #splitSheetEditor ol ol ol,
+    .diagram-shape-text ol ol ol {
+      list-style-type: lower-roman !important;
+    }
+    #liveSheetEditor ol ol ol ol,
+    #splitSheetEditor ol ol ol ol,
+    .diagram-shape-text ol ol ol ol {
+      list-style-type: decimal !important;
+    }
+    #liveSheetEditor ul ul,
+    #splitSheetEditor ul ul,
+    .diagram-shape-text ul ul {
+      list-style-type: circle !important;
+      margin-top: 0.15rem;
+      margin-bottom: 0.15rem;
+    }
+    #liveSheetEditor ul ul ul,
+    #splitSheetEditor ul ul ul,
+    .diagram-shape-text ul ul ul {
+      list-style-type: square !important;
+    }
+    #liveSheetEditor ul ul ul ul,
+    #splitSheetEditor ul ul ul ul,
+    .diagram-shape-text ul ul ul ul {
+      list-style-type: '– ' !important;
+    }
+
+    /* Zero horizontal padding & margin on highlights so mid-word highlights NEVER split a word */
+    #liveSheetEditor mark,
+    #liveSheetEditor .hl-yellow,
+    #liveSheetEditor span[style*="254, 240, 138"],
+    #liveSheetEditor span[style*="#fef08a"],
+    #liveSheetEditor font[style*="254, 240, 138"],
+    #liveSheetEditor font[style*="#fef08a"],
+    .diagram-shape-text mark,
+    .diagram-shape-text .hl-yellow,
+    .diagram-shape-text span[style*="254, 240, 138"],
+    .diagram-shape-text span[style*="#fef08a"] {
+      background-color: #fef08a;
+      color: #0f172a;
+      padding: 0 !important;
+      margin: 0 !important;
+      border-radius: 0 !important;
+      display: inline !important;
+      white-space: pre-wrap;
+    }
+
+    /* ========================================================= */
+    /* TABLE WIDGET WITH GREEN (+) ROW & COLUMN BUTTONS          */
+    /* ========================================================= */
+    .table-widget {
+      margin: 0.65rem 0;
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      white-space: normal;
+      user-select: none;
+    }
+    .table-widget table {
+      border-collapse: collapse;
+      font-size: 0.92em;
+      background: #ffffff;
+    }
+    .dark .table-widget table {
+      background: #18181c;
+    }
+    .table-widget th,
+    .table-widget td {
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      padding: 0.4rem 0.65rem;
+      text-align: left;
+      min-width: 95px;
+      outline: none;
+      user-select: text;
+      white-space: pre-wrap;
+    }
+    .table-widget th {
+      background: rgba(148, 163, 184, 0.14);
+      font-weight: 600;
+    }
+    .dark .table-widget th {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    /* ========================================================= */
+    /* CODE WIDGET WITH LANGUAGE SELECTOR & SYNTAX HIGHLIGHTING  */
+    /* ========================================================= */
+    .code-widget {
+      margin: 0.65rem 0;
+      border: 1px solid #cbd5e1;
+      border-radius: 0.5rem;
+      background-color: #f8fafc;
+      color: #1e293b;
+      overflow: visible;
+      white-space: normal;
+      width: 100%;
+      max-width: 100%;
+      position: relative;
+    }
+    .code-widget-header {
+      border-top-left-radius: 0.45rem;
+      border-top-right-radius: 0.45rem;
+    }
+    html.theme-win98 .code-widget-header {
+      border-radius: 0 !important;
+    }
+    .dark .code-widget {
+      border-color: #3f3f46;
+      background-color: #18181c;
+      color: #e4e4e7;
+    }
+    .code-editor-area {
+      position: relative;
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.55;
+      min-height: 76px;
+    }
+    .code-highlight-layer {
+      position: absolute;
+      inset: 0;
+      padding: 0.75rem 0.9rem;
+      pointer-events: none;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .code-input-layer {
+      position: relative;
+      width: 100%;
+      min-height: 76px;
+      padding: 0.75rem 0.9rem;
+      background: transparent;
+      color: transparent;
+      caret-color: #0284c7;
+      resize: none;
+      border: 0;
+      outline: none;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.55;
+      display: block;
+    }
+    .dark .code-input-layer {
+      caret-color: #38bdf8;
+    }
+    /* Syntax Highlighting Token Colors (Light Mode matching Notepad) */
+    .tok-kw { color: #7c3aed; font-weight: 600; }
+    .tok-str { color: #059669; }
+    .tok-com { color: #64748b; font-style: italic; }
+    .tok-num { color: #d97706; }
+    .tok-fn { color: #0284c7; }
+    .tok-type { color: #b45309; }
+    /* Dark Mode Token Colors */
+    .dark .tok-kw { color: #c084fc; }
+    .dark .tok-str { color: #86efac; }
+    .dark .tok-com { color: #71717a; }
+    .dark .tok-num { color: #fdba74; }
+    .dark .tok-fn { color: #60a5fa; }
+    .dark .tok-type { color: #fcd34d; }
+
+    /* ========================================================= */
+    /* DRAW.IO INLINE DIAGRAM CANVAS STYLES (RESIZABLE)          */
+    /* ========================================================= */
+    .diagram-widget {
+      position: relative;
+      margin: 0.75rem 0;
+      width: 100% !important;
+      max-width: 100% !important;
+      border: 1px solid #cbd5e1;
+      border-radius: 0.6rem;
+      background-color: #f8fafc;
+      overflow: visible;
+      user-select: none;
+      white-space: normal;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .diagram-toolbar {
+      border-top-left-radius: 0.55rem;
+      border-top-right-radius: 0.55rem;
+    }
+    .diagram-canvas {
+      border-bottom-left-radius: 0.55rem;
+      border-bottom-right-radius: 0.55rem;
+    }
+    .diagram-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      min-width: 175px;
+      z-index: 60;
+      border-radius: 0.5rem;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.16);
+      padding: 4px;
+    }
+    .dark .diagram-dropdown-menu {
+      background: #18181b;
+      border-color: #3f3f46;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.55);
+    }
+    .diagram-card-bg {
+      fill: #f8fafc;
+      stroke: #cbd5e1;
+      stroke-width: 1;
+    }
+    .dark .diagram-card-bg {
+      fill: #18181c;
+      stroke: #3f3f46;
+    }
+    .diagram-card-text {
+      fill: #334155;
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: 11px;
+      font-weight: 700;
+      text-anchor: middle;
+      dominant-baseline: central;
+      pointer-events: none;
+    }
+    .dark .diagram-card-text {
+      fill: #e4e4e7;
+    }
+    .connector-selected .diagram-card-bg {
+      stroke: #0284c7;
+    }
+    .connector-selected .diagram-card-text {
+      fill: #0284c7;
+    }
+    .dark .diagram-widget {
+      border-color: #3f3f46;
+      background-color: #18181c;
+    }
+    .diagram-widget.widget-focused {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.18);
+    }
+    .diagram-canvas {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      background-image: radial-gradient(rgba(148, 163, 184, 0.45) 1px, transparent 1px);
+      background-size: 16px 16px;
+    }
+    .dark .diagram-canvas {
+      background-image: radial-gradient(rgba(82, 82, 91, 0.5) 1px, transparent 1px);
+    }
+    .diagram-board-resizer {
+      position: absolute;
+      right: -3px;
+      bottom: -3px;
+      width: 14px;
+      height: 14px;
+      cursor: nwse-resize;
+      background: transparent;
+      border: none;
+      z-index: 25;
+    }
+    .diagram-board-resizer-right {
+      position: absolute;
+      top: 0;
+      right: -3px;
+      bottom: 12px;
+      width: 10px;
+      cursor: ew-resize;
+      background: transparent;
+      border: none;
+      z-index: 22;
+    }
+    .diagram-board-resizer-bottom {
+      position: absolute;
+      left: 0;
+      right: 12px;
+      bottom: -3px;
+      height: 10px;
+      cursor: ns-resize;
+      background: transparent;
+      border: none;
+      z-index: 22;
+    }
+    .diagram-shape {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      background-color: #ffffff;
+      border: 2px solid #475569;
+      color: #0f172a;
+      cursor: grab;
+      box-shadow: 0 2px 5px rgba(15, 23, 42, 0.08);
+      transition: box-shadow 0.1s, border-color 0.1s;
+    }
+    .dark .diagram-shape {
+      background-color: #27272a;
+      border-color: #a1a1aa;
+      color: #f4f4f5;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    }
+    .diagram-shape:active {
+      cursor: grabbing;
+    }
+    .diagram-shape.shape-selected {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.22);
+    }
+    .diagram-shape.shape-connect-source {
+      border-color: #16a34a;
+      box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.28);
+    }
+    .diagram-shape.shape-square {
+      border-radius: 6px;
+    }
+    .diagram-shape.shape-rect {
+      border-radius: 6px;
+    }
+    .diagram-shape.shape-circle {
+      border-radius: 9999px;
+      padding: 14px;
+    }
+    .diagram-shape.shape-text {
+      background-color: transparent !important;
+      border: 1.5px dashed transparent;
+      box-shadow: none !important;
+      border-radius: 4px;
+      padding: 2px 5px;
+      min-width: 28px;
+      min-height: 22px;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .diagram-shape.shape-text:hover {
+      border-color: rgba(148, 163, 184, 0.7);
+    }
+    .diagram-shape.shape-text.shape-selected,
+    .diagram-shape.shape-text.shape-editing {
+      border: 1.5px dashed #0284c7;
+      background-color: rgba(2, 132, 199, 0.04) !important;
+      box-shadow: none !important;
+    }
+    .dark .diagram-shape.shape-text.shape-selected,
+    .dark .diagram-shape.shape-text.shape-editing {
+      border-color: #38bdf8;
+      background-color: rgba(56, 189, 248, 0.08) !important;
+    }
+    /* Invisible edge & corner resize zones on shapes (no visible squares) */
+    .diagram-shape-resize-handle {
+      position: absolute;
+      bottom: -4px;
+      right: -4px;
+      width: 12px;
+      height: 12px;
+      background: transparent;
+      border: none;
+      cursor: nwse-resize;
+      z-index: 14;
+    }
+    .diagram-shape-resize-right {
+      position: absolute;
+      top: 4px;
+      right: -4px;
+      bottom: 8px;
+      width: 8px;
+      background: transparent;
+      border: none;
+      cursor: ew-resize;
+      z-index: 12;
+    }
+    .diagram-shape-resize-bottom {
+      position: absolute;
+      left: 4px;
+      right: 8px;
+      bottom: -4px;
+      height: 8px;
+      background: transparent;
+      border: none;
+      cursor: ns-resize;
+      z-index: 12;
+    }
+    .diagram-shape-text {
+      width: 100%;
+      max-height: 100%;
+      overflow: hidden;
+      text-align: center;
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.4;
+      outline: none;
+      word-break: break-word;
+      pointer-events: none;
+      user-select: text;
+    }
+    .diagram-shape.shape-find-match {
+      border-color: #f97316 !important;
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.32) !important;
+    }
+    .diagram-shape.shape-text .diagram-shape-text {
+      text-align: left;
+      overflow: visible;
+      max-height: none;
+      min-height: 1.4em;
+      white-space: pre-wrap;
+      line-height: 1.45;
+    }
+    .diagram-shape.shape-editing {
+      cursor: text;
+      border-color: #0284c7;
+    }
+    .diagram-shape.shape-editing .diagram-shape-text {
+      pointer-events: auto;
+      user-select: text;
+      cursor: text;
+    }
+    .diagram-shape-text:empty:before {
+      content: attr(data-placeholder);
+      color: #94a3b8;
+      pointer-events: none;
+    }
+    .dark .diagram-shape-text:empty:before {
+      color: #71717a;
+    }
+    .diagram-connector-hit {
+      stroke: transparent;
+      stroke-width: 14px;
+      cursor: pointer;
+    }
+    .diagram-connector-line {
+      stroke: #475569;
+      stroke-width: 2px;
+      pointer-events: none;
+    }
+    .dark .diagram-connector-line {
+      stroke: #a1a1aa;
+    }
+    .diagram-connector-group.connector-selected .diagram-connector-line {
+      stroke: #0284c7;
+      stroke-width: 2.8px;
+    }
+
+    /* Split View Secondary Editor */
+    #splitSheetEditor {
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      line-height: 1.65;
+      outline: none;
+      min-height: 100%;
+      width: 100%;
+      padding: 20px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    #splitSheetEditor .txt-grande {
+      font-size: 1.45em;
+      font-weight: 700;
+      line-height: 1.35;
+      margin: 0.25rem 0;
+    }
+    #splitSheetEditor .txt-mediano {
+      font-size: 1em;
+      line-height: 1.65;
+    }
+    #splitSheetEditor .txt-chico {
+      font-size: 0.82em;
+      line-height: 1.5;
+    }
+    #splitSheetEditor ul { list-style-type: disc; padding-left: 1.5rem; margin: 0.25rem 0; }
+    #splitSheetEditor ol { list-style-type: decimal; padding-left: 1.5rem; margin: 0.25rem 0; }
+
+    /* Clean PDF Print Stylesheet */
+    @media print {
+      @page { margin: 16mm; }
+      body {
+        background: #ffffff !important;
+        color: #0f172a !important;
+        height: auto !important;
+        overflow: visible !important;
+        display: block !important;
+      }
+      header, nav, footer, #findReplaceBar, #lineNumbersGutter, #splitPaneContainer,
+      #tabContextMenu, #diagramContextMenu, #renameTabModal, #trashModal,
+      #tokenCalculatorPopover, #globalSearchModal, #notepadToast,
+      .diagram-toolbar, .btn-add-col, .btn-del-col, .btn-add-row, .btn-del-row,
+      .btn-copy-table, .btn-remove-table, .code-widget button {
+        display: none !important;
+      }
+      main, #sheetScrollWrapper {
+        display: block !important;
+        overflow: visible !important;
+        height: auto !important;
+        background: #ffffff !important;
+      }
+      #liveSheetEditor {
+        padding: 0 !important;
+        color: #0f172a !important;
+      }
+      .diagram-widget, .code-widget, .table-widget {
+        break-inside: avoid;
+      }
+      .code-widget {
+        background: #f8fafc !important;
+        border: 1px solid #cbd5e1 !important;
+      }
+      .code-input-layer { display: none !important; }
+      .code-highlight-layer { position: static !important; }
+    }
+    ::highlight(find-all) {
+      background-color: rgba(250, 204, 21, 0.35);
+      color: inherit;
+    }
+    ::highlight(find-current) {
+      background-color: rgba(249, 115, 22, 0.45);
+      color: inherit;
+    }
+    .tab-mention-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 5px;
+      margin: 0 1px;
+      border-radius: 4px;
+      background-color: rgba(2, 132, 199, 0.1);
+      color: #0369a1;
+      border: 1px solid rgba(2, 132, 199, 0.22);
+      font-size: 0.92em;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      vertical-align: baseline;
+      transition: background-color 0.12s;
+    }
+    .tab-mention-chip:hover {
+      background-color: rgba(2, 132, 199, 0.2);
+    }
+    .dark .tab-mention-chip {
+      background-color: rgba(56, 189, 248, 0.14);
+      color: #38bdf8;
+      border-color: rgba(56, 189, 248, 0.28);
+    }
+    .dark .tab-mention-chip:hover {
+      background-color: rgba(56, 189, 248, 0.25);
+    }
+
+/* ========================================================= */
+    /* MATH WIDGET (FORMULAS + LIVE EVALUATOR, 100% OFFLINE)     */
+    /* ========================================================= */
+    .math-widget {
+      margin: 0.75rem 0;
+      border: 1px solid #cbd5e1;
+      border-radius: 0.5rem;
+      background-color: #f8fafc;
+      color: #1e293b;
+      overflow: visible;
+      white-space: normal;
+      width: 100%;
+      max-width: 100%;
+      position: relative;
+    }
+    .math-widget-header {
+      border-top-left-radius: 0.45rem;
+      border-top-right-radius: 0.45rem;
+    }
+    html.theme-win98 .math-widget-header,
+    html.theme-win98 .math-dropdown-menu {
+      border-radius: 0 !important;
+    }
+    html.theme-win98 .math-dropdown-menu {
+      background-color: #c0c0c0 !important;
+      color: #000000 !important;
+      border-top: 2px solid #ffffff !important;
+      border-left: 2px solid #ffffff !important;
+      border-right: 2px solid #404040 !important;
+      border-bottom: 2px solid #404040 !important;
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.35) !important;
+    }
+    html.theme-win98 .widget-dropdown-btn {
+      border-radius: 0 !important;
+      background-color: #c0c0c0 !important;
+      color: #000000 !important;
+      border-top: 2px solid #ffffff !important;
+      border-left: 2px solid #ffffff !important;
+      border-right: 2px solid #404040 !important;
+      border-bottom: 2px solid #404040 !important;
+    }
+    html.theme-win98 .widget-dropdown-btn:active {
+      border-top: 2px solid #404040 !important;
+      border-left: 2px solid #404040 !important;
+      border-right: 2px solid #ffffff !important;
+      border-bottom: 2px solid #ffffff !important;
+    }
+    html.theme-win98.dark .widget-dropdown-btn {
+      background-color: #3a3a3a !important;
+      color: #f0f0f0 !important;
+      border-top-color: #5a5a5a !important;
+      border-left-color: #5a5a5a !important;
+      border-right-color: #141414 !important;
+      border-bottom-color: #141414 !important;
+    }
+    html.theme-win98 .widget-dropdown-menu,
+    html.theme-win98 .math-dropdown-menu {
+      border-radius: 0 !important;
+      background-color: #c0c0c0 !important;
+      color: #000000 !important;
+      border-top: 2px solid #ffffff !important;
+      border-left: 2px solid #ffffff !important;
+      border-right: 2px solid #404040 !important;
+      border-bottom: 2px solid #404040 !important;
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.35) !important;
+    }
+    html.theme-win98.dark .widget-dropdown-menu,
+    html.theme-win98.dark .math-dropdown-menu {
+      background-color: #2b2b2b !important;
+      color: #f0f0f0 !important;
+      border-top-color: #555555 !important;
+      border-left-color: #555555 !important;
+      border-right-color: #111111 !important;
+      border-bottom-color: #111111 !important;
+    }
+    html.theme-win98 .widget-dropdown-menu button:hover,
+    html.theme-win98 .math-dropdown-menu button:hover {
+      background-color: #000080 !important;
+      color: #ffffff !important;
+    }
+    html.theme-win98 .widget-dropdown-menu button:hover *,
+    html.theme-win98 .math-dropdown-menu button:hover * {
+      color: #ffffff !important;
+    }
+    /* Win98 Classic styling for #scienceCommandsModal interior */
+    html.theme-win98 #scienceCommandsModal .sci-tabs-bar {
+      background-color: #c0c0c0 !important;
+      border-bottom: 1px solid #808080 !important;
+      color: #000000 !important;
+    }
+    html.theme-win98.dark #scienceCommandsModal .sci-tabs-bar {
+      background-color: #2b2b2b !important;
+      border-bottom: 1px solid #141414 !important;
+      color: #f0f0f0 !important;
+    }
+    html.theme-win98 #scienceCommandsModal .sci-tab-btn,
+    html.theme-win98 #scienceCommandsModal .sci-copy-btn {
+      border-radius: 0 !important;
+      background-color: #c0c0c0 !important;
+      color: #000000 !important;
+      border-top: 2px solid #ffffff !important;
+      border-left: 2px solid #ffffff !important;
+      border-right: 2px solid #404040 !important;
+      border-bottom: 2px solid #404040 !important;
+    }
+    html.theme-win98 #scienceCommandsModal .sci-tab-btn.is-active {
+      background-color: #dfdfdf !important;
+      border-top: 2px solid #404040 !important;
+      border-left: 2px solid #404040 !important;
+      border-right: 2px solid #ffffff !important;
+      border-bottom: 2px solid #ffffff !important;
+      font-weight: 700 !important;
+    }
+    html.theme-win98.dark #scienceCommandsModal .sci-tab-btn,
+    html.theme-win98.dark #scienceCommandsModal .sci-copy-btn {
+      background-color: #3a3a3a !important;
+      color: #f0f0f0 !important;
+      border-top-color: #5a5a5a !important;
+      border-left-color: #5a5a5a !important;
+      border-right-color: #141414 !important;
+      border-bottom-color: #141414 !important;
+    }
+    html.theme-win98.dark #scienceCommandsModal .sci-tab-btn.is-active {
+      background-color: #222222 !important;
+      border-top-color: #141414 !important;
+      border-left-color: #141414 !important;
+      border-right-color: #5a5a5a !important;
+      border-bottom-color: #5a5a5a !important;
+    }
+    html.theme-win98 #scienceCommandsBody {
+      background-color: #ffffff !important;
+      border-top: 2px solid #808080 !important;
+      border-left: 2px solid #808080 !important;
+      border-right: 2px solid #ffffff !important;
+      border-bottom: 2px solid #ffffff !important;
+      margin: 4px !important;
+    }
+    html.theme-win98.dark #scienceCommandsBody {
+      background-color: #1a1a1a !important;
+      border-top-color: #111111 !important;
+      border-left-color: #111111 !important;
+      border-right-color: #4a4a4a !important;
+      border-bottom-color: #4a4a4a !important;
+    }
+    html.theme-win98 #scienceCommandsBody code,
+    html.theme-win98 #scienceCommandsBody .rounded-md {
+      border-radius: 0 !important;
+    }
+    /* Science Formula Autocomplete Popup */
+    #scienceAutocompletePopup {
+      position: fixed;
+      z-index: 9999;
+      min-width: 240px;
+      max-width: 340px;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+    html.theme-win98 #scienceAutocompletePopup {
+      background-color: #c0c0c0 !important;
+      color: #000000 !important;
+      border-top: 2px solid #ffffff !important;
+      border-left: 2px solid #ffffff !important;
+      border-right: 2px solid #404040 !important;
+      border-bottom: 2px solid #404040 !important;
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.35) !important;
+    }
+    html.theme-win98 #scienceAutocompletePopup .sci-ac-item.is-selected {
+      background-color: #000080 !important;
+      color: #ffffff !important;
+    }
+    html.theme-win98 #scienceAutocompletePopup .sci-ac-item.is-selected * {
+      color: #ffffff !important;
+    }
+    .dark .math-widget {
+      border-color: #3f3f46;
+      background-color: #18181c;
+      color: #e4e4e7;
+    }
+    .math-input-layer {
+      width: 100%;
+      min-height: 48px;
+      padding: 0.6rem 0.9rem;
+      background: transparent;
+      color: inherit;
+      resize: none;
+      border: 0;
+      outline: none;
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      display: block;
+    }
+    .math-preview-area {
+      border-top: 1px dashed rgba(148, 163, 184, 0.45);
+      padding: 0.65rem 0.95rem;
+      background: rgba(255, 255, 255, 0.55);
+      font-family: 'Cambria Math', 'Times New Roman', Georgia, serif;
+      font-size: 1.15em;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .dark .math-preview-area {
+      background: rgba(0, 0, 0, 0.22);
+      border-top-color: rgba(82, 82, 91, 0.6);
+    }
+    .math-preview-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .math-bigop {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      vertical-align: middle;
+      line-height: 1;
+      margin: 0 4px;
+    }
+    .math-bigop-sup { font-size: 0.65em; margin-bottom: 1px; }
+    .math-bigop-sym { font-size: 1.45em; line-height: 1; }
+    .math-bigop-sub { font-size: 0.65em; margin-top: 1px; }
+    .math-lim-sym { font-size: 0.95em; font-style: normal; letter-spacing: 0.02em; }
+    .math-matrix {
+      display: inline-flex;
+      align-items: stretch;
+      vertical-align: middle;
+      margin: 0 4px;
+      padding: 2px 6px;
+      border-left: 1.5px solid currentColor;
+      border-right: 1.5px solid currentColor;
+      border-radius: 6px;
+    }
+    .math-matrix-grid {
+      display: inline-grid;
+      gap: 2px 10px;
+      text-align: center;
+      font-size: 0.9em;
+    }
+    .math-fn { font-style: normal; margin-right: 1px; }
+    .math-frac {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      vertical-align: middle;
+      margin: 0 3px;
+      font-size: 0.88em;
+      line-height: 1.15;
+    }
+    .math-frac-num {
+      border-bottom: 1.2px solid currentColor;
+      padding: 0 4px 1px 4px;
+    }
+    .math-frac-den {
+      padding: 1px 4px 0 4px;
+    }
+    .math-sqrt {
+      display: inline-flex;
+      align-items: center;
+    }
+    .math-sqrt-body {
+      border-top: 1.2px solid currentColor;
+      padding: 0 3px;
+      margin-left: 1px;
+    }
+    .math-vec, .math-hat, .math-dot {
+      position: relative;
+      display: inline-block;
+      line-height: 1.15;
+      padding-top: 0.35em;
+    }
+    .math-vec::before {
+      content: '→';
+      position: absolute;
+      top: -0.18em;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.62em;
+      font-style: normal;
+      line-height: 1;
+    }
+    .math-hat::before {
+      content: '^';
+      position: absolute;
+      top: -0.15em;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.72em;
+      font-style: normal;
+      line-height: 1;
+    }
+    .math-dot::before {
+      content: attr(data-dot);
+      position: absolute;
+      top: -0.22em;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.78em;
+      font-style: normal;
+      line-height: 1;
+    }
+    .math-bar {
+      display: inline-block;
+      border-top: 1.2px solid currentColor;
+      padding-top: 1px;
+      line-height: 1.05;
+    }
+    .math-ce {
+      font-style: normal;
+      font-family: 'Inter', system-ui, sans-serif;
+      letter-spacing: 0.01em;
+    }
+    .math-rxn-arrow {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      vertical-align: middle;
+      margin: 0 6px;
+      line-height: 1;
+      font-style: normal;
+    }
+    .math-rxn-top {
+      font-size: 0.65em;
+      margin-bottom: -1px;
+      padding: 0 3px;
+    }
+    .math-rxn-sym {
+      font-size: 1.15em;
+      line-height: 0.9;
+    }
+    .math-rxn-bot {
+      font-size: 0.65em;
+      margin-top: -1px;
+      padding: 0 3px;
+    }
+    .math-iso {
+      display: inline-flex;
+      align-items: center;
+      font-style: normal;
+      margin: 0 2px;
+    }
+    .math-iso-nums {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-end;
+      font-size: 0.62em;
+      line-height: 1.05;
+      margin-right: 1px;
+    }
+    html.theme-win98 .math-mode-select {
+      border-radius: 0 !important;
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border: 1px solid #808080 !important;
+    }
+
+    /* Win98 styling for .math-widget */
+    html.theme-win98 .math-widget {
+      border-radius: 0 !important;
+      border-top: 2px solid #ffffff !important;
+      border-left: 2px solid #ffffff !important;
+      border-right: 2px solid #404040 !important;
+      border-bottom: 2px solid #404040 !important;
+      background-color: #ffffff !important;
+      color: #000000 !important;
+    }
+    html.theme-win98.dark .math-widget {
+      background-color: #181818 !important;
+      color: #e5e5e5 !important;
+      border-top-color: #4a4a4a !important;
+      border-left-color: #4a4a4a !important;
+      border-right-color: #111111 !important;
+      border-bottom-color: #111111 !important;
+    }
+    html.theme-win98 .math-widget > div:first-child {
+      background-color: #c0c0c0 !important;
+      border-bottom: 1px solid #808080 !important;
+      color: #000000 !important;
+    }
+    html.theme-win98.dark .math-widget > div:first-child {
+      background-color: #2b2b2b !important;
+      border-bottom: 1px solid #111111 !important;
+      color: #e5e5e5 !important;
+    }
+    html.theme-win98 .math-result-badge {
+      border-radius: 0 !important;
+      background: #ffffe1 !important;
+      color: #000080 !important;
+      border: 1px solid #808080 !important;
+    }
+    @media print {
+      .math-widget > div:first-child,
+      .math-input-layer { display: none !important; }
+      .math-preview-area { border-top: none !important; background: #ffffff !important; }
+    }
+
+    /* Compact Top & Bottom Chrome + Maximized Writing Sheet */
+    header {
+      padding-top: 4px !important;
+      padding-bottom: 0 !important;
+      padding-left: 5px !important;
+      padding-right: 5px !important;
+      height: auto !important;
+      overflow: visible !important;
+    }
+    header .notepad-tab,
+    header [data-tab-id] {
+      padding-top: 2px !important;
+      padding-bottom: 2px !important;
+      min-height: 22px !important;
+      font-size: 11px !important;
+      line-height: 1.2 !important;
+    }
+    header button[onclick="createNewTab()"],
+    #btnOpenTrash,
+    #btnRetroFullscreen {
+      padding: 1px 4px !important;
+      min-height: 20px !important;
+      height: 21px !important;
+      font-size: 11px !important;
+    }
+    nav {
+      padding-top: 2px !important;
+      padding-bottom: 2px !important;
+      padding-left: 5px !important;
+      padding-right: 5px !important;
+      min-height: 26px !important;
+      gap: 4px !important;
+    }
+    nav > div:first-child .menu-trigger {
+      padding: 1px 6px !important;
+      font-size: 11.5px !important;
+      line-height: 1.25 !important;
+    }
+    #mainFormattingGroup {
+      padding: 1px 4px !important;
+      gap: 2px !important;
+    }
+    #mainFormattingGroup > button,
+    #mainFormattingGroup > div > button {
+      height: 22px !important;
+      padding-top: 1px !important;
+      padding-bottom: 1px !important;
+    }
+    #findReplaceBar {
+      padding: 1px 4px !important;
+    }
+    #findReplaceBar input,
+    #findReplaceBar button {
+      height: 20px !important;
+      font-size: 11px !important;
+    }
+    #classicStatusBar {
+      height: 21px !important;
+      min-height: 21px !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      padding-left: 6px !important;
+      padding-right: 6px !important;
+      font-size: 10.5px !important;
+      line-height: 1 !important;
+    }
+    html.theme-win98 #classicStatusBar {
+      padding: 1px 4px !important;
+    }
+    html.theme-win98 #classicStatusBar > div > span,
+    html.theme-win98 #classicStatusBar > div > button {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      line-height: 16px !important;
+    }
+    html.theme-win98 main {
+      margin: 2px !important;
+    }
+    html.theme-win98 #liveSheetEditor,
+    html.theme-win98 #splitSheetEditor {
+      padding: 12px 16px !important;
+    }
+    html.theme-win98 #lineNumbersGutter {
+      padding-top: 12px !important;
+    }
+    html.theme-modern #liveSheetEditor,
+    html.theme-modern #splitSheetEditor {
+      padding: 14px 22px !important;
+    }
+    html.theme-modern #lineNumbersGutter {
+      padding-top: 14px !important;
+    }
+
+    #lineNumbersGutter {
+      position: relative !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      overflow: hidden !important;
+    }
+    .gutter-num-item {
+      position: absolute;
+      left: 0;
+      right: 7px;
+      text-align: right;
+      line-height: 1.5;
+      pointer-events: none;
+      user-select: none;
+    }
