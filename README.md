@@ -1,83 +1,42 @@
 # Simple Pad
 
-Bloc de notas técnico, liviano y 100% offline. Combina la velocidad del Bloc de Notas clásico con bloques interactivos de diagramas, tablas, código y notación científica (Matemática, Física y Química).
+A lightweight, 100% offline technical notepad. It combines the speed of classic Notepad with interactive blocks for diagrams, tables, code, and scientific notation (Math, Physics, and Chemistry).
 
-- **Probar online (sin instalar):** https://mateocasella.github.io/simple-pad/
-- **Descargar para Windows (`.exe` / Portable):** https://github.com/MateoCasella/simple-pad/releases/latest
+- **Try online (no installation required):** https://mateocasella.github.io/simple-pad/
+- **Download for Windows (`.exe` / Portable):** https://github.com/MateoCasella/simple-pad/releases/latest
 
-## Características principales
+## Key Features
 
-- **Dos estilos visuales intercambiables** (`Formato → Estilo visual`):
-  - **Clásico (Windows 98)**: interfaz retro con biseles 3D, barra azul clásica y tipografía monoespaciada tradicional.
-  - **Moderno**: diseño afilado y productivo con tipografías **Saira** y **Share Tech Mono**.
-  - Ambos estilos incluyen **Modo oscuro** (`Alt+T`).
-- **Comandos rápidos en línea (`/`) y menciones (`@`)**:
-  - Formato de línea completa (`/grande`, `/mediano`, `/chico`, `/negrita`, `/cursiva`, `/subrayado`, `/tachado`, `/resaltado`).
-  - Componentes interactivos (`/tabla`, `/diagrama`, `/matematica`, `/fisica`, `/quimica`, `/js`, `/py`, `/c`, `/sql`, `/html`, `/json`).
-  - Menciones a otras pestañas y fecha/hora (`@hoy`, `@hora`, `@fecha`).
-- **Bloques de Ciencias (Matemática, Física y Química)**:
-  - Motor compartido con fracciones anidadas, límites, integrales, sumatorias, matrices, vectores (`\vec{F}`), fórmulas e iones (`\ce{H2SO4}`, `\ce{SO4^2-}`), equilibrio químico (`\rightleftharpoons`), isótopos (`\iso{14}{6}{C}`), autocompletado con `\` y guía copiable desde `?`.
-- **Pizarra de diagramas integrada**: formas redimensionables, texto libre, conectores con o sin flechas y formato interno.
-- **Exportación e importación limpia**:
-  - `.txt` 100% texto plano limpio.
-  - `.md` bidireccional que reconstruye títulos, formato, tablas, código, ciencias y **coordenadas exactas de pizarras** usando comentarios nativos `%%` de Mermaid.
-  - PDF limpio (`@media print`), `.html`, respaldo completo `.json` y botón **Copiar para IA (Markdown)** con estimador de tokens.
-- **Productividad**: pestañas con Papelera de 15 días, vista dividida (`Alt+D`), búsqueda local (`Ctrl+F`) y global (`Ctrl+Shift+F`), autocompletado de palabras del apunte y autocorrector ortográfico.
+- **Two switchable visual themes** (`Format → Visual Style`):
+  - **Classic (Windows 98)**: retro interface with 3D bevels, classic blue title bar, and traditional monospace typography.
+  - **Modern**: sharp, productivity-focused design using **Saira** and **Share Tech Mono** fonts.
+  - Both themes include **Dark Mode** (`Alt+T`).
+- **Quick inline commands (`/`) and mentions (`@`)**:
+  - Full-line formatting (`/grande`, `/mediano`, `/chico`, `/negrita`, `/cursiva`, `/subrayado`, `/tachado`, `/resaltado`).
+  - Interactive components (`/tabla`, `/diagrama`, `/matematica`, `/fisica`, `/quimica`, `/js`, `/py`, `/c`, `/sql`, `/html`, `/json`).
+  - Mentions to other tabs and date/time (`@hoy`, `@hora`, `@fecha`).
+- **Science Blocks (Math, Physics, and Chemistry)**:
+  - Shared engine supporting nested fractions, limits, integrals, summations, matrices, vectors (`\vec{F}`), formulas and ions (`\ce{H2SO4}`, `\ce{SO4^2-}`), chemical equilibrium (`\rightleftharpoons`), isotopes (`\iso{14}{6}{C}`), autocomplete with `\`, and a copyable reference guide via `?`.
+- **Built-in diagram canvas**: resizable shapes, free text, connectors with or without arrows, and internal formatting.
+- **Clean export and import**:
+  - 100% clean plain text `.txt`.
+  - Bidirectional `.md` that reconstructs headings, formatting, tables, code, science blocks, and **exact canvas coordinates** using native Mermaid `%%` comments.
+  - Clean PDF (`@media print`), `.html`, full `.json` backup, and a **Copy for AI (Markdown)** button with a token estimator.
+- **Productivity**: tabs with a 15-day Trash bin, split view (`Alt+D`), local (`Ctrl+F`) and global (`Ctrl+Shift+F`) search, note-based word autocomplete, and spellcheck.
 
-## Instalación y uso
+## Installation and Usage
 
-### 1. Versión Web (sin instalación)
-Abrí directamente https://mateocasella.github.io/simple-pad/ en tu navegador (podés instalarlo como app de escritorio desde el menú del navegador: *Instalar página como app*).
+### 1. Web Version (No Installation)
+Open https://mateocasella.github.io/simple-pad/ directly in your browser (you can install it as a desktop app from your browser's menu: *Install page as app*).
 
-### 2. Instalador para Windows (`.exe`)
-Descargá el instalador o la versión portable desde [GitHub Releases](https://github.com/MateoCasella/simple-pad/releases/latest) (compilados automáticamente con GitHub Actions).
+### 2. Windows Installer (`.exe`)
+Download the installer or portable version from [GitHub Releases](https://github.com/MateoCasella/simple-pad/releases/latest) (automatically built with GitHub Actions).
 
-### 3. Ejecutar o compilar desde código fuente (`npm`)
-Requiere [Node.js](https://nodejs.org/) instalado:
+### 3. Run or Build from Source (`npm`)
+Requires [Node.js](https://nodejs.org/) installed:
 
 ```bash
 git clone [https://github.com/MateoCasella/simple-pad.git](https://github.com/MateoCasella/simple-pad.git)
 cd simple-pad
 npm install
-npm start          # Abrir Simple Pad en ventana de escritorio (Electron)
-```
-
-Para generar los ejecutables `.exe` localmente en `dist/`:
-
-```bash
-npm run dist
-```
-
-## Estructura del proyecto
-
-```text
-simple-pad/
-├── .github/
-│   └── workflows/
-│       └── release.yml
-├── electron/
-│   └── main.js
-├── src/
-│   ├── styles/
-│   │   ├── base.css
-│   │   ├── theme-win98.css
-│   │   └── theme-modern.css
-│   └── js/
-│       ├── state.js
-│       ├── diagram.js
-│       ├── table-code.js
-│       ├── science.js
-│       ├── tabs-trash.js
-│       ├── editor.js
-│       ├── io-markdown.js
-│       └── ui-search.js
-├── index.html
-├── package.json
-├── .gitignore
-├── LICENSE
-└── README.md
-```
-
-## Licencia
-
-Distribuido bajo licencia **MIT**. Consultá el archivo `LICENSE` para más información.
+npm start          # Open Simple Pad in
