@@ -1,6 +1,6 @@
 # Simple Pad
 
-Bloc de notas técnico, liviano y 100% offline pensado para estudiantes de ingeniería, ciencias y desarrolladores. Combina la velocidad del Bloc de Notas clásico con bloques interactivos de diagramas, tablas, código y notación científica (Matemática, Física y Química).
+Bloc de notas técnico, liviano y 100% offline. Combina la velocidad del Bloc de Notas clásico con bloques interactivos de diagramas, tablas, código y notación científica (Matemática, Física y Química).
 
 - **Probar online (sin instalar):** https://mateocasella.github.io/simple-pad/
 - **Descargar para Windows (`.exe` / Portable):** https://github.com/MateoCasella/simple-pad/releases/latest
